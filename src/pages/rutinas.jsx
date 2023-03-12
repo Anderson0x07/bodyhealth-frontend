@@ -4,8 +4,15 @@ import styled from "styled-components";
 
 export function Rutinas() {
   return (
-    <div>
+    <Container>
       <h1>Rutinas</h1>
-    </div>
+    </Container>
   )
 }
+
+const Container =styled.div`
+  height:100vh;
+`
+
+//rfce
+

@@ -3,8 +3,12 @@ import styled from "styled-components";
 
 export  function Maquinas() {
   return (
-    <div>
+    <Container>
       <h2>Listas de maquinas</h2>
-    </div>
+    </Container>
   )
 }
+
+const Container =styled.div`
+  height:100vh;
+`
