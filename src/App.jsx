@@ -5,6 +5,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { DashBoard } from "./components/DashBoard/DashBoard";
 import { Light, Dark } from "./style/theme";
+import 'bootstrap/dist/css/bootstrap.min.css';
 export const ThemeContext = React.createContext(null);
 
 function App() {

@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 import logo from "../../assets/react.svg";
 import { v } from "../../style/Variables";
@@ -92,6 +91,11 @@ const linkArray = [
     label: "Musculos",
     icon: <AiOutlineHome />,
     to: "/musculos",
+  },
+  {
+    label: "Provedores",
+    icon: <AiOutlineHome />,
+    to: "/provedores",
   },
 ];
 

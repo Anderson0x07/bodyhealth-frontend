@@ -3,6 +3,7 @@ import {Tablero} from '../pages/tablero'
 import {Maquinas} from '../pages/maquinas'
 import {Rutinas} from '../pages/rutinas'
 import {Musculo} from '../pages/Musculo'
+import { Provedor } from '../pages/Proveedor'
 
 export  function Myroutes() {
  
@@ -14,6 +15,9 @@ export  function Myroutes() {
       <Route path="/maquinas" element={<Maquinas/>}/>
       <Route path="/rutinas" element={<Rutinas/>}/>
       <Route path="/musculos" element={<Musculo/>}/>
+      <Route path='/proveedores' element={<Proveedor/>}/>
+      
+    
     </Routes>
     
   
