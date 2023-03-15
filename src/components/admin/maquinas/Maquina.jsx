@@ -2,8 +2,6 @@ import React from 'react'
 
 function Maquina() {
 
-    
-
   return (
     <div>
       

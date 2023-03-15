@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import MaquinaList from "./components/admin/maquinas/MaquinaList";
-import { Myroutes } from "./routers/routes";
+import Myroutes from "./routers/MyRoutes";
 import styled, { ThemeProvider } from "styled-components";
 import { BrowserRouter } from "react-router-dom";
-import { DashBoard } from "./components/DashBoard/DashBoard";
-import { Light, Dark } from "./style/theme";
+import DashBoard from "./components/admin/DashBoard";
+import { Light, Dark } from "./style/Theme";
 import 'bootstrap/dist/css/bootstrap.min.css';
 export const ThemeContext = React.createContext(null);
 

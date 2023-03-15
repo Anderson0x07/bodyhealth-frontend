@@ -1,17 +1,17 @@
 import React from 'react'
 import styled from "styled-components";
 
-export  function Tablero() {
+function Musculos() {
   return (
     <Container>
-
-<h2>Bienvenido al dashboard de Administrador</h2>
+      <h1>Musculos</h1>
     </Container>
-  
-
   )
 }
+
+export default Musculos;
 
 const Container =styled.div`
   height:100vh;
 `
+
