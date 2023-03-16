@@ -6,6 +6,7 @@ function ProveedorList() {
     
   const [proveedores, setProveedores] = useState([]);
   const [status, setStatus] = useState(0);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -16,19 +17,14 @@ function ProveedorList() {
       const url = "http://localhost:8080/proveedor/all";
       const response = await axios.get(url);
 
-      console.log("ERROR:")
-      console.log(response);
-
-      if(response.data.error == null){
-        setProveedores(response.data.Proveedores);
-      } else {
-        console.log(response.data.error)
-      }
-      setStatus(response.status);
+      setStatus(response.status)
+      setProveedores(response.data.proveedor);
       
 
     } catch (error) {
-      console.error(error);
+      setError(error.response.data.error);
+      setStatus(error.response.status);
+
     }
   };
 
@@ -45,7 +41,7 @@ function ProveedorList() {
         </thead>
         <tbody>
           {status != 200 ? (
-            <tr><td>No datos disponibles</td></tr>
+            <tr><td>{error}</td></tr>
           ) : (
             proveedores.map((proveedor) => (
               <tr key={proveedor.id_proveedor}>
