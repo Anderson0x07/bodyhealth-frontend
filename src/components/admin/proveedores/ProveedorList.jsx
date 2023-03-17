@@ -29,7 +29,7 @@ function ProveedorList() {
   };
 
   return (
-    <div>
+    <div className="container p-5">
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -40,9 +40,7 @@ function ProveedorList() {
           </tr>
         </thead>
         <tbody>
-          {status != 200 ? (
-            <tr><td>{error}</td></tr>
-          ) : (
+          {status === 200 && (
             proveedores.map((proveedor) => (
               <tr key={proveedor.id_proveedor}>
                 <td>{proveedor.id_proveedor}</td>
@@ -54,6 +52,7 @@ function ProveedorList() {
           )}
         </tbody>
       </Table>
+        {status !== 200 && (<p className="alert alert-danger py-2 my-2 text-center">{error}</p>)}
     </div>
   );
 }
