@@ -1,31 +1,29 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
+import { procesarPeticionGet } from "../../../util/HandleApi";
 
 function ProveedorList() {
-    
   const [proveedores, setProveedores] = useState([]);
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchData();
+    getAll();
   }, []);
 
-  const fetchData = async () => {
+  const getAll = async () => {
     try {
-      const url = "http://localhost:8080/proveedor/all";
-      const response = await axios.get(url);
+      const response = await procesarPeticionGet("proveedor/all");
 
-      setStatus(response.status)
+      console.log(response);
+      setStatus(response.status);
       setProveedores(response.data.proveedor);
-      
-
     } catch (error) {
       setError(error.response.data.error);
       setStatus(error.response.status);
-
     }
+
   };
 
   return (
@@ -40,7 +38,7 @@ function ProveedorList() {
           </tr>
         </thead>
         <tbody>
-          {status === 200 && (
+          {status === 200 &&
             proveedores.map((proveedor) => (
               <tr key={proveedor.id_proveedor}>
                 <td>{proveedor.id_proveedor}</td>
@@ -48,11 +46,12 @@ function ProveedorList() {
                 <td>{proveedor.direccion}</td>
                 <td>{proveedor.telefono}</td>
               </tr>
-            ))
-          )}
+            ))}
         </tbody>
       </Table>
-        {status !== 200 && (<p className="alert alert-danger py-2 my-2 text-center">{error}</p>)}
+      {status !== 200 && (
+        <p className="alert alert-danger py-2 my-2 text-center">{error}</p>
+      )}
     </div>
   );
 }
