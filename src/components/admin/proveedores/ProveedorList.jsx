@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { procesarPeticionGet } from "../../../util/HandleApi";
+import { MdPendingActions } from "react-icons/md";
+
 
 function ProveedorList() {
   const [proveedores, setProveedores] = useState([]);
@@ -15,8 +17,6 @@ function ProveedorList() {
   const getAll = async () => {
     try {
       const response = await procesarPeticionGet("proveedor/all");
-
-      console.log(response);
       setStatus(response.status);
       setProveedores(response.data.proveedor);
     } catch (error) {
@@ -24,6 +24,10 @@ function ProveedorList() {
       setStatus(error.response.status);
     }
 
+  };
+
+  const handleEdit = (id) => {
+    window.location.href = `/proveedores/expand/${id}`;
   };
 
   return (
@@ -35,6 +39,8 @@ function ProveedorList() {
             <th>Nombre Empresa</th>
             <th>Dirección</th>
             <th>Teléfono</th>
+            <th>Acciones</th>
+
           </tr>
         </thead>
         <tbody>
@@ -45,6 +51,10 @@ function ProveedorList() {
                 <td>{proveedor.nombre_empresa}</td>
                 <td>{proveedor.direccion}</td>
                 <td>{proveedor.telefono}</td>
+                <td> <span className="d-inline-block" onClick={() => handleEdit(proveedor.id_proveedor)}>
+                  <MdPendingActions />
+                </span></td>
+
               </tr>
             ))}
         </tbody>

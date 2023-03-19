@@ -3,7 +3,8 @@ import Tablero from "../pages/admin/Tablero";
 import Maquinas from "../pages/admin/Maquinas";
 import Rutinas from "../pages/admin/Rutinas";
 import Musculo from "../pages/admin/Musculos";
-import Proveedor from "../pages/admin/Proveedores";
+import Proveedor from "../pages/admin/proveedores/Proveedores";
+import ProveedorEdit from '../pages/admin/proveedores/ProveedoresEdit'
 
 function MyRoutes() {
   return (
@@ -13,6 +14,7 @@ function MyRoutes() {
       <Route path="/rutinas" element={<Rutinas />} />
       <Route path="/musculos" element={<Musculo />} />
       <Route path="/proveedores" element={<Proveedor />} />
+      <Route path="/proveedores/expand/:id" element={<ProveedorEdit/>}/>
     </Routes>
   );
 }

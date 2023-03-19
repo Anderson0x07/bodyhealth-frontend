@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import ProveedorList from "../../components/admin/proveedores/ProveedorList";
+import ProveedorList from "../../../components/admin/proveedores/ProveedorList";
 
 function Proveedores() {
 
