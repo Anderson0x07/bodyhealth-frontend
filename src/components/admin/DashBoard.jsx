@@ -86,6 +86,11 @@ const linkArray = [
     to: "/",
   },
   {
+    label: "Clientes",
+    icon: <AiOutlineHome />,
+    to: "/clientes",
+  },
+  {
     label: "Maquinas",
     icon: <AiOutlineHome />,
     to: "/maquinas",

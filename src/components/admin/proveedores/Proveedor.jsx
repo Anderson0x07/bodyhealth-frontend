@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import { v } from "../../../style/Variables";
 import Container from 'react-bootstrap/Container';
@@ -8,17 +8,22 @@ import Table from 'react-bootstrap/Table';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button'
 import imagen from '../../../assets/Logo-BodyHealth.jpeg';
-import axios from "axios";
 import EditarProveedorModal from './EditarProveedorModal'
-import { procesarPeticionDelete, procesarPeticionGet } from '../../../util/HandleApi';
+import { procesarPeticionGet } from '../../../util/HandleApi';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function Proveedor() {
   const [proveedor, setProveedor] = useState({});
   const [editedProveedor, setEditedProveedor] = useState({});
   const [error, setError] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
-  const [message,setMessage]=useState("")
-  
+
+
+  const navigate = useNavigate();
+  console.log(navigate)
+
   const pagina = window.location.href;
   const urlParts = pagina.split("/");
   const id = urlParts[urlParts.length - 1];
@@ -26,6 +31,7 @@ function Proveedor() {
   useEffect(() => {
     fetchProveedor();
   }, []);
+
   const fetchProveedor = async () => {
     try {
       const response = await procesarPeticionGet(`proveedor/${id}`);
@@ -35,25 +41,26 @@ function Proveedor() {
     }
   };
 
-  const handleBack = (id) => {
+  const handleBack = () => {
     window.location.href = `/proveedores`;
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await procesarPeticionDelete(`proveedor/eliminar/${id}`);
-      setMessage(response.data.message)
-      window.location.href = "/proveedores";
-    } catch (error) {
-      setError(error.response.data.error);
-    }
+  const handleDelete = () => {
+
+    //window.location.href = `/proveedores/expand-delete/${id}`;
+
+    navigate(`/proveedores/expand-delete/${proveedor.id_proveedor}`);
   };
 
   const handleEditar = () => {
     setEditedProveedor(proveedor);
     setShowEditModal(true);
   };
-  
+
+  const handleUpdate = (updatedData) => {
+    setProveedor(updatedData)
+  }
+
   return (
     <div className='container p-5'>
       <h1 className='mx-5'>Datos del proveedor</h1>
@@ -92,19 +99,19 @@ function Proveedor() {
             <Button variant="dark" className="mx-3" onClick={() => handleBack()}>Regresar</Button>
           </Col>
           <Col md={4} className="ml-auto">
-            <Button variant="secondary" className="mx-3" onClick={handleEditar}>Editar</Button>
+            <Button variant="secondary" className="mx-3" onClick={() => handleEditar()}>Editar</Button>
           </Col>
           <Col md={4} className="ml-auto">
-            <Button variant="danger" className="mx-3" onClick={handleDelete}>Eliminar</Button>
+            <Button variant="danger" className="mx-3" onClick={() => handleDelete()}>Eliminar</Button>
           </Col>
         </Row>
       </Container>
       {showEditModal && (
         <EditarProveedorModal
-          editedProveedor={editedProveedor}
-          setEditedProveedor={setEditedProveedor}
+          proveedor={proveedor}
           showEditModal={showEditModal}
           setShowEditModal={setShowEditModal}
+          onUpdate={handleUpdate}
         />
       )}
     </div>
@@ -118,4 +125,4 @@ const Divider = styled.div`
   margin: ${v.lgSpacing} 0;
 `;
 
-export default Proveedor
+export default Proveedor;

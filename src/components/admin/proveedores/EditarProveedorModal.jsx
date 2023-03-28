@@ -2,45 +2,51 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import axios from 'axios';
-
+import { procesarPeticionPut } from '../../../util/HandleApi';
+import Swal from 'sweetalert2'
 
 
 function EditarProveedorModal(props) {
-    const { editedProveedor, setEditedProveedor, showEditModal, setShowEditModal } = props;
-    const [nombreEmpresa, setNombreEmpresa] = useState(editedProveedor.nombre_empresa);
-    const [telefono, setTelefono] = useState(editedProveedor.telefono);
-    const [direccion, setDireccion] = useState(editedProveedor.direccion);
-    const [error, setError] = useState('');
-  
-    const handleNombreEmpresaChange = (event) => {
-      setNombreEmpresa(event.target.value);
+    const {showEditModal, setShowEditModal, proveedor, onUpdate} = props;
+    const [data, setData] = useState(proveedor);
+
+    const handleChange = (event) => {
+      setData({ ...data, [event.target.name]: event.target.value });
     };
-  
-    const handleTelefonoChange = (event) => {
-      setTelefono(event.target.value);
-    };
-  
-    const handleDireccionChange = (event) => {
-      setDireccion(event.target.value);
-    };
-  
-    const handleEditarProveedor = async () => {
-      try {
-        const url = `http://localhost:8080/proveedor/editar/${editedProveedor.id_proveedor}`;
-        const data = { nombre_empresa: nombreEmpresa, telefono: telefono, direccion: direccion };
-        const response = await axios.put(url, data);
-        setEditedProveedor(response.data.proveedor);
-        setShowEditModal(false);
-      } catch (error) {
-        setError(error.response.error);
-      }
-    };
+
   
     const handleCancelar = () => {
       setShowEditModal(false);
     };
-  
+
+
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+
+      try {
+        const respuesta = await procesarPeticionPut(`proveedor/editar/${proveedor.id_proveedor}`, data);
+        console.log(respuesta)
+        setShowEditModal(false);
+        onUpdate(data);
+
+        Swal.fire({
+          icon: 'success',
+          title: "Información",
+          text: respuesta.data.message
+        })
+
+
+      } catch(error) {
+        console.log(error)
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error.response.data.error
+        })
+      }
+    };
+    
     return (
       <Modal show={showEditModal} onHide={handleCancelar}>
         <Modal.Header closeButton>
@@ -50,24 +56,23 @@ function EditarProveedorModal(props) {
           <Form>
             <Form.Group controlId="formNombreEmpresa">
               <Form.Label>Nombre de la empresa</Form.Label>
-              <Form.Control type="text" placeholder="Ingrese el nombre de la empresa" value={nombreEmpresa} onChange={handleNombreEmpresaChange} />
+              <Form.Control type="text" name="nombre_empresa" placeholder="Ingrese el nombre de la empresa" defaultValue={proveedor.nombre_empresa} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formTelefono">
               <Form.Label>Telefono</Form.Label>
-              <Form.Control type="text" placeholder="Ingrese el telefono" value={telefono} onChange={handleTelefonoChange} />
+              <Form.Control type="text" name="telefono" placeholder="Ingrese el telefono" defaultValue={proveedor.telefono} onChange={handleChange}/>
             </Form.Group>
             <Form.Group controlId="formDireccion">
               <Form.Label>Direccion</Form.Label>
-              <Form.Control type="text" placeholder="Ingrese la direccion" value={direccion} onChange={handleDireccionChange} />
+              <Form.Control type="text" name="direccion" placeholder="Ingrese la direccion" defaultValue={proveedor.direccion} onChange={handleChange}/>
             </Form.Group>
           </Form>
-          {error && <p>{error}</p>}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCancelar}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleEditarProveedor}>
+          <Button variant="primary" onClick={handleSubmit}>
             Guardar cambios
           </Button>
         </Modal.Footer>

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { procesarPeticionGet } from "../../../util/HandleApi";
@@ -10,7 +9,9 @@ function ProveedorList() {
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
 
+  
   useEffect(() => {
+    
     getAll();
   }, []);
 
@@ -51,7 +52,7 @@ function ProveedorList() {
                 <td>{proveedor.nombre_empresa}</td>
                 <td>{proveedor.direccion}</td>
                 <td>{proveedor.telefono}</td>
-                <td> <span className="d-inline-block" onClick={() => handleEdit(proveedor.id_proveedor)}>
+                <td> <span className="d-inline-block" style={{cursor: "pointer"}} onClick={() => handleEdit(proveedor.id_proveedor)}>
                   <MdPendingActions />
                 </span></td>
 

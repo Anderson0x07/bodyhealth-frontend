@@ -15,8 +15,10 @@
     "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
-    "react-router-dom": "^6.8.2",
-    "styled-components": "^5.3.8"
+    "react-router-dom": "^6.9.0",
+    "styled-components": "^5.3.8",
+    "sweetalert2": "^11.7.3",
+    "sweetalert2-react-content": "^5.0.7"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
