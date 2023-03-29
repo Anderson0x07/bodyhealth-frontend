@@ -10,10 +10,20 @@ function AgregarClienteModal(props) {
     console.log(props)
     const { showModal, setShowModal } = props;
     const [data, setData] = useState({});
-    const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState(null);
+    const [image, setImage] = useState('');
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        setFileName(file.name)
+
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+
+        reader.readAsDataURL(file);
     };
 
     const handleChange = (event) => {
@@ -30,26 +40,16 @@ function AgregarClienteModal(props) {
         console.log(data)
         data.estado = true;
         data.comentario = "hola";
+        data.foto=image+" "+fileName;
 
-        //event.preventDefault();
+        console.log(foto);
 
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('documento', data.documento);
-        formData.append('tipo_documento', data.tipo_documento);
-        formData.append('nombre', data.nombre);
-        formData.append('apellido', data.apellido);
-        formData.append('telefono', data.telefono);
-        formData.append('fecha_nacimiento', data.fecha_nacimiento);
-        formData.append('email', data.email);
-        formData.append('password', data.password);
-        formData.append('jornada', data.jornada);
-        formData.append('estado', data.estado);
-        formData.append('comentario', data.comentario);
+        console.log(data);
 
+        event.preventDefault();
 
         try {
-            const respuesta = await procesarPeticionPost(`cliente/guardar`, formData);
+            const respuesta = await procesarPeticionPost(`cliente/guardar`, data);
             console.log(respuesta)
             setShowModal(false);
 
