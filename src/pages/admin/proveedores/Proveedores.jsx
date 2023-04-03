@@ -1,19 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import ProveedorList from "../../../components/admin/proveedores/ProveedorList";
+import { Container } from '@mui/material';
 
 function Proveedores() {
-
   return (
-    <Container>
-      <ProveedorList/>
-    </Container>
+    <>
+      <Container>
+        
+      </Container>
+    </>
   );
 }
 
 export default Proveedores;
-
-const Container = styled.div`
-  height: 100vh;
-`;
-

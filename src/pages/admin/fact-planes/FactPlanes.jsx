@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 
-function Maquinas() {
+function FactPlanes() {
   return (
     <>
       <Container>
@@ -10,4 +10,4 @@ function Maquinas() {
   );
 }
 
-export default Maquinas;
+export default FactPlanes;

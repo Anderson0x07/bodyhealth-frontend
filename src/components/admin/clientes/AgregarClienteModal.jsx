@@ -1,28 +1,53 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { procesarPeticionPost } from '../../../util/HandleApi';
+import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2'
-import { Modal } from 'react-bootstrap';
+import { 
+    Avatar, 
+    Button, 
+    Dialog, 
+    DialogActions, 
+    DialogContent, 
+    DialogTitle, 
+    FormControl, 
+    Grid, 
+    IconButton, 
+    InputAdornment, 
+    InputLabel, 
+    MenuItem, 
+    OutlinedInput, 
+    TextField } from '@mui/material';
+import { PhotoCamera, Visibility, VisibilityOff, Save } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 
 function AgregarClienteModal(props) {
-    console.log(props)
-    const { showModal, setShowModal } = props;
+    const { showModal, setShowModal, agregarCliente } = props;
+
     const [data, setData] = useState({});
     const [fileName, setFileName] = useState(null);
     const [image, setImage] = useState('');
+    const [error, setError] = useState(null)
 
-    const handleFileChange = (event) => {
+    const [loading, setLoading] = useState(false);
 
+    const [tipoDoc, setTipoDoc] = useState("Seleccionar");
+    const [jornada, setJornada] = useState("Seleccionar");
+
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const handleImageUpload = (event) => {
         const reader = new FileReader();
         const file = event.target.files[0];
         setFileName(file.name)
-
-        reader.onloadend = () => {
-            setImage(reader.result);
+        reader.onload = (event) => {
+            const base64String = event.target.result.split(',')[1]; 
+            setImage(base64String);
         };
-
         reader.readAsDataURL(file);
     };
 
@@ -30,106 +55,185 @@ function AgregarClienteModal(props) {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
+    const handleTipoDoc = (event) => {
+        setTipoDoc(event.target.value);
+        
+    }
+    const handleJornada = (event) => {
+        setJornada(event.target.value);
+    }
+
     const handleCancelar = () => {
         setShowModal(false);
     };
 
 
     const handleSubmit = async (event) => {
-
-        console.log(data)
-        data.estado = true;
-        data.comentario = "hola";
-        data.foto=image+" "+fileName;
-
-        console.log(foto);
+        event.preventDefault();
 
         console.log(data);
 
-        event.preventDefault();
-
-        try {
-            const respuesta = await procesarPeticionPost(`cliente/guardar`, data);
-            console.log(respuesta)
-            setShowModal(false);
-
+        if(tipoDoc === 'Seleccionar') {
             Swal.fire({
-                icon: 'success',
-                title: "Información",
-                text: respuesta.data.message
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar un tipo de documento',
+                icon: 'warning'
             })
-
-
-        } catch (error) {
-            console.log(error)
-
+        } else if (jornada === 'Seleccionar') {
             Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: error.response.data.error
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar una jornada',
+                icon: 'warning'
             })
+    
+        } else {
+            setLoading(true);
+            data.estado = false;
+            data.comentario = "hola";
+
+            if(image != ""){
+                data.foto = image + " " + fileName;
+            } else {
+                data.foto="";
+            }
+            
+
+            data.tipo_documento = tipoDoc;
+            data.jornada = jornada;
+            data.rol = {
+                id_rol: 2
+            }
+
+            try {
+                const respuesta = await procesarPeticionPost(`cliente/guardar`, data);
+                setLoading(false);
+                console.log(respuesta);
+                Swal.fire('Información', respuesta.data.message, 'success')
+
+                setShowModal(false);
+
+                const response = await procesarPeticionGet("cliente/all");
+
+                agregarCliente(response.data.clientes);
+
+            } catch (error) {
+                setLoading(false);
+                console.log(error);
+
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Atención',
+                    text: error.response.data.error,
+                    icon: 'error'
+                })
+            }   
         }
+
     }
 
     return (
-        <Modal show={showModal} onHide={handleCancelar}>
-            
-            <Modal.Header closeButton>
-                <Modal.Title>Agregar cliente</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group controlId="formDocumento">
-                        <Form.Label>Documento</Form.Label>
-                        <Form.Control type='number' name="documento" placeholder="Ingrese el documento" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formTipoDocumento">
-                        <Form.Label>Tipo Documento</Form.Label>
-                        <Form.Control type="text" name="tipo_documento" placeholder="Ingrese el tipo de documento" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formNombre">
-                        <Form.Label>Nombre</Form.Label>
-                        <Form.Control type="text" name="nombre" placeholder="Ingrese nombre" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formApellido">
-                        <Form.Label>Apellido</Form.Label>
-                        <Form.Control type="text" name="apellido" placeholder="Ingrese apellido" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formTelefono">
-                        <Form.Label>Telefono</Form.Label>
-                        <Form.Control type="text" name="telefono" placeholder="Ingrese telefono" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formFechaNacimiento">
-                        <Form.Label>Fecha de Nacimiento</Form.Label>
-                        <Form.Control type="date" name="fecha_nacimiento" placeholder="Ingrese la Fecha de Nacimiento" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formEmail">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control type="email" name="email" placeholder="Ingrese su email" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" name="password" placeholder="Ingrese password" onChange={handleChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formFoto">
-                        <Form.Label>Foto</Form.Label>
-                        <Form.Control type="file" name="foto" onChange={handleFileChange} />
-                    </Form.Group>
-                    <Form.Group controlId="formJornada">
-                        <Form.Label>Jornada</Form.Label>
-                        <Form.Control type="text" name="jornada" placeholder="Ingrese jornada" onChange={handleChange} />
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={() => handleCancelar()}>
-                    Cancelar
+
+        <Dialog open={showModal} onClose={handleCancelar} >
+            <DialogTitle>Nuevo cliente</DialogTitle>
+            <DialogContent>
+
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <TextField select margin="normal" type="text" name="tipo_documento" label="Tipo de documento" onChange={handleTipoDoc}
+                            fullWidth variant="outlined" defaultValue={tipoDoc} helperText="Por favor seleccione tipo de documento">
+
+                            <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
+                            <MenuItem key="CC" value="CC">Cedula de ciudadania</MenuItem>
+                            <MenuItem key="TI" value="TI">Tarjeta de identidad</MenuItem>
+
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField margin="normal" type="number" name="documento" label="Documento"
+                            fullWidth onChange={handleChange} variant="outlined" helperText="Por favor ingrese su documento" />
+                    </Grid>
+                </Grid>
+
+                <TextField margin="normal" type="text" name="nombre" label="Nombre"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su nombre" />
+
+                <TextField margin="normal" type="text" name="apellido" label="Apellido"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su apellido" />
+
+                <TextField margin="normal" type="text" name="telefono" label="Teléfono"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su número de telefono" />
+
+                <TextField margin="normal" type="date" name="fecha_nacimiento"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor seleccione su fecha de nacimiento" />
+
+                <TextField margin="normal" type="email" name="email" label="Email"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su email" />
+
+                <FormControl margin="normal" fullWidth variant="outlined" >
+                    <InputLabel htmlFor="pass">Contraseña</InputLabel>
+                    <OutlinedInput
+                        id="pass"
+                        name='password'
+                        type={showPassword ? 'text' : 'password'}
+                        onChange={handleChange}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                        label="Password"
+                    />
+                </FormControl>
+
+                <TextField name="jornada" margin="normal" select label="Jornada" onChange={handleJornada}
+                    fullWidth variant="outlined" defaultValue={jornada} helperText="Por favor seleccione jornada">
+                    <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
+                    <MenuItem key="M" value="Mañana">Mañana</MenuItem>
+                    <MenuItem key="T" value="Tarde">Tarde</MenuItem>
+                </TextField>
+
+                <Button variant="outlined" component="label" size="large" >
+                    Subir foto de perfil
+                    <input hidden accept="image/*" type="file" name="foto" onChange={handleImageUpload} />
                 </Button>
-                <Button variant="primary" onClick={() => handleSubmit()}>
-                    Guardar cambios
-                </Button>
-            </Modal.Footer>
-        </Modal>
+                <IconButton color="primary" aria-label="upload picture" component="label">
+                    <input hidden accept="image/*" type="file" name='foto' onChange={handleImageUpload} />
+                    <PhotoCamera />
+                </IconButton>
+
+                {image && <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={image} />}
+
+            </DialogContent>
+            <DialogActions>
+                <Button variant="outlined" onClick={handleCancelar}>Cancelar</Button>
+                <LoadingButton
+                    color="secondary"
+                    onClick={handleSubmit}
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<Save />}
+                    variant="contained"
+                >
+                    Guardar
+                </LoadingButton>
+            </DialogActions>
+        </Dialog>
+
     );
 }
 
