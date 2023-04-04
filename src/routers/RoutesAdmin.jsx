@@ -14,6 +14,8 @@ import Proveedores from '../pages/admin/proveedores/Proveedores';
 import LoginForm from '../pages/index/LoginForm';
 import Cliente from '../components/admin/clientes/Cliente';
 import ClienteDelete from '../components/admin/clientes/ClienteDelete';
+import Producto from '../components/admin/productos/Producto';
+import ProductoDelete from '../components/admin/productos/ProductoDelete';
 
 
 
@@ -31,6 +33,8 @@ function RoutesAdmin() {
                 { path: 'entrenadores', element: <Entrenadores /> },
                 { path: 'maquinas', element: <Maquinas /> },
                 { path: 'productos', element: <Productos /> },
+                { path: 'productos/:id', element: <Producto /> },
+                { path: 'productos/expand-delete/:id', element: <ProductoDelete/> },
                 { path: 'proveedores', element: <Proveedores /> },
                 { path: 'fact-pedidos', element: <FactPedidos /> },
                 { path: 'fact-planes', element: <FactPlanes /> },

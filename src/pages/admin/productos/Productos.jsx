@@ -1,12 +1,11 @@
-import { Container } from '@mui/material';
+import { Container } from "@mui/material";
+import ProductoList from "../../../components/admin/productos/ProductoList";
 
 function Productos() {
   return (
-    <>
-      <Container>
-        
-      </Container>
-    </>
+    <Container>
+      <ProductoList />
+    </Container>
   );
 }
 
