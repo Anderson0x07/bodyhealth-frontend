@@ -18,7 +18,6 @@ import { Save } from '@mui/icons-material';
 function EditarMaquinaModal(props) {
  const { showEditModal, setShowEditModal, maquina, onUpdate } = props;
 
-    console.log(maquina)
     const [data, setData] = useState(maquina);
     const [loading, setLoading] = useState(false);
     const [proveedorSeleccionado, setProveedorSeleccionado] = useState(maquina.proveedor.id_proveedor)
@@ -95,7 +94,7 @@ function EditarMaquinaModal(props) {
   }
     return (
          <Dialog open={showEditModal} onClose={handleCancelar} >
-            <DialogTitle>Agregar Maquina</DialogTitle>
+            <DialogTitle>Editar Maquina</DialogTitle>
             <DialogContent>
 
             <TextField margin="normal" type="text" name="id_maquina" label="Serial"

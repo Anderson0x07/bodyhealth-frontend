@@ -17,6 +17,7 @@ import ClienteDelete from '../components/admin/clientes/ClienteDelete';
 import Producto from '../components/admin/productos/Producto';
 import ProductoDelete from '../components/admin/productos/ProductoDelete';
 import Maquina from '../components/admin/maquinas/Maquina';
+import Musculos from '../pages/admin/musculos/Musculos';
 
 
 
@@ -33,11 +34,12 @@ function RoutesAdmin() {
                 { path: 'clientes/expand-delete/:id', element: <ClienteDelete /> },
                 { path: 'entrenadores', element: <Entrenadores /> },
                 { path: 'maquinas', element: <Maquinas /> },
-                {path: 'maquinas/:id', element: <Maquina/> },
+                { path: 'maquinas/:id', element: <Maquina/> },
                 { path: 'productos', element: <Productos /> },
                 { path: 'productos/:id', element: <Producto /> },
                 { path: 'productos/expand-delete/:id', element: <ProductoDelete/> },
                 { path: 'proveedores', element: <Proveedores /> },
+                { path: 'musculos', element: <Musculos /> },
                 { path: 'fact-pedidos', element: <FactPedidos /> },
                 { path: 'fact-planes', element: <FactPlanes /> },
                 { path: 'configuracion', element: <Configuracion /> },

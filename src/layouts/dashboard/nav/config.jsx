@@ -6,6 +6,8 @@ import StoreIcon from '@mui/icons-material/Store';
 import PeopleAltTwoToneIcon from '@mui/icons-material/PeopleAltTwoTone';
 import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
 import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
+import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
+
 
 
 const navConfig = [
@@ -38,6 +40,11 @@ const navConfig = [
     title: 'proveedores',
     path: '/admin/dashboard/proveedores',
     icon: <PeopleAltTwoToneIcon/>,
+  },
+  {
+    title: 'musculos',
+    path: '/admin/dashboard/musculos',
+    icon: <SportsGymnasticsIcon/>,
   },
   {
     title: 'fact. pedidos',
