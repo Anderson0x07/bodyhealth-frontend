@@ -16,6 +16,7 @@ import Cliente from '../components/admin/clientes/Cliente';
 import ClienteDelete from '../components/admin/clientes/ClienteDelete';
 import Producto from '../components/admin/productos/Producto';
 import ProductoDelete from '../components/admin/productos/ProductoDelete';
+import Maquina from '../components/admin/maquinas/Maquina';
 
 
 
@@ -32,6 +33,7 @@ function RoutesAdmin() {
                 { path: 'clientes/expand-delete/:id', element: <ClienteDelete /> },
                 { path: 'entrenadores', element: <Entrenadores /> },
                 { path: 'maquinas', element: <Maquinas /> },
+                {path: 'maquinas/:id', element: <Maquina/> },
                 { path: 'productos', element: <Productos /> },
                 { path: 'productos/:id', element: <Producto /> },
                 { path: 'productos/expand-delete/:id', element: <ProductoDelete/> },
