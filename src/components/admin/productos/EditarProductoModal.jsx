@@ -94,7 +94,9 @@ function EditarProductoModal(props) {
                 icon: 'warning'
             })
         } else {
-            if (data.cantidad === 0) {
+            if(data.stock > 0){
+                data.estado = true;
+            }else{
                 data.estado = false;
             }
 
@@ -112,8 +114,14 @@ function EditarProductoModal(props) {
             try {
                 const respuesta = await procesarPeticionPut(`producto/editar/${producto.id_producto}`, data);
                 setLoading(false);
-                Swal.fire('Información', respuesta.data.message, 'success')
-
+                Swal.fire({
+                    title:'Información',
+                    text: respuesta.data.message,
+                    icon: 'success',
+                    customClass: {
+                        container: 'my-swal'
+                    }
+                })
                 setShowEditModal(false);
                 onUpdate(respuesta.data.producto);
                 

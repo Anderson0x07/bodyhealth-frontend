@@ -4,21 +4,21 @@ import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from
 //import EditarProductoModal from './EditarproductoModal';
 import Swal from 'sweetalert2';
 //import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, Edit } from '@mui/icons-material';
+import { ArrowBack, Cancel, CheckCircleRounded, Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
 import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import EditarProductoModal from './EditarProductoModal';
+import MostrarventasProductosModal from './MostrarVentasProductoModal';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function Producto() {
     const [producto, setProducto] = useState({});
-    const [productoEntrenadores, setProductoEntrenadores] = useState([]);
-    const [editarAsignacion, setDesactivarProducto] = useState({});
-    const [editedproducto, setEditedproducto] = useState({});
     const [error, setError] = useState("");
     const [showModalEditarProducto, setShowModalEditarProducto] = useState(false);
+    const [showModalVentasProducto, setShowModalVentasProducto] = useState(false);
     const [proveedor, setProveedor] = useState(null);
+    const [pedidos, setPedidos] = useState([]);
 
 
     const navigate = useNavigate();
@@ -33,6 +33,7 @@ function Producto() {
                 console.log(response);
                 setProducto(response.data.producto);
                 setProveedor(response.data.producto.proveedor);
+                setPedidos(response.data.producto.pedidos);
             } catch (error) {
                 setError(error.response.data.error)
             }
@@ -51,7 +52,7 @@ function Producto() {
         try {
             Swal.fire({
                 title: 'Atención',
-                text: "¿Está seguro que desea desactivar el producto?",
+                text: "¿Está seguro que desea desactivar el producto?, Esta acción dejará el stock del producto en 0.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -63,11 +64,18 @@ function Producto() {
                 }
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    const response = await procesarPeticionPut(`producto/desactivar/${id}`);
-                    Swal.fire(
-                        'Información',
-                        response.data.message,
-                        'success'
+                    producto.stock = 0;
+                    producto.estado = false;
+                    const respuesta = await procesarPeticionPut(`producto/editar/${producto.id_producto}`, producto);
+                    Swal.fire({
+                        title: 'Información',
+                        text: respuesta.data.message,
+                        icon: 'success',
+                        customClass: {
+                            container: 'my-swal'
+                        }
+                    }
+
                     ).then(() => {
                         navigate(`/admin/dashboard/productos/${id}`);
                     })
@@ -80,7 +88,6 @@ function Producto() {
     };
 
     const handleEditarproducto = () => {
-        setEditedproducto(producto);
         setShowModalEditarProducto(true);
     };
 
@@ -88,6 +95,44 @@ function Producto() {
         setProveedor(updatedData.proveedor)
         setProducto(updatedData)
     }
+
+    const handleDelete = () => {
+        try {
+    
+          Swal.fire({
+            title: 'Atención',
+            text: "¿Está seguro que desea eliminar el producto?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, elimínalo',
+            customClass: {
+              container: 'my-swal'
+            }
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              const response = await procesarPeticionDelete(`producto/eliminar/${id}`);
+              Swal.fire({
+                title: 'Información',
+                text: response.data.message,
+                icon: 'success',
+                customClass: {
+                    container: 'my-swal'
+                  }
+              }
+                
+              ).then(() => {
+                navigate(`/admin/dashboard/productos`);
+              })
+            }
+          })
+    
+        } catch (error) {
+          console.log(error.response.data.error);
+          Swal.fire('Atención', error.response.data.error, 'error');
+        }
+      };
 
     const handleUpdateAsignacion = (updatedData) => {
         setDesactivarProducto(updatedData);
@@ -165,38 +210,25 @@ function Producto() {
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Edit />} onClick={handleEditarproducto}>Editar</Button>
                     </Grid>
-
+                    <Grid item xs={2} sm={2} md={3} >
+                        <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>Eliminar</Button>
+                    </Grid>
+                    {producto.stock > 0 ?
+                        <Grid item xs={2} sm={2} md={3} >
+                            <Button variant="contained" startIcon={<Cancel />} onClick={handleDesactivar}>Desactivar</Button>
+                        </Grid>
+                        : false}
+                    {pedidos.length > 0
+                        ?
+                        <Grid item xs={2} sm={2} md={3} >
+                            <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalVentasProducto(true)}>Ver Ventas</Button>
+                        </Grid>
+                        : console.log("no tiene pedidos")
+                    }
                     
 
-                </Grid>
-                <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
-                    <Grid item xs={6} sm={4} md={6} pb={5}>
-                        <TableContainer>
-                            <Table style={{ border: "1px solid black" }}>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell >Pedido</TableCell>
-                                        <TableCell >Cliente</TableCell>
-                                        <TableCell >Fecha compra</TableCell>
-                                        <TableCell >Cantidad</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {producto.pedidos != null
-                                        ? producto.pedidos.map((pedido) => (
-                                            <TableRow>
-                                                <TableCell className='value'>{pedido.id_pedido}</TableCell>
-                                                <TableCell className='value' align="right">{pedido.compra.cliente.nombre + " " + pedido.compra.cliente.apellido}</TableCell>
-                                                <TableCell className='value' align="right">{pedido.compra.fecha_compra}</TableCell>
-                                                <TableCell className='value' align="right">{pedido.cantidad}</TableCell>
-                                            </TableRow>
-                                        ))
-                                        : console.log("No hay pedidos")
-                                    }
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>
+
+
                 </Grid>
 
             </Container>
@@ -207,6 +239,15 @@ function Producto() {
                     showEditModal={showModalEditarProducto}
                     setShowEditModal={setShowModalEditarProducto}
                     onUpdate={handleUpdate}
+                />
+            )}
+
+            {/* MODAL PARA VER PLANES ADQUIRIDOS */}
+            {showModalVentasProducto && (
+                <MostrarventasProductosModal
+                    pedidos={pedidos}
+                    showModalVentasProducto={showModalVentasProducto}
+                    setShowModalVentasProducto={setShowModalVentasProducto}
                 />
             )}
 

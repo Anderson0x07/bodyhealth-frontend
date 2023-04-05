@@ -99,7 +99,12 @@ function AgregarProductoModal(props) {
             })
         } else {
             setLoading(true);
-            data.estado = true;
+            if(data.stock > 0){
+                data.estado = true;
+            }else{
+                data.estado = false;
+            }
+            
             data.proveedor = {
                 id_proveedor: proveedor
             }
