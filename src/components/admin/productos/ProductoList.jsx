@@ -1,4 +1,4 @@
-import { Container, Box, Card, Grid, Stack, Typography, styled } from '@mui/material';
+import { Container, Box, Card, Grid, Stack, Typography, styled, Button } from '@mui/material';
 
 //import PRODUCTS from '../_mock/products'; //este es el arreglo de productos, cambiarlo a un estado como lo maneja con las tablas
 
@@ -7,6 +7,8 @@ import Label from '../dashboard/label/Label';
 import { useEffect, useState } from 'react';
 import { procesarPeticionGet } from '../../../utils/HandleApi';
 import { useNavigate } from "react-router-dom";
+import AddIcon from '@mui/icons-material/Add';
+import AgregarProductoModal from "./AgregarProductoModal";
 
 
 const ImagenProductoEstilo = styled('img')({
@@ -27,6 +29,7 @@ function ProductoList() {
     const [productos, setProductos] = useState(null);
     const [status, setStatus] = useState('');
     const [error, setError] = useState('');
+    const [showModal, setShowModal] = useState();
     const navigate = useNavigate();
     useEffect(() => {
         getAll();
@@ -49,6 +52,9 @@ function ProductoList() {
   const handleExpandProduct = (id_producto) => {
     navigate(`/admin/dashboard/productos/${id_producto}`);
   };
+  const agregarProducto = (productos) => {
+    setProductos(productos);
+}
 
   return (
     <>
@@ -60,6 +66,17 @@ function ProductoList() {
         <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
           <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
 
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
+                        Nuevo
+                    </Button>
+
+                    {showModal && (
+                        <AgregarProductoModal
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                            agregarProducto={agregarProducto}
+                        />
+                    )}
             {/* ACA IRÍA UN BOTON PARA FILTRAR O EL COMPONENTE DE BUSQUEDA DE SIEMPRE */}
           </Stack>
         </Stack>
