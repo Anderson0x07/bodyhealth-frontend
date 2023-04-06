@@ -38,6 +38,7 @@ function RoutesAdmin() {
                 { path: 'productos/:id', element: <Producto /> },
                 { path: 'proveedores', element: <Proveedores /> },
                 { path: 'musculos', element: <Musculos /> },
+                { path: 'metodospago',element:<MetodoPago />},
                 { path: 'fact-pedidos', element: <FactPedidos /> },
                 { path: 'fact-planes', element: <FactPlanes /> },
                 { path: 'configuracion', element: <Configuracion /> },

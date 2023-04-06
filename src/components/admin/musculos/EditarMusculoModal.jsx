@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {

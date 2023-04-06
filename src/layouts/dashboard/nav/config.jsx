@@ -7,6 +7,7 @@ import PeopleAltTwoToneIcon from '@mui/icons-material/PeopleAltTwoTone';
 import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
 import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
+import PaymentTwoToneIcon from '@mui/icons-material/PaymentTwoTone';
 
 
 
@@ -45,6 +46,11 @@ const navConfig = [
     title: 'musculos',
     path: '/admin/dashboard/musculos',
     icon: <SportsGymnasticsIcon/>,
+  },
+  {
+    title: 'metodo de pagos',
+    path: '/admin/dashboard/metodospago',
+    icon: <PaymentTwoToneIcon/>,
   },
   {
     title: 'fact. pedidos',
