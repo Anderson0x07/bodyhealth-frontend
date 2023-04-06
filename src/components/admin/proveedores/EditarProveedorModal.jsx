@@ -32,10 +32,10 @@ function EditarProveedorModal(props) {
         event.preventDefault();
 
         setLoading(true);
-        
+
         console.log("DATA");
         console.log(data);
-      
+
         try {
             const respuesta = await procesarPeticionPut(`proveedor/editar/${proveedor.id_proveedor}`, data);
             setLoading(false);

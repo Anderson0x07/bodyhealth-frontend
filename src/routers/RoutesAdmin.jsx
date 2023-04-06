@@ -16,7 +16,9 @@ import Cliente from '../components/admin/clientes/Cliente';
 import ClienteDelete from '../components/admin/clientes/ClienteDelete';
 import Producto from '../components/admin/productos/Producto';
 import Maquina from '../components/admin/maquinas/Maquina';
+import Proveedor from '../components/admin/proveedores/Proveedor';
 import Musculos from '../pages/admin/musculos/Musculos';
+import MetodoPago from '../pages/admin/metodo-pago/MetodoPago';
 
 
 
@@ -37,6 +39,7 @@ function RoutesAdmin() {
                 { path: 'productos', element: <Productos /> },
                 { path: 'productos/:id', element: <Producto /> },
                 { path: 'proveedores', element: <Proveedores /> },
+                { path: 'proveedor/:id', element: <Proveedor /> },
                 { path: 'musculos', element: <Musculos /> },
                 { path: 'metodospago',element:<MetodoPago />},
                 { path: 'fact-pedidos', element: <FactPedidos /> },

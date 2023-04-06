@@ -48,7 +48,7 @@ const navConfig = [
     icon: <SportsGymnasticsIcon/>,
   },
   {
-    title: 'metodo de pagos',
+    title: 'métodos de pago',
     path: '/admin/dashboard/metodospago',
     icon: <PaymentTwoToneIcon/>,
   },

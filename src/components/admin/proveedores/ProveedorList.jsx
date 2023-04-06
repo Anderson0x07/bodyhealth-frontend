@@ -103,47 +103,6 @@ function ProveedorList() {
         setProveedores(proveedores);
     }
 
-    const handleDelete = (id_proveedor) => {
-console.log(id_proveedor)
-        try {
-            Swal.fire({
-                title: 'Atención',
-                text: "¿Está seguro que desea eliminar el proveedor?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, elimínalo',
-                customClass: {
-                    container: 'my-swal'
-                }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-
-                    const response = await procesarPeticionDelete(`proveedor/eliminar/${id_proveedor}`);
-      
-                    Swal.fire({
-                        customClass: {
-                            container: 'my-swal'
-                        },
-                        title: 'Información',
-                        text: response.data.message,
-                        icon: 'success'
-
-                    }).then(async () => {
-                        const response = await procesarPeticionGet("proveedor/all");
-                        setProveedores(response.data.proveedores);
-                        navigate(`/admin/dashboard/proveedores`);
-                    })
-                }
-            })
-
-        } catch (error) {
-            Swal.fire('Atención', error.response.data.error, 'error');
-        }
-
-
-    };
 
     const handleEditarproveedor = (row) => {
         setShowModalEditarProveedor(true);
@@ -153,6 +112,10 @@ console.log(id_proveedor)
     const handleActualizarproveedor = (proveedoresActualizados) => {
         setProveedores(proveedoresActualizados)
     }
+
+    const handleExpandProveedor = (id_proveedor) => {
+        navigate(`/admin/dashboard/proveedor/${id_proveedor}`);
+      };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -210,7 +173,7 @@ console.log(id_proveedor)
 
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                         <Typography variant="h4" gutterBottom>
-                            proveedores
+                            Proveedores
                         </Typography>
                         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
                             Nuevo
@@ -263,13 +226,10 @@ console.log(id_proveedor)
                                                     </TableCell>
 
                                                     <TableCell align="right">
-                                                    <IconButton  size="large" color="inherit" onClick={()=>handleEditarproveedor(row)}>
-                                                            <Edit /> 
-                                                        </IconButton>
-                                                        <IconButton  size="large" sx={{color:'red'}} onClick={()=>handleDelete(id_proveedor)}>
-                                                            <Delete  /> 
-                                                        </IconButton>
-                                                    </TableCell>
+                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_proveedor)}>
+                                                        <ReadMoreIcon/>
+                                                    </IconButton>
+                                                </TableCell>
 
                                                    
                                                 </TableRow>
