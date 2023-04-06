@@ -19,6 +19,8 @@ import Maquina from '../components/admin/maquinas/Maquina';
 import Proveedor from '../components/admin/proveedores/Proveedor';
 import Musculos from '../pages/admin/musculos/Musculos';
 import MetodoPago from '../pages/admin/metodo-pago/MetodoPago';
+import Ejercicios from '../pages/admin/ejercicios/Ejercicios';
+import Ejercicio from '../components/admin/dashboard/ejercicios/Ejercicio';
 
 
 
@@ -41,6 +43,8 @@ function RoutesAdmin() {
                 { path: 'proveedores', element: <Proveedores /> },
                 { path: 'proveedor/:id', element: <Proveedor /> },
                 { path: 'musculos', element: <Musculos /> },
+                { path: 'ejercicios', element: <Ejercicios /> },
+                { path: 'ejercicio/:id', element: <Ejercicio /> },
                 { path: 'metodospago',element:<MetodoPago />},
                 { path: 'fact-pedidos', element: <FactPedidos /> },
                 { path: 'fact-planes', element: <FactPlanes /> },

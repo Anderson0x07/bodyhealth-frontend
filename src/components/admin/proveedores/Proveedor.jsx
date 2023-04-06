@@ -204,7 +204,7 @@ function Proveedor() {
                 />
             )}
 
-            {/* MODAL PARA VER MAQUINAS/PRODUCTOS DEL PROVEEDOR */}
+            {/* MODAL PARA VER PRODUCTOS DEL PROVEEDOR */}
             {showModalProductosProveedor && (
                 <MostrarProductosProveedorModal
                     productos={productos}
@@ -213,7 +213,7 @@ function Proveedor() {
                 />
             )}
 
-            {/* MODAL PARA VER MAQUINAS/PRODUCTOS DEL PROVEEDOR */}
+            {/* MODAL PARA VER MAQUINAS DEL PROVEEDOR */}
             {showModalMaquinasProveedor && (
                 <MostrarMaquinasProveedorModal
                     maquinas={maquinas}

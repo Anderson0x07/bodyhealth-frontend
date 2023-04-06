@@ -48,6 +48,11 @@ const navConfig = [
     icon: <SportsGymnasticsIcon/>,
   },
   {
+    title: 'ejercicios',
+    path: '/admin/dashboard/ejercicios',
+    icon: <FitnessCenterIcon/>,
+  },
+  {
     title: 'métodos de pago',
     path: '/admin/dashboard/metodospago',
     icon: <PaymentTwoToneIcon/>,
