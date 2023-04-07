@@ -53,16 +53,13 @@ function MostrarMaquinasProveedorModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productos.length) : 0;
     const emptyRowsMaquinas = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - maquinas.length) : 0;
-
-
 
     return (
         <Dialog open={showModalMaquinasProveedor} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
             <DialogTitle>Usos del Proveedor</DialogTitle>
             <DialogContent>
-                <Grid item xs={6} sm={3} md={5} ml={1}>
+                <Grid item xs={6} sm={8} md={12} >
 
                     <Typography variant="subtitle2" align="center" >
                         Máquinas que tiene el Proveedor
@@ -95,7 +92,7 @@ function MostrarMaquinasProveedorModal(props) {
                                         );
                                     })}
                                     {emptyRowsMaquinas > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
                                             <TableCell colSpan={2} />
                                         </TableRow>
                                     )}

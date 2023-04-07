@@ -84,7 +84,7 @@ function FactPedidoList() {
 
   const [order, setOrder] = useState('asc');
 
-  const [orderBy, setOrderBy] = useState('nombre');
+  const [orderBy, setOrderBy] = useState('id_compra');
 
   const [filterName, setFilterName] = useState('');
 

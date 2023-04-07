@@ -6,7 +6,6 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid,
     IconButton,
     Paper,
     Slide,
@@ -17,12 +16,11 @@ import {
     TableHead,
     TablePagination,
     TableRow,
-    Typography,
 } from '@mui/material';
 import { CheckCircleRounded, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import Scrollbar from '../dashboard/scrollbar/Scrollbar';
-import { useNavigate } from 'react-router-dom';
+import { procesarPeticionPdf } from '../../../utils/HandleApi';
 
 // ----------------------------------------------------------------------
 
@@ -30,19 +28,20 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function MostrarProductosProveedorModal(props) {
-    const navigate = useNavigate();
+function VerControlFisicoModal(props) {
 
-    const { productos, showModalProductosProveedor, setShowModalProductosProveedor } = props;
-    const [loading, setLoading] = useState(false);
+    const { controlesCliente, showModalControlesCliente, setShowModalControlesCliente } = props;
+
 
     const [page, setPage] = useState(0);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+
     const handleCancelarAndOk = () => {
-        setShowModalProductosProveedor(false);
+        setShowModalControlesCliente(false);
     };
+
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -53,18 +52,14 @@ function MostrarProductosProveedorModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productos.length) : 0;
-
-
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, controlesCliente.length - page * rowsPerPage);
 
     return (
-        <Dialog open={showModalProductosProveedor} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
-            <DialogTitle>Usos del Proveedor</DialogTitle>
+        <Dialog open={showModalControlesCliente} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
+            <DialogTitle>Compras realizadas</DialogTitle>
             <DialogContent>
-                <Grid item xs={6} sm={8} md={12} >
-                    <Typography variant="subtitle2" align="center" >
-                        Productos que tiene el Proveedor
-                    </Typography>
+
+                <Container>
 
                     <Scrollbar>
                         <TableContainer component={Paper}>
@@ -72,57 +67,68 @@ function MostrarProductosProveedorModal(props) {
                                 <TableHead>
                                     <TableRow hover >
 
-                                        <TableCell align="center">Id Producto</TableCell>
+                                        <TableCell align="center">Control #</TableCell>
 
-                                        <TableCell align="center">Nombre</TableCell>
+                                        <TableCell align="center">Fecha de control</TableCell>
 
-                                        <TableCell align="center">Precio</TableCell>
+                                        <TableCell align="center">Peso</TableCell>
+
+                                        <TableCell align="center">Estatura</TableCell>
+
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody>
-                                    {productos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {controlesCliente.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_producto, nombre, precio } = row;
+                                        const { id_controlcliente, fecha, peso, estatura } = row;
 
                                         return (
-                                            <TableRow hover key={id_producto} >
+                                            <TableRow hover key={id_controlcliente} >
 
-                                                <TableCell align="center">{id_producto}</TableCell>
+                                                <TableCell align="center">{id_controlcliente}</TableCell>
 
-                                                <TableCell align="center">{nombre}</TableCell>
+                                                <TableCell align="center">{fecha}</TableCell>
 
-                                                <TableCell align="center">{precio}</TableCell>
+                                                <TableCell align="center">{peso}</TableCell>
+
+                                                <TableCell align="center">{estatura}</TableCell>
+
+                                                
                                             </TableRow>
                                         );
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={3} />
+                                            <TableCell colSpan={5} />
                                         </TableRow>
                                     )}
                                 </TableBody>
+
+
                             </Table>
                         </TableContainer>
                     </Scrollbar>
+
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={productos.length}
+                        count={controlesCliente.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                </Grid>
+                </Container>
+
+
+
             </DialogContent>
             <DialogActions>
                 <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >
@@ -133,4 +139,4 @@ function MostrarProductosProveedorModal(props) {
     )
 }
 
-export default MostrarProductosProveedorModal;
+export default VerControlFisicoModal;

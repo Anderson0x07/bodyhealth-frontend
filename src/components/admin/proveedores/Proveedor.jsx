@@ -32,7 +32,7 @@ function Proveedor() {
 
 
     useEffect(() => {
-        const getproveedor = async () => {
+        const getProveedor = async () => {
             try {
                 const response = await procesarPeticionGet(`proveedor/${id}`);
                 console.log(response);
@@ -43,7 +43,7 @@ function Proveedor() {
                 setError(error.response.data.error)
             }
         };
-        getproveedor();
+        getProveedor();
     }, []);
 
 
@@ -51,14 +51,12 @@ function Proveedor() {
         navigate(`/admin/dashboard/proveedores`);
     };
 
-    let helper = 0;
-
     const handleEditarProveedor = () => {
         setShowModalEditarProveedor(true);
     };
 
     const handleUpdate = (updatedData) => {
-        setProveedor(updatedData.proveedor)
+        console.log(updatedData)
         setProveedor(updatedData)
     }
 
@@ -187,8 +185,8 @@ function Proveedor() {
             {showModalEditarProveedor && (
                 <EditarProveedorModal
                     proveedor={proveedor}
-                    showEditModal={showModalEditarProveedor}
-                    setShowEditModal={setShowModalEditarProveedor}
+                    showModalEditarProveedor={showModalEditarProveedor}
+                    setShowModalEditarProveedor={setShowModalEditarProveedor}
                     onUpdate={handleUpdate}
                 />
             )}

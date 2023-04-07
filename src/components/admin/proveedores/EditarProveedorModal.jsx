@@ -50,9 +50,7 @@ function EditarProveedorModal(props) {
 
             setShowModalEditarProveedor(false);
 
-            const response = await procesarPeticionGet('proveedor/all')
-            console.log(response)
-            onUpdate(response.data.proveedores);
+            onUpdate(respuesta.data.proveedor);
 
         } catch (error) {
             console.log(error)

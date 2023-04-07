@@ -1,10 +1,9 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/HandleApi";
 import AgregarMetodoPagoModal from './AgregarMetodoPagoModal'
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -14,32 +13,31 @@ import {
     TableCell,
     Container,
     Typography,
-    IconButton,
     TableContainer,
     TablePagination,
     Alert,
     AlertTitle,
-    Popover,
-    MenuItem,
 } from '@mui/material';
 // components
 
-import Scrollbar from '../../../components/admin/dashboard/scrollbar';
+import Scrollbar from '../dashboard/scrollbar';
 
-import TableHead from '../../../components/admin/dashboard/TableHead';
-import TableBuscar from '../../../components/admin/dashboard/TableBuscar';
+import TableHead from '../dashboard/TableHead';
+import TableBuscar from '../dashboard/TableBuscar';
 
 //icons
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import Swal from "sweetalert2";
 import EditarMetodoPago from './EditarMetodoPago';
+import MostrarComprasMetodoModal from './MostrarComprasMetodoModal';
+import MostrarPlanesMetodoModal from './MostrarPlanesMetodoModal';
+import MostrarUsosMetodoModal from './MostrarUsosMetodoModal';
 
 
 const TABLE_HEAD = [
-    { id: 'descripcion', label: 'Metodo', alignRight: false },
+    { id: 'descripcion', label: 'Método de Pago', alignRight: false },
     { id: '' },
 ];
 
@@ -62,7 +60,6 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-console.log(array)
 
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -84,6 +81,13 @@ function MetodoPagoList() {
     const [showModal, setShowModal] = useState(false);
     const [metodo, setMetodo] = useState({})
 
+    const [compras, setCompras] = useState([]);
+    const [planes, setPlanes] = useState([]);
+
+    const [showModalUsosMetodo, setShowModalUsosMetodo] = useState(false);
+    const [showModalComprasMetodo, setShowModalComprasMetodo] = useState(false);
+    const [showModalPlanesMetodo, setShowModalPlanesMetodo] = useState(false);
+
 
     const [showModalEditarMetodoPago, setShowModalEditarMetodoPago] = useState(false);
 
@@ -103,51 +107,71 @@ function MetodoPagoList() {
         setMetodos(metodo);
     }
 
-    const handleDelete = (id_metodoPago) => {
+    const handleDelete = async (metodo) => {
 
-        try {
-            Swal.fire({
-                title: 'Atención',
-                text: "¿Está seguro que desea eliminar este metodo de pago?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, elimínalo',
-                customClass: {
-                    container: 'my-swal'
-                }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
+        console.log(metodo);
 
-                    const response = await procesarPeticionDelete(`metodopago/eliminar/${id_metodoPago}`);
+        console.log(metodo.compras);
+        console.log(metodo.clienteDetalles);
+        setCompras(metodo.compras);
+        setPlanes(metodo.clienteDetalles);
 
-                    Swal.fire({
-                        customClass: {
-                            container: 'my-swal'
-                        },
-                        title: 'Información',
-                        text: response.data.message,
-                        icon: 'success'
-
-                    }).then(async () => {
-                        const response = await procesarPeticionGet("metodopago/all");
-                        setMetodos(response.data.metodospago);
-                        navigate(`/admin/dashboard/metodospago`);
-                    })
-                }
-            })
-
-        } catch (error) {
-            Swal.fire('Atención', error.response.data.error, 'error');
+        if (metodo.compras.length > 0 && metodo.clienteDetalles.length > 0) {
+            //mostrarModalAmbos
+            console.log("Entre")
+            setShowModalUsosMetodo(true);
         }
+        else if (metodo.compras.length > 0) {
+            //mostrarModalCompras
 
+            setShowModalComprasMetodo(true);
+        } else if (metodo.clienteDetalles.length > 0) {
+            //mostrarModalPlanes
+            setShowModalPlanesMetodo(true);
+        } else {
+            try {
+                Swal.fire({
+                    title: 'Atención',
+                    text: "¿Está seguro que desea eliminar este método de pago?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, elimínalo',
+                    customClass: {
+                        container: 'my-swal'
+                    }
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
+
+                        const response = await procesarPeticionDelete(`metodopago/eliminar/${metodo.id_metodopago}`);
+
+                        Swal.fire({
+                            customClass: {
+                                container: 'my-swal'
+                            },
+                            title: 'Información',
+                            text: response.data.message,
+                            icon: 'success'
+
+                        }).then(async () => {
+                            const response = await procesarPeticionGet("metodopago/all");
+                            setMetodos(response.data.metodospago);
+                            navigate(`/admin/dashboard/metodospago`);
+                        })
+                    }
+                })
+
+            } catch (error) {
+                Swal.fire('Atención', error.response.data.error, 'error');
+            }
+        }
 
     };
 
-    const handleEditarMetodoPago = (row) => {
+    const handleEditarMetodoPago = (metodo) => {
         setShowModalEditarMetodoPago(true);
-        setMetodo(row)
+        setMetodo(metodo)
     }
     //FUNCION DE EDITAR
     const handleActualizarMetodoPago = (metodoPagosActualizados) => {
@@ -188,6 +212,7 @@ function MetodoPagoList() {
     const getAll = async () => {
         try {
             const response = await procesarPeticionGet("metodopago/all");
+
             setStatus(response.status);
             setMetodos(response.data.metodospago);
         } catch (error) {
@@ -199,7 +224,6 @@ function MetodoPagoList() {
         <div>
             <>
                 <Container>
-
                     {status !== 200 && (
                         <Alert sx={{ marginBottom: '50px' }} variant="outlined" severity="error">
                             <AlertTitle>Error</AlertTitle>
@@ -209,7 +233,7 @@ function MetodoPagoList() {
 
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
                         <Typography variant="h4" gutterBottom>
-                           Metodos de pagos
+                            Métodos de pago
                         </Typography>
                         <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
                             Nuevo
@@ -229,7 +253,7 @@ function MetodoPagoList() {
                     </Stack>
 
                     <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
+                        <TableContainer sx={{ minWidth: 500 }}>
                             <Table>
                                 <TableHead
                                     order={order}
@@ -253,12 +277,13 @@ function MetodoPagoList() {
                                                 </TableCell>
 
                                                 <TableCell align="right">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleEditarMetodoPago(row)}>
-                                                        <Edit />
-                                                    </IconButton>
-                                                    <IconButton size="large" sx={{ color: 'red' }} onClick={() => handleDelete(id_metodopago)}>
-                                                        <Delete />
-                                                    </IconButton>
+                                                    <Button variant="contained" sx={{ marginRight: '10px' }} color="inherit" onClick={() => handleEditarMetodoPago(row)}>
+                                                        <Edit /> Editar
+                                                    </Button>
+                                                    <Button variant="contained" color="inherit" onClick={() => handleDelete(row)}>
+                                                        <Delete /> Eliminar
+                                                    </Button>
+
                                                 </TableCell>
 
 
@@ -270,29 +295,30 @@ function MetodoPagoList() {
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={2} />
                                         </TableRow>
                                     )}
-                                    {isNotFound && (
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                    <Paper sx={{ textAlign: 'center' }}>
-                                                        <Typography variant="h6" paragraph>
-                                                            No Encontrado
-                                                        </Typography>
 
-                                                        <Typography variant="body2">
-                                                            No hay resultados para &nbsp;
-                                                            <strong>&quot;{filterName}&quot;</strong>.
-                                                            <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                        </Typography>
-                                                    </Paper>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    )}
                                 </TableBody>
+                                {isNotFound && (
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={2} sx={{ py: 3 }}>
+                                                <Paper sx={{ textAlign: 'center' }}>
+                                                    <Typography variant="h6" paragraph>
+                                                        No Encontrado
+                                                    </Typography>
+
+                                                    <Typography variant="body2">
+                                                        No hay resultados para &nbsp;
+                                                        <strong>&quot;{filterName}&quot;</strong>.
+                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                                    </Typography>
+                                                </Paper>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                )}
                             </Table>
                         </TableContainer>
                     </Scrollbar>
@@ -307,8 +333,8 @@ function MetodoPagoList() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
 
-
                 </Container>
+
                 {showModalEditarMetodoPago && (
                     <EditarMetodoPago
                         metodo={metodo}
@@ -318,6 +344,39 @@ function MetodoPagoList() {
                         onUpdate={handleActualizarMetodoPago}
                     />
                 )}
+
+                {/* MODAL PARA VER COMPRAS DEL METODO */}
+                {showModalComprasMetodo && (
+                    <MostrarComprasMetodoModal
+                        compras={compras}
+                        showModalComprasMetodo={showModalComprasMetodo}
+                        setShowModalComprasMetodo={setShowModalComprasMetodo}
+                    />
+                )}
+
+                {/* MODAL PARA VER PLANES DEL METODO */}
+                {showModalPlanesMetodo && (
+                    <MostrarPlanesMetodoModal
+                        planes={planes}
+                        showModalPlanesMetodo={showModalPlanesMetodo}
+                        setShowModalPlanesMetodo={setShowModalPlanesMetodo}
+                    />
+                )}
+
+                {/* MODAL PARA VER USOS DEL METODO */}
+                {showModalUsosMetodo && (
+                    <MostrarUsosMetodoModal
+                        compras={compras}
+                        planes={planes}
+                        showModalUsosMetodo={showModalUsosMetodo}
+                        setShowModalUsosMetodo={setShowModalUsosMetodo}
+                    />
+
+                )}
+
+
+
+
 
             </>
         </div>

@@ -15,6 +15,7 @@ import { obtenerDiferenciaDias } from '../../../utils/obtenerDiasRestantesPlan';
 import EditarAsignacionRutinaModal from './EditarAsignacionRutinaModal';
 import VerRutinasAsignadasModal from './VerRutinasAsignadasModal';
 import VerComprasModal from './VerComprasModal';
+import VerControlFisicoModal from './VerControlFisicoModal';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -53,7 +54,6 @@ function Cliente() {
     const getCliente = async () => {
         try {
             const response = await procesarPeticionGet(`cliente/${id}`);
-            console.log(response)
             setCliente(response.data.cliente);
             setClienteEntrenador(response.data.cliente.clienteEntrenadores[0]);
             setClienteRutinas(response.data.cliente.clienteRutinas);
@@ -65,7 +65,7 @@ function Cliente() {
             setError(error.response.data.error)
         }
     };
-    
+
 
     const handleActualizarCliente = (clienteActualizado) => {
         setCliente(clienteActualizado)
@@ -172,13 +172,11 @@ function Cliente() {
                         <Grid item xs={6} sm={8} md={12} pb={5}>
 
                             {clienteDetalles.length > 0
-                                ? 
-                                    <Alert sx={{ marginBottom: '10px' }} variant="standard" severity="success" al>
-                                    <AlertTitle>Tiempo restante {obtenerDiferenciaDias(clienteDetalles[clienteDetalles.length-1].fecha_fin)} dias</AlertTitle>
+                                ?
+                                <Alert sx={{ marginBottom: '10px' }} variant="standard" severity="success">
+                                    <AlertTitle>Tiempo restante {obtenerDiferenciaDias(clienteDetalles[clienteDetalles.length - 1].fecha_fin)} dias</AlertTitle>
                                 </Alert>
-                                
-                                
-                                
+
                                 : console.log("Sin plan activo")
                             }
 
@@ -412,6 +410,15 @@ function Cliente() {
                     clienteCompras={clienteCompras}
                     showModalComprasCliente={showModalComprasCliente}
                     setShowModalComprasCliente={setShowModalComprasCliente}
+                />
+            )}
+
+            {/* MODAL PARA VER CONTROL FISICO DEL CLIENTE */}
+            {showModalControlesCliente && (
+                <VerControlFisicoModal
+                    controlesCliente={controlesCliente}
+                    showModalControlesCliente={showModalControlesCliente}
+                    setShowModalControlesCliente={setShowModalControlesCliente}
                 />
             )}
 

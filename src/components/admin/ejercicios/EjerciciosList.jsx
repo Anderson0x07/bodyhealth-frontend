@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -18,8 +17,6 @@ import {
     TablePagination,
     Alert,
     AlertTitle,
-    Popover,
-    MenuItem,
 } from '@mui/material';
 // components
 
@@ -37,10 +34,11 @@ import Scrollbar from "../dashboard/scrollbar";
 import AgregarEjercicioModal from "./AgregarEjercicioModal";
 
 const TABLE_HEAD = [
-    { id: 'descripción', label: 'Descripción', alignRight: false },
-    { id: 'series', label: 'Series', alignRight: false},
-    { id: 'repeticiones', label: 'Repeticiones', alignRight: false},
-    { id: 'musculo', label: 'Musculo', alignRight: false}
+    { id: 'descripcion', label: 'Descripción', alignRight: false },
+    { id: 'series', label: 'Series', alignRight: false },
+    { id: 'repeticiones', label: 'Repeticiones', alignRight: false },
+    { id: 'musculo', label: 'Musculo', alignRight: false },
+    { id: '' }
 ];
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -81,16 +79,13 @@ function EjerciciosList() {
     const [status, setStatus] = useState(0);
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [proveedor,setProveedor]=useState({})
-    
 
-    const [showModalEditarProveedor, setShowModalEditarProveedor] = useState(false);
 
     const [page, setPage] = useState(0);
 
     const [order, setOrder] = useState('asc');
 
-    const [orderBy, setOrderBy] = useState('nombre');
+    const [orderBy, setOrderBy] = useState('descripcion');
 
     const [filterName, setFilterName] = useState('');
 
@@ -103,18 +98,9 @@ function EjerciciosList() {
     }
 
 
-    const handleEditarproveedor = (row) => {
-        setShowModalEditarProveedor(true);
-        setProveedor(row)
-    }
-    //FUNCION DE EDITAR
-    const handleActualizarproveedor = (ejerciciosActualizados) => {
-        setEjercicios(ejerciciosActualizados)
-    }
-
     const handleExpandProveedor = (id_ejercicio) => {
         navigate(`/admin/dashboard/ejercicio/${id_ejercicio}`);
-      };
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -206,67 +192,66 @@ function EjerciciosList() {
                                         const { id_ejercicio, descripcion, series, repeticiones, musculo } = row;
 
                                         return (
-                                            
-                                                <TableRow hover key={id_ejercicio} >
-                                                    <TableCell align="left">
-                                                        <Typography variant="subtitle2" noWrap>
-                                                            {descripcion}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {series}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {repeticiones}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {musculo.descripcion}
-                                                        </Typography>
-                                                    </TableCell>
 
-                                                    <TableCell align="right">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_ejercicio)}>
-                                                        <ReadMoreIcon/>
-                                                    </IconButton>
+                                            <TableRow hover key={id_ejercicio} >
+                                                <TableCell align="left">
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {descripcion}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {series}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {repeticiones}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {musculo.descripcion}
+                                                    </Typography>
                                                 </TableCell>
 
-                                                   
-                                                </TableRow>
-                                            
+                                                <TableCell align="right">
+                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_ejercicio)}>
+                                                        <ReadMoreIcon />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </TableRow>
+
 
                                         );
 
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={5} />
                                         </TableRow>
                                     )}
-                                    {isNotFound && (
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                    <Paper sx={{ textAlign: 'center' }}>
-                                                        <Typography variant="h6" paragraph>
-                                                            No Encontrado
-                                                        </Typography>
 
-                                                        <Typography variant="body2">
-                                                            No hay resultados para &nbsp;
-                                                            <strong>&quot;{filterName}&quot;</strong>.
-                                                            <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                        </Typography>
-                                                    </Paper>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    )}
                                 </TableBody>
+                                {isNotFound && (
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={5} sx={{ py: 3 }}>
+                                                <Paper sx={{ textAlign: 'center' }}>
+                                                    <Typography variant="h6" paragraph>
+                                                        No Encontrado
+                                                    </Typography>
+
+                                                    <Typography variant="body2">
+                                                        No hay resultados para &nbsp;
+                                                        <strong>&quot;{filterName}&quot;</strong>.
+                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                                    </Typography>
+                                                </Paper>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                )}
                             </Table>
                         </TableContainer>
                     </Scrollbar>
@@ -283,15 +268,6 @@ function EjerciciosList() {
 
 
                 </Container>
-                {showModalEditarProveedor && (
-                    <EditarProveedorModal
-                        proveedor={proveedor}
-                        showModalEditarProveedor={showModalEditarProveedor}
-                        setShowModalEditarProveedor={setShowModalEditarProveedor}
-                        onUpdate={handleActualizarproveedor}
-                    />
-                )}
-
             </>
         </div>
     )

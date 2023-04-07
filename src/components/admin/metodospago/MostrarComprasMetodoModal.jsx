@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import {
     Button,
-    Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -19,10 +17,9 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import Scrollbar from '../dashboard/scrollbar/Scrollbar';
-import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -30,10 +27,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function MostrarProductosProveedorModal(props) {
-    const navigate = useNavigate();
+function MostrarComprasMetodoModal(props) {
 
-    const { productos, showModalProductosProveedor, setShowModalProductosProveedor } = props;
+    const { compras, showModalComprasMetodo, setShowModalComprasMetodo } = props;
+
+
     const [loading, setLoading] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -41,8 +39,23 @@ function MostrarProductosProveedorModal(props) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handleCancelarAndOk = () => {
-        setShowModalProductosProveedor(false);
+        setShowModalComprasMetodo(false);
     };
+
+    const handleDelete = () => {
+        setLoading(true);
+
+        Swal.fire({
+            title: 'Atención',
+            text: 'No se puede eliminar el método de pago, está siendo utilizado en otros servicios.',
+            icon: 'error',
+            customClass: {
+                container: 'my-swal'
+            }
+        });
+
+        setLoading(false);
+    }
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -53,17 +66,16 @@ function MostrarProductosProveedorModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productos.length) : 0;
-
-
+    const emptyRowsCompras = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - compras.length) : 0;
 
     return (
-        <Dialog open={showModalProductosProveedor} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
-            <DialogTitle>Usos del Proveedor</DialogTitle>
+        <Dialog open={showModalComprasMetodo} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
+            <DialogTitle>Usos del método de pago</DialogTitle>
             <DialogContent>
-                <Grid item xs={6} sm={8} md={12} >
+                <Grid item xs={6} sm={3} md={5} ml={1}>
+
                     <Typography variant="subtitle2" align="center" >
-                        Productos que tiene el Proveedor
+                        Compras donde se usó el método de pago
                     </Typography>
 
                     <Scrollbar>
@@ -72,32 +84,32 @@ function MostrarProductosProveedorModal(props) {
                                 <TableHead>
                                     <TableRow hover >
 
-                                        <TableCell align="center">Id Producto</TableCell>
+                                        <TableCell align="center"># Compra</TableCell>
 
-                                        <TableCell align="center">Nombre</TableCell>
+                                        <TableCell align="center">Fecha de Compra</TableCell>
 
-                                        <TableCell align="center">Precio</TableCell>
+                                        <TableCell align="center">Cliente</TableCell>
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody>
-                                    {productos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_producto, nombre, precio } = row;
+                                        const { id_compra, fecha_compra, cliente } = row;
 
                                         return (
-                                            <TableRow hover key={id_producto} >
+                                            <TableRow hover key={id_compra} >
 
-                                                <TableCell align="center">{id_producto}</TableCell>
+                                                <TableCell align="center">{id_compra}</TableCell>
 
-                                                <TableCell align="center">{nombre}</TableCell>
+                                                <TableCell align="center">{fecha_compra}</TableCell>
 
-                                                <TableCell align="center">{precio}</TableCell>
+                                                <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
                                             </TableRow>
                                         );
                                     })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
+                                    {emptyRowsCompras > 0 && (
+                                        <TableRow style={{ height: 53 * emptyRowsCompras }}>
                                             <TableCell colSpan={3} />
                                         </TableRow>
                                     )}
@@ -108,7 +120,7 @@ function MostrarProductosProveedorModal(props) {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={productos.length}
+                        count={compras.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -120,17 +132,17 @@ function MostrarProductosProveedorModal(props) {
                 <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
-                    onClick={handleCancelarAndOk}
+                    onClick={handleDelete}
                     loading={loading}
                     loadingPosition="start"
-                    startIcon={<CheckCircleRounded />}
+                    startIcon={<Delete />}
                     variant="contained"
                 >
-                    ¡Vale!
+                    Eliminar
                 </LoadingButton>
             </DialogActions>
         </Dialog>
     )
 }
 
-export default MostrarProductosProveedorModal;
+export default MostrarComprasMetodoModal;

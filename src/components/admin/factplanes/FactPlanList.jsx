@@ -82,7 +82,7 @@ function FactPlanList() {
 
   const [order, setOrder] = useState('asc');
 
-  const [orderBy, setOrderBy] = useState('nombre');
+  const [orderBy, setOrderBy] = useState('id_factura');
 
   const [filterName, setFilterName] = useState('');
 

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/HandleApi";
+import { procesarPeticionGet } from "../../../utils/HandleApi";
 import AgregarProveedorModal from './AgregarProveedorModal'
 
 import { filter } from 'lodash';
-// @mui
+
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -20,11 +19,8 @@ import {
     TablePagination,
     Alert,
     AlertTitle,
-    Popover,
-    MenuItem,
 } from '@mui/material';
-// components
-import Label from '../dashboard/label';
+
 import Scrollbar from '../dashboard/scrollbar';
 
 import TableHead from '../dashboard/TableHead';
@@ -34,14 +30,12 @@ import TableBuscar from '../dashboard/TableBuscar';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
-import Swal from "sweetalert2";
-import EditarProveedorModal from "./EditarProveedorModal";
 
 const TABLE_HEAD = [
     { id: 'nombre_empresa', label: 'Nombre', alignRight: false },
-    { id: 'direccion', label: 'Dirección', alignRight: false},
-    { id: 'telefono', label: 'Telefono', alignRight: false}
+    { id: 'direccion', label: 'Dirección', alignRight: false },
+    { id: 'telefono', label: 'Telefono', alignRight: false },
+    { id: '' },
 ];
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -82,10 +76,7 @@ function ProveedorList() {
     const [status, setStatus] = useState(0);
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [proveedor,setProveedor]=useState({})
-    
 
-    const [showModalEditarProveedor, setShowModalEditarProveedor] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -103,19 +94,9 @@ function ProveedorList() {
         setProveedores(proveedores);
     }
 
-
-    const handleEditarproveedor = (row) => {
-        setShowModalEditarProveedor(true);
-        setProveedor(row)
-    }
-    //FUNCION DE EDITAR
-    const handleActualizarproveedor = (proveedoresActualizados) => {
-        setProveedores(proveedoresActualizados)
-    }
-
     const handleExpandProveedor = (id_proveedor) => {
         navigate(`/admin/dashboard/proveedor/${id_proveedor}`);
-      };
+    };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -193,7 +174,7 @@ function ProveedorList() {
                     </Stack>
 
                     <Scrollbar>
-                        <TableContainer sx={{ minWidth: 800 }}>
+                        <TableContainer sx={{ minWidth: 500 }}>
                             <Table>
                                 <TableHead
                                     order={order}
@@ -207,62 +188,63 @@ function ProveedorList() {
                                         const { id_proveedor, nombre_empresa, direccion, telefono } = row;
 
                                         return (
-                                            
-                                                <TableRow hover key={id_proveedor} >
-                                                    <TableCell align="left">
-                                                        <Typography variant="subtitle2" noWrap>
-                                                            {nombre_empresa}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {direccion}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {telefono}
-                                                        </Typography>
-                                                    </TableCell>
 
-                                                    <TableCell align="right">
+                                            <TableRow hover key={id_proveedor} >
+                                                <TableCell align="left">
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {nombre_empresa}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {direccion}
+                                                    </Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {telefono}
+                                                    </Typography>
+                                                </TableCell>
+
+                                                <TableCell align="right">
                                                     <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_proveedor)}>
-                                                        <ReadMoreIcon/>
+                                                        <ReadMoreIcon />
                                                     </IconButton>
                                                 </TableCell>
 
-                                                   
-                                                </TableRow>
-                                            
+
+                                            </TableRow>
+
 
                                         );
 
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={4} />
                                         </TableRow>
                                     )}
-                                    {isNotFound && (
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                                    <Paper sx={{ textAlign: 'center' }}>
-                                                        <Typography variant="h6" paragraph>
-                                                            No Encontrado
-                                                        </Typography>
 
-                                                        <Typography variant="body2">
-                                                            No hay resultados para &nbsp;
-                                                            <strong>&quot;{filterName}&quot;</strong>.
-                                                            <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                        </Typography>
-                                                    </Paper>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    )}
                                 </TableBody>
+                                {isNotFound && (
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
+                                                <Paper sx={{ textAlign: 'center' }}>
+                                                    <Typography variant="h6" paragraph>
+                                                        No Encontrado
+                                                    </Typography>
+
+                                                    <Typography variant="body2">
+                                                        No hay resultados para &nbsp;
+                                                        <strong>&quot;{filterName}&quot;</strong>.
+                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                                    </Typography>
+                                                </Paper>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                )}
                             </Table>
                         </TableContainer>
                     </Scrollbar>
@@ -279,14 +261,8 @@ function ProveedorList() {
 
 
                 </Container>
-                {showModalEditarProveedor && (
-                    <EditarProveedorModal
-                        proveedor={proveedor}
-                        showModalEditarProveedor={showModalEditarProveedor}
-                        setShowModalEditarProveedor={setShowModalEditarProveedor}
-                        onUpdate={handleActualizarproveedor}
-                    />
-                )}
+
+                
 
             </>
         </div>

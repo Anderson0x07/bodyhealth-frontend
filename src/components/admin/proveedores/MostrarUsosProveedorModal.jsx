@@ -105,8 +105,8 @@ function MostrarUsosProveedorModal(props) {
             <DialogContent>
                 {productos.length > 0 && maquinas.length > 0
                     ?
-                    <Grid container columns={{ xs: 6, sm: 8, md: 12 }} m={1}>
-                        <Grid item xs={6} sm={3} md={5} mr={1}>
+                    <Grid container columns={{ xs: 6, sm: 9, md: 13 }} m={1}>
+                        <Grid item xs={6} sm={4} md={6} mr={1}>
                             <Typography variant="subtitle2" align="center" >
                                 Productos que tiene el Proveedor
                             </Typography>
@@ -160,7 +160,7 @@ function MostrarUsosProveedorModal(props) {
                                 onRowsPerPageChange={handleChangeRowsPerPage}
                             />
                         </Grid>
-                        <Grid item xs={6} sm={3} md={5} ml={1}>
+                        <Grid item xs={6} sm={4} md={6} ml={1}>
 
                             <Typography variant="subtitle2" align="center" >
                                 Máquinas que tiene el Proveedor
@@ -193,7 +193,7 @@ function MostrarUsosProveedorModal(props) {
                                                 );
                                             })}
                                             {emptyRowsMaquinas > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRows }}>
+                                                <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
                                                     <TableCell colSpan={2} />
                                                 </TableRow>
                                             )}
@@ -215,7 +215,7 @@ function MostrarUsosProveedorModal(props) {
                     :
                     productos.length > 0
                         ?
-                        <Grid item columns={{ xs: 6, sm: 8, md: 12 }} m={1}>
+                        <Grid item columns={{ xs: 6, sm: 8, md: 12 }} >
 
                             <Typography variant="subtitle2" align="center" >
                                 Productos que tiene el Proveedor
@@ -272,7 +272,7 @@ function MostrarUsosProveedorModal(props) {
 
                         </Grid>
                         :
-                        <Grid item columns={{ xs: 6, sm: 8, md: 12 }} m={1}>
+                        <Grid item columns={{ xs: 6, sm: 8, md: 12 }} >
                             <Typography variant="subtitle2" align="center" >
                                 Máquinas que tiene el Proveedor
                             </Typography>
@@ -305,7 +305,7 @@ function MostrarUsosProveedorModal(props) {
                                                 );
                                             })}
                                             {emptyRowsMaquinas > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRows }}>
+                                                <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
                                                     <TableCell colSpan={2} />
                                                 </TableRow>
                                             )}
