@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { procesarPeticionDelete, procesarPeticionGet } from "../../../../utils/HandleApi";
+import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/HandleApi";
 
 import Swal from 'sweetalert2';
-import logo from "../../../../assets/Logo-BodyHealth.jpeg";
+import logo from "../../../assets/Logo-BodyHealth.jpeg";
 import { ArrowBack, Cancel, CheckCircleRounded, Edit } from '@mui/icons-material';
 
 import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';

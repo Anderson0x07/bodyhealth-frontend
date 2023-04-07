@@ -19,7 +19,7 @@ import Proveedor from '../components/admin/proveedores/Proveedor';
 import Musculos from '../pages/admin/musculos/Musculos';
 import MetodoPago from '../pages/admin/metodo-pago/MetodoPago';
 import Ejercicios from '../pages/admin/ejercicios/Ejercicios';
-import Ejercicio from '../components/admin/dashboard/ejercicios/Ejercicio';
+import Ejercicio from '../components/admin/ejercicios/Ejercicio';
 import LoginPage from '../pages/index/LoginPage';
 
 

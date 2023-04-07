@@ -23,18 +23,17 @@ import {
 } from '@mui/material';
 // components
 
-import TableHead from "../../dashboard/TableHead"
-import TableBuscar from '../../dashboard/TableBuscar';
+import TableHead from "../dashboard/TableHead"
+import TableBuscar from '../dashboard/TableBuscar';
 
 //icons
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-import { Delete, Edit, MoreVert } from "@mui/icons-material";
-import Swal from "sweetalert2";
 
-import { procesarPeticionGet } from "../../../../utils/HandleApi";
-import Scrollbar from "../scrollbar/Scrollbar";
+
+import { procesarPeticionGet } from "../../../utils/HandleApi";
+import Scrollbar from "../dashboard/scrollbar";
 import AgregarEjercicioModal from "./AgregarEjercicioModal";
 
 const TABLE_HEAD = [

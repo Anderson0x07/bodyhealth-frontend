@@ -1,11 +1,11 @@
 import { Container } from '@mui/material';
-import FacPlanList from '../../../components/admin/factplanes/FacPlanList';
+import FactPlanList from '../../../components/admin/factplanes/FactPlanList';
 
 function FactPlanes() {
   return (
     <>
       <Container>
-        <FacPlanList />
+        <FactPlanList />
       </Container>
     </>
   );

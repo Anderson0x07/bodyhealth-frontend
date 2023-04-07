@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { procesarPeticionGet } from "../../../utils/HandleApi";
+import { procesarPeticionGet, procesarPeticionPdf } from "../../../utils/HandleApi";
 
 import { filter } from 'lodash';
 // @mui
@@ -25,21 +25,19 @@ import Scrollbar from '../dashboard/scrollbar';
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
-import AddIcon from '@mui/icons-material/Add';
+
 import { useNavigate } from "react-router-dom";
+import { LoadingButton } from "@mui/lab";
 
 
 const TABLE_HEAD = [
-  { id: 'id_factura', label: '# Factura', alignRight: false },
-  { id: 'cliente', label: 'Nombre', alignRight: false },
-  { id: 'plan', label: 'Plan', alignRight: false },
-  { id: 'fecha_inicio', label: 'Fecha de inicio', alignRight: false },
-  { id: 'fecha_fin', label: 'Fecha de fin', alignRight: false },
+  { id: 'id_compra', label: '# Compra', alignRight: false },
+  { id: 'cliente', label: 'Cliente', alignRight: false },
+  { id: 'fecha_compra', label: 'Fecha de compra', alignRight: false },
   { id: 'metodoPago', label: 'Metodo de pago', alignRight: false },
+  { id: 'total', label: 'Total de compra', alignRight: false },
   { id: '', label: "Generar reporte", align: "center" },
 ];
-
-
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -65,20 +63,24 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_factPlan) => (_factPlan.cliente.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-      _factPlan.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1))
+    return filter(array, (_factPedido) => (_factPedido.cliente.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+      _factPedido.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1))
 
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-function FacPlanList() {
 
+function FactPedidoList() {
   const [fact, setFact] = useState([]);
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [loadingPdf,setLoadingPdf]= useState(false)
+
+
+
   const [page, setPage] = useState(0);
+  
 
   const [order, setOrder] = useState('asc');
 
@@ -91,8 +93,24 @@ function FacPlanList() {
   const navigate = useNavigate();
 
 
-  const handleVerFactura = (id_factura) => {
-    console.log("gereando factura")
+  const handleGenerarFactura = async (id_compra) => {
+
+    setLoadingPdf(true);
+        try {
+            const response = await procesarPeticionPdf(`pedido/pdf/${id_compra}`)
+           
+
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            window.open(url);
+
+            setLoadingPdf(false);
+
+        } catch (error) {
+            console.log(error);
+            setLoadingPdf(false);
+        }
+
   };
 
   const handleRequestSort = (event, property) => {
@@ -128,15 +146,14 @@ function FacPlanList() {
 
   const getAll = async () => {
     try {
-      const response = await procesarPeticionGet("clientedetalle/all");
+      const response = await procesarPeticionGet("compra/all");
       setStatus(response.status);
-      setFact(response.data.clientedetalles);
+      setFact(response.data.compras);
     } catch (error) {
       setError(error.response.data.error);
       setStatus(error.response.status);
     }
   };
-
   return (
     <>
       <Container>
@@ -147,10 +164,9 @@ function FacPlanList() {
             {error}
           </Alert>
         )}
-
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Detalles de los planes del cliente
+            Facturación de pedidos
           </Typography>
         </Stack>
 
@@ -170,32 +186,31 @@ function FacPlanList() {
               <TableBody>
                 {filteredFacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                  const { id_factura, cliente, plan, fecha_inicio, fecha_fin, metodoPago } = row;
+                  const { id_compra, cliente, fecha_compra, total, metodoPago } = row;
 
                   return (
-                    <TableRow hover key={id_factura} >
+                    <TableRow hover key={id_compra} >
 
 
-                      <TableCell align="center">{id_factura}</TableCell>
+                      <TableCell align="center">{id_compra}</TableCell>
                       <TableCell align="left">
                         <Typography variant="subtitle2" noWrap>
                           {cliente.nombre + " " + cliente.apellido}
                         </Typography>
-
                       </TableCell>
-
-                      <TableCell align="left">{plan.plan}</TableCell>
-
-                      <TableCell align="left">{fecha_inicio}</TableCell>
-
-                      <TableCell align="left">{fecha_fin}</TableCell>
-
+                      <TableCell align="left">{fecha_compra}</TableCell>
                       <TableCell align="left">{metodoPago.descripcion} </TableCell>
-
+                      <TableCell align="left">{total}</TableCell>
                       <TableCell align="center">
-                        <IconButton size="large" color="inherit" onClick={() => handleVerFactura(id_factura)}>
+                        <LoadingButton
+                          size="large"
+                          color="inherit"
+                          onClick={() => handleGenerarFactura(id_compra)}
+                          loading={loadingPdf}
+                          variant="text"
+                        >
                           <ReceiptIcon />
-                        </IconButton>
+                        </LoadingButton>
                       </TableCell>
                     </TableRow>
                   );
@@ -205,26 +220,27 @@ function FacPlanList() {
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper sx={{ textAlign: 'center' }}>
-                          <Typography variant="h6" paragraph>
-                            No Encontrado
-                          </Typography>
 
-                          <Typography variant="body2">
-                            No hay resultados para &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Intente verificar errores tipográficos o usar palabras completas.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
               </TableBody>
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper sx={{ textAlign: 'center' }}>
+                        <Typography variant="h6" paragraph>
+                          No Encontrado
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No hay resultados para &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Intente verificar errores tipográficos o usar palabras completas.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Scrollbar>
@@ -238,11 +254,9 @@ function FacPlanList() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-
-
       </Container>
     </>
   )
 }
 
-export default FacPlanList
+export default FactPedidoList

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPost } from "../../../../utils/HandleApi";
+import { procesarPeticionGet, procesarPeticionPost } from "../../../utils/HandleApi";
 import Swal from 'sweetalert2';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, TextField, InputLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
