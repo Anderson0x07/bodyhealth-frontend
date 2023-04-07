@@ -1,5 +1,6 @@
-import { useState} from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import React from 'react'
+import { useState,useEffect } from 'react';
+import { procesarPeticionPut,procesarPeticionGet } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Button,
@@ -7,79 +8,79 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    MenuItem,
     TextField
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
 
+
 function EditarMusculoModal(props) {
-    const { musculo, showModalEditarMusculo, setShowModalEditarMusculo, onUpdate } = props;
+ const { showEditModal, setShowEditModal, musculo, onUpdate } = props;
 
-    const [loading, setLoading] = useState(false);
     const [data, setData] = useState(musculo);
-
-
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
     const handleCancelar = () => {
-        setShowModalEditarMusculo(false);
+        setShowEditModal(false);
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        setLoading(true);
+      setLoading(true);
+      console.log(data)
+      try {
+          const respuesta = await procesarPeticionPut(`musculo/editar/${musculo.id_musculo}`, data);
+          setLoading(false);
+          console.log(respuesta);
+          Swal.fire({
+            customClass: {
+                container: 'my-swal'
+            },
+            title: 'Información',
+            text: respuesta.data.message,
+            icon: 'success'
+        })
         
-        console.log("DATA");
-        console.log(data);
-      
-        try {
-            const respuesta = await procesarPeticionPut(`musculo/editar/${musculo.id_musculo}`, data);
-            setLoading(false);
-            Swal.fire({
-                customClass: {
-                    container: 'my-swal'
-                },
-                title: 'Información',
-                text: respuesta.data.message,
-                icon: 'success'
-            })
+          setShowEditModal(false);
+          onUpdate(respuesta.data.musculo);
+      } catch (error) {
+          setLoading(false);
+          console.log(error);
 
-            setShowModalEditarMusculo(false);
+          Swal.fire({
+              customClass: {
+                  container: 'my-swal'
+              },
+              title: 'Atención',
+              text: error.response.data.error,
+              icon: 'error'
+          })
+      }
 
-            const response = await procesarPeticionGet('musculo/all')
-            console.log(response)
-            onUpdate(response.data.musculos);
-
-        } catch (error) {
-            console.log(error)
-            setLoading(false);
-
-            Swal.fire({
-                customClass: {
-                    container: 'my-swal'
-                },
-                title: 'Atención',
-                text: error.response.data.error,
-                icon: 'error'
-            })
-        }
+        
     };
-
-
+    
     return (
-        <Dialog open={showModalEditarMusculo} onClose={handleCancelar} >
-            <DialogTitle>Editar musculo</DialogTitle>
+         <Dialog open={showEditModal} onClose={handleCancelar} >
+            <DialogTitle>Editar Musculo</DialogTitle>
             <DialogContent>
 
-                <TextField margin="normal" type="text" name="descripcion" label="Musculo"
-                    onChange={handleChange} defaultValue={ musculo.descripcion} fullWidth variant="outlined" />
+            <TextField margin="normal" type="text" name="nombre" label="Nombre"
+                    onChange={handleChange} defaultValue={musculo.nombre} fullWidth variant="outlined" />
+                    
+            <TextField margin="normal" type="text" name="grupo_muscular" label="Grupo Muscular"
+                    onChange={handleChange} defaultValue={musculo.grupo_muscular} fullWidth variant="outlined" />
+
+                <TextField margin="normal" type="text" name="descripcion" label="Descripción"
+                    onChange={handleChange} defaultValue={musculo.descripcion} fullWidth variant="outlined" />
 
             </DialogContent>
-
             <DialogActions>
                 <Button onClick={handleCancelar}>Cancelar</Button>
 
@@ -95,7 +96,7 @@ function EditarMusculoModal(props) {
                 </LoadingButton>
             </DialogActions>
         </Dialog>
-    );
+    )
 }
 
 export default EditarMusculoModal

@@ -21,6 +21,7 @@ import MetodoPago from '../pages/admin/metodo-pago/MetodoPago';
 import Ejercicios from '../pages/admin/ejercicios/Ejercicios';
 import Ejercicio from '../components/admin/ejercicios/Ejercicio';
 import LoginPage from '../pages/index/LoginPage';
+import Musculo from '../components/admin/musculos/Musculo';
 
 
 
@@ -43,6 +44,7 @@ function RoutesAdmin() {
                 { path: 'proveedores', element: <Proveedores /> },
                 { path: 'proveedor/:id', element: <Proveedor /> },
                 { path: 'musculos', element: <Musculos /> },
+                { path: 'musculo/:id', element: <Musculo /> },
                 { path: 'ejercicios', element: <Ejercicios /> },
                 { path: 'ejercicio/:id', element: <Ejercicio /> },
                 { path: 'metodospago',element:<MetodoPago />},

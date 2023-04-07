@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/HandleApi";
+import AgregarMusculoModal from './AgregarMusculoModal'
 
 import { filter } from 'lodash';
 // @mui
@@ -22,24 +24,23 @@ import {
     MenuItem,
 } from '@mui/material';
 // components
+import Label from '../dashboard/label';
+import Scrollbar from '../dashboard/scrollbar';
 
-import TableHead from "../dashboard/TableHead"
+import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
 //icons
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
-
-
-import { procesarPeticionGet } from "../../../utils/HandleApi";
-import Scrollbar from "../dashboard/scrollbar";
-import AgregarMusculoModal from "./AgregarMusculoModal";
+import { Delete, Edit, MoreVert } from "@mui/icons-material";
+import Swal from "sweetalert2";
+import EditarMusculoModal from "./EditarMusculoModal";
 
 const TABLE_HEAD = [
-    { id: 'nombre', label: 'Nombre', alignRight: false},
-    { id: 'grupo_muscular', label: 'Grupo muscular', alignRight: false},
-    { id: 'descripcion', label: 'Descripcion', alignRight: false}
+    { id: 'descripcion', label: 'Nombre', alignRight: false },
+    { id: '' },
 ];
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -80,10 +81,10 @@ function MusculoList() {
     const [status, setStatus] = useState(0);
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [proveedor,setProveedor]=useState({})
+    const [musculo,setMusculo]=useState({})
     
 
-    const [showModalEditarProveedor, setShowModalEditarProveedor] = useState(false);
+    const [showModalEditarMusculo, setShowModalEditarMusculo] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -101,15 +102,56 @@ function MusculoList() {
         setMusculos(musculos);
     }
 
+    const handleDelete = (id_musculo) => {
+console.log(id_musculo)
+        try {
+            Swal.fire({
+                title: 'Atención',
+                text: "¿Está seguro que desea eliminar el musculo?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, elimínalo',
+                customClass: {
+                    container: 'my-swal'
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
 
+                    const response = await procesarPeticionDelete(`musculo/eliminar/${id_musculo}`);
+      
+                    Swal.fire({
+                        customClass: {
+                            container: 'my-swal'
+                        },
+                        title: 'Información',
+                        text: response.data.message,
+                        icon: 'success'
+
+                    }).then(async () => {
+                        const response = await procesarPeticionGet("musculo/all");
+                        setMusculos(response.data.musculos);
+                        navigate(`/admin/dashboard/musculos`);
+                    })
+                }
+            })
+
+        } catch (error) {
+            Swal.fire('Atención', error.response.data.error, 'error');
+        }
+
+
+    };
+
+    const handleEditarMusculo = (row) => {
+        setShowModalEditarMusculo(true);
+        setMusculo(row)
+    }
     //FUNCION DE EDITAR
-    const handleActualizarproveedor = (musculosActualizados) => {
+    const handleActualizarMusculo = (musculosActualizados) => {
         setMusculos(musculosActualizados)
     }
-
-    const handleExpandMusculo = (id_musculo) => {
-        navigate(`/admin/dashboard/musculo/${id_musculo}`);
-      };
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -134,9 +176,9 @@ function MusculoList() {
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - musculos.length) : 0;
 
-    const filteredmusculos = applySortFilter(musculos, getComparator(order, orderBy), filterName);
+    const filteredMusculos = applySortFilter(musculos, getComparator(order, orderBy), filterName);
 
-    const isNotFound = !filteredmusculos.length && !!filterName;
+    const isNotFound = !filteredMusculos.length && !!filterName;
 
     useEffect(() => {
         getAll();
@@ -196,34 +238,28 @@ function MusculoList() {
                                     onRequestSort={handleRequestSort}
                                 />
                                 <TableBody>
-                                    {filteredmusculos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {filteredMusculos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_musculo, nombre, grupo_muscular, descripcion } = row;
+                                        const { id_musculo, descripcion } = row;
 
                                         return (
                                             
                                                 <TableRow hover key={id_musculo} >
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {nombre}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                            {grupo_muscular}
-                                                        </Typography>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
+                                                    <TableCell align="left">
+                                                        <Typography variant="subtitle2" noWrap>
                                                             {descripcion}
                                                         </Typography>
+
                                                     </TableCell>
 
                                                     <TableCell align="right">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandMusculo(id_musculo)}>
-                                                        <ReadMoreIcon/>
-                                                    </IconButton>
-                                                </TableCell>
+                                                    <IconButton  size="large" color="inherit" onClick={()=>handleEditarMusculo(row)}>
+                                                            <Edit /> 
+                                                        </IconButton>
+                                                        <IconButton  size="large" sx={{color:'red'}} onClick={()=>handleDelete(id_musculo)}>
+                                                            <Delete  /> 
+                                                        </IconButton>
+                                                    </TableCell>
 
                                                    
                                                 </TableRow>
@@ -273,12 +309,13 @@ function MusculoList() {
 
 
                 </Container>
-                {showModalEditarProveedor && (
-                    <EditarProveedorModal
-                        proveedor={proveedor}
-                        showModalEditarProveedor={showModalEditarProveedor}
-                        setShowModalEditarProveedor={setShowModalEditarProveedor}
-                        onUpdate={handleActualizarproveedor}
+                {showModalEditarMusculo && (
+                    <EditarMusculoModal
+                        musculo={musculo}
+
+                        showModalEditarMusculo={showModalEditarMusculo}
+                        setShowModalEditarMusculo={setShowModalEditarMusculo}
+                        onUpdate={handleActualizarMusculo}
                     />
                 )}
 
