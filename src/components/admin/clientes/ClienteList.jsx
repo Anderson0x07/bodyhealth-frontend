@@ -99,7 +99,9 @@ function ClienteList() {
     const navigate = useNavigate();
 
     const agregarCliente = (clientes) => {
+        console.log(clientes)
         setClientes(clientes);
+        setStatus()
     }
 
     const handleClienteExpand = (id_usuario) => {
@@ -175,8 +177,10 @@ function ClienteList() {
                     )}
                 </Stack>
 
-                <Card>
+                <Stack mb={5}>
                     <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
+                </Stack>
+                    
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 800 }}>
                             <Table>
@@ -261,7 +265,6 @@ function ClienteList() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                </Card>
             </Container>
 
         </>

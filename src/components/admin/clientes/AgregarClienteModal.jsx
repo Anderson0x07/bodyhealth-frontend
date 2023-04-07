@@ -26,7 +26,7 @@ function AgregarClienteModal(props) {
     const [data, setData] = useState({});
     const [fileName, setFileName] = useState(null);
     const [image, setImage] = useState('');
-    const [error, setError] = useState(null)
+    const [previsualizar, setPrevisualizar] = useState('');
 
     const [loading, setLoading] = useState(false);
 
@@ -45,8 +45,10 @@ function AgregarClienteModal(props) {
         const file = event.target.files[0];
         setFileName(file.name)
         reader.onload = (event) => {
-            const base64String = event.target.result.split(',')[1]; 
+            const base64String = event.target.result.split(',')[1];
             setImage(base64String);
+            const previsualizar = event.target.result;
+            setPrevisualizar(previsualizar);
         };
         reader.readAsDataURL(file);
     };
@@ -97,29 +99,34 @@ function AgregarClienteModal(props) {
             data.estado = false;
             data.comentario = "hola";
 
-            if(image != ""){
-                data.foto = image + " " + fileName;
-            } else {
-                data.foto="";
-            }
-            
-
             data.tipo_documento = tipoDoc;
             data.jornada = jornada;
             data.rol = {
                 id_rol: 2
             }
 
+            if(image != ""){
+                data.foto = image + " " + fileName;
+            } else {
+                data.foto="";
+            }
+
             try {
                 const respuesta = await procesarPeticionPost(`cliente/guardar`, data);
                 setLoading(false);
-                console.log(respuesta);
-                Swal.fire('Información', respuesta.data.message, 'success')
+
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Información',
+                    text: respuesta.data.message,
+                    icon: 'success'
+                })
 
                 setShowModal(false);
 
                 const response = await procesarPeticionGet("cliente/all");
-
                 agregarCliente(response.data.clientes);
 
             } catch (error) {
@@ -148,7 +155,7 @@ function AgregarClienteModal(props) {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField select margin="normal" type="text" name="tipo_documento" label="Tipo de documento" onChange={handleTipoDoc}
-                            fullWidth variant="outlined" defaultValue={tipoDoc} helperText="Por favor seleccione tipo de documento">
+                            fullWidth variant="outlined" value={tipoDoc} helperText="Por favor seleccione tipo de documento">
 
                             <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
                             <MenuItem key="CC" value="CC">Cedula de ciudadania</MenuItem>
@@ -201,9 +208,9 @@ function AgregarClienteModal(props) {
                 </FormControl>
 
                 <TextField name="jornada" margin="normal" select label="Jornada" onChange={handleJornada}
-                    fullWidth variant="outlined" defaultValue={jornada} helperText="Por favor seleccione jornada">
+                    fullWidth variant="outlined" value={jornada} helperText="Por favor seleccione jornada">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
-                    <MenuItem key="M" value="Mañana">Mañana</MenuItem>
+                    <MenuItem key="M" value="Manana">Mañana</MenuItem>
                     <MenuItem key="T" value="Tarde">Tarde</MenuItem>
                 </TextField>
 
@@ -216,7 +223,7 @@ function AgregarClienteModal(props) {
                     <PhotoCamera />
                 </IconButton>
 
-                {image && <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={image} />}
+                {previsualizar && <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={previsualizar} />}
 
             </DialogContent>
             <DialogActions>

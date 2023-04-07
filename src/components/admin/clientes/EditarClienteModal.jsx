@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Avatar,
@@ -22,9 +22,9 @@ function EditarClienteModal(props) {
 
     const { showEditModal, setShowEditModal, cliente, onUpdate } = props;
 
-    console.log(cliente)
     const [fileName, setFileName] = useState(null);
-    const [image, setImage] = useState( url+cliente.foto);
+    const [image, setImage] = useState(url+cliente.foto);
+    const [previsualizar, setPrevisualizar] = useState(url+cliente.foto);
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState(cliente);
@@ -39,8 +39,11 @@ function EditarClienteModal(props) {
         const file = event.target.files[0];
         setFileName(file.name)
         reader.onload = (event) => {
-            const base64String = event.target.result.split(',')[1]; 
+            const base64String = event.target.result.split(',')[1];
             setImage(base64String);
+            const previsualizar = event.target.result;
+            setPrevisualizar(previsualizar);
+            
         };
 
         reader.readAsDataURL(file);
@@ -70,21 +73,28 @@ function EditarClienteModal(props) {
 
         } else {
             data.jornada = jornada;
-            data.foto = "";
 
-            if(!image.startsWith("https")){
+            if (!image.startsWith("https")) {
                 data.foto = image + " " + fileName;
             }
             setLoading(true);
-
+            console.log(data)
             try {
                 const respuesta = await procesarPeticionPut(`cliente/editar/${cliente.id_usuario}`, data);
                 setLoading(false);
-                console.log(respuesta)
-                Swal.fire('Información', respuesta.data.message, 'success')
 
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Información',
+                    text: respuesta.data.message,
+                    icon: 'success'
+                })
+                
                 setShowEditModal(false);
-                onUpdate(data);
+
+                onUpdate(respuesta.data.cliente);
 
             } catch (error) {
                 setLoading(false);
@@ -99,6 +109,8 @@ function EditarClienteModal(props) {
                     icon: 'error'
                 })
             }
+
+            
         }
     };
 
@@ -156,7 +168,7 @@ function EditarClienteModal(props) {
                     <PhotoCamera />
                 </IconButton>
 
-                {image && <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={image} />}
+                {previsualizar && <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={previsualizar} />}
 
             </DialogContent>
             <DialogActions>

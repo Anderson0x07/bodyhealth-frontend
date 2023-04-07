@@ -2,13 +2,13 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Proveedor from "../pages/admin/proveedores/Proveedores";
 import NotFound from "../pages/index/NotFound";
 import ProveedorDelete from "../components/admin/proveedores/ProveedorDelete";
-import LoginForm from "../pages/index/LoginForm";
 import Logout from "../pages/index/Logout";
 import Index from "../pages/index/Index";
 import Noticias from "../pages/index/Noticias";
 import Planes from "../pages/index/Planes";
 import Productos from "../pages/index/Productos";
 import ProveedorExpand from "../pages/admin/proveedores/ProveedorExpand";
+import LoginPage from "../pages/index/LoginPage";
 
 function RoutesIndex() {
 
@@ -21,7 +21,7 @@ function RoutesIndex() {
           <Route exact path="/noticias" element={<Noticias/>} />
           <Route exact path="/planes" element={<Planes/>} />
           <Route exact path="/productos" element={<Productos/>} />
-          <Route exact path="/login" element={<LoginForm/>}/>
+          <Route exact path="/login" element={<LoginPage/>}/>
           <Route exact path="/logout" element={<Logout/>}/>
           <Route path="*" element={<NotFound/>}/>
 

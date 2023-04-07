@@ -15,68 +15,80 @@ import { Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
 
-function AsignarEntrenadorModal(props) {
+function AsignarRutinaModal(props) {
 
-    const { cliente, showModalAsignarEntrenador, setShowModalAsignarEntrenador, onUpdate } = props;
+    const { cliente, showModalAsignarRutina, setShowModalAsignarRutina, onUpdate } = props;   
+    
     const [loading, setLoading] = useState(false);
-    const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState('S');
+    const [rutinaSeleccionada, setRutinaSeleccionada] = useState('S');
 
-    const clienteEntrenador = {};
+    const data = {};
 
-    //Entrenadores por jornada...
-    const [entrenadores, setEntrenadores] = useState(null);
+    //rutinas disponibles
+    const [rutinas, setRutinas] = useState(null);
 
     useEffect(() => {
-        getEntrenadores();
+        getRutinas();
     }, [])
 
-    const getEntrenadores = async () => {
+    const getRutinas = async () => {
         try {
-            const respuesta = await procesarPeticionGet('entrenador/all/jornada/'+cliente.jornada);
-            setEntrenadores(respuesta.data.entrenadores)
+            const respuesta = await procesarPeticionGet('rutina/all');
+
+            setRutinas(respuesta.data.rutinas)
 
         } catch (error) {
             console.log(error);
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error'
+            })
+            setShowModalAsignarRutina(false);
         }
     }
 
-    
-    const handleEntrenador = (event) => {
-        console.log("Entrenador seleccionado: --")
-        setEntrenadorSeleccionado(event.target.value);
+    const handleSeleccionRutina = (event) => {
+        setRutinaSeleccionada(event.target.value);
     }
 
     const handleCancelar = () => {
-        setShowModalAsignarEntrenador(false);
+        setShowModalAsignarRutina(false);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         
-
-        if (entrenadorSeleccionado === "S") {
+        if (rutinaSeleccionada === "S") {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
                 },
                 title: 'Atención',
-                text: 'Debe seleccionar un entrenador',
+                text: 'Debe seleccionar una rutina',
                 icon: 'warning'
             })
 
         } else {
-            clienteEntrenador.entrenador = {
-                id_usuario: entrenadorSeleccionado
+            
+            data.cliente = cliente;
+
+            data.rutina = {
+                id_rutina: rutinaSeleccionada
             }
-            clienteEntrenador.cliente = cliente;
 
             setLoading(true);
 
-            console.log(clienteEntrenador)
+            console.log("D-A-T-A DE LA RUTINA ASIGNADA")
+            console.log(data)
 
             try {
-                const respuesta = await procesarPeticionPost(`entrenadorcliente/guardar`, clienteEntrenador);
+                const respuesta = await procesarPeticionPost(`clienterutina/guardar`, data);
+                console.log(respuesta)
                 setLoading(false);
 
                 Swal.fire({
@@ -87,11 +99,12 @@ function AsignarEntrenadorModal(props) {
                     text: respuesta.data.message,
                     icon: 'success'
                 })
-                setShowModalAsignarEntrenador(false);
+                setShowModalAsignarRutina(false);
 
-                const response = await procesarPeticionGet(`entrenadorcliente/${respuesta.data.id_asignacion}`);
+                const response = await procesarPeticionGet(`clienterutina/${respuesta.data.id_clienterutina}`);
+                console.log(response)
 
-                onUpdate(response.data.entrenadorcliente);
+                onUpdate(response.data.clienterutina);
 
             } catch (error) {
                 setLoading(false);
@@ -110,22 +123,22 @@ function AsignarEntrenadorModal(props) {
     };
 
     return (
-        <Dialog open={showModalAsignarEntrenador} onClose={handleCancelar} >
-            <DialogTitle>Asignación de entrenador</DialogTitle>
+        <Dialog open={showModalAsignarRutina} onClose={handleCancelar} maxWidth={'xl'}>
+            <DialogTitle>Asignación de rutina</DialogTitle>
             <DialogContent>
 
-                <TextField name="entrenador" margin="normal" select label="Entrenador" onChange={handleEntrenador}
-                    fullWidth variant="outlined" value={entrenadorSeleccionado} helperText="Por favor seleccione el entrenador">
+                <TextField name="rutina" margin="normal" select label="Rutina" onChange={handleSeleccionRutina}
+                    fullWidth variant="outlined" value={rutinaSeleccionada} helperText="Por favor seleccione la rutina">
                     <MenuItem key="S" value="S">
                             Seleccionar
                     </MenuItem>
-                    {entrenadores != null 
-                        ? entrenadores.map((trainer) => (
-                            <MenuItem key={trainer.id_usuario} value={trainer.id_usuario}>
-                                {trainer.nombre + " " + trainer.apellido}
+                    {rutinas != null 
+                        ? rutinas.map((rutina) => (
+                            <MenuItem key={rutina.id_rutina} value={rutina.id_rutina}>
+                                {rutina.nombre_rutina}
                             </MenuItem>
                         )) 
-                        : console.log("cargando") 
+                        : console.log("cargando rutinas") 
                     }
                     
                 </TextField>
@@ -148,4 +161,4 @@ function AsignarEntrenadorModal(props) {
     )
 }
 
-export default AsignarEntrenadorModal;
+export default AsignarRutinaModal;

@@ -11,7 +11,6 @@ import Maquinas from '../pages/admin/maquinas/Maquinas';
 import Page404 from '../pages/admin/Page404';
 import Productos from '../pages/admin/productos/Productos';
 import Proveedores from '../pages/admin/proveedores/Proveedores';
-import LoginForm from '../pages/index/LoginForm';
 import Cliente from '../components/admin/clientes/Cliente';
 import ClienteDelete from '../components/admin/clientes/ClienteDelete';
 import Producto from '../components/admin/productos/Producto';
@@ -21,6 +20,7 @@ import Musculos from '../pages/admin/musculos/Musculos';
 import MetodoPago from '../pages/admin/metodo-pago/MetodoPago';
 import Ejercicios from '../pages/admin/ejercicios/Ejercicios';
 import Ejercicio from '../components/admin/dashboard/ejercicios/Ejercicio';
+import LoginPage from '../pages/index/LoginPage';
 
 
 
@@ -56,7 +56,7 @@ function RoutesAdmin() {
             children: [
                 { element: <Navigate to="/admin/dashboard/home" />, index: true },
                 { path: '404', element: <Page404 /> },
-                {path:'login', element: <LoginForm/>},
+                { path:'login', element: <LoginPage/>},
                 { path: '*', element: <Navigate to="/404" /> },
             ],
         },

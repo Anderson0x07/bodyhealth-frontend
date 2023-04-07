@@ -15,11 +15,14 @@ import { Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
 
-function AsignarEntrenadorModal(props) {
+function EditarAsignacionEntrenadorModal(props) {
 
-    const { cliente, showModalAsignarEntrenador, setShowModalAsignarEntrenador, onUpdate } = props;
+    const { cliente, asignacionEntrenador, showModalEditarAsignacionEntrenador, setShowModalEditarAsignacionEntrenador, onUpdate } = props;
+
+    console.log(asignacionEntrenador)
+
     const [loading, setLoading] = useState(false);
-    const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState('S');
+    const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(asignacionEntrenador.entrenador.id_usuario);
 
     const clienteEntrenador = {};
 
@@ -27,18 +30,17 @@ function AsignarEntrenadorModal(props) {
     const [entrenadores, setEntrenadores] = useState(null);
 
     useEffect(() => {
+        const getEntrenadores = async () => {
+            try {
+                const respuesta = await procesarPeticionGet('entrenador/all/jornada/'+cliente.jornada);
+                setEntrenadores(respuesta.data.entrenadores)
+    
+            } catch (error) {
+                console.log(error);
+            }
+        }
         getEntrenadores();
     }, [])
-
-    const getEntrenadores = async () => {
-        try {
-            const respuesta = await procesarPeticionGet('entrenador/all/jornada/'+cliente.jornada);
-            setEntrenadores(respuesta.data.entrenadores)
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     
     const handleEntrenador = (event) => {
@@ -47,13 +49,11 @@ function AsignarEntrenadorModal(props) {
     }
 
     const handleCancelar = () => {
-        setShowModalAsignarEntrenador(false);
+        setShowModalEditarAsignacionEntrenador(false);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        
 
         if (entrenadorSeleccionado === "S") {
             Swal.fire({
@@ -73,12 +73,11 @@ function AsignarEntrenadorModal(props) {
 
             setLoading(true);
 
-            console.log(clienteEntrenador)
 
             try {
-                const respuesta = await procesarPeticionPost(`entrenadorcliente/guardar`, clienteEntrenador);
+                const respuesta = await procesarPeticionPut(`entrenadorcliente/editar/${asignacionEntrenador.id_asignacion}`, clienteEntrenador);
                 setLoading(false);
-
+                console.log(respuesta)
                 Swal.fire({
                     customClass: {
                         container: 'my-swal'
@@ -87,11 +86,9 @@ function AsignarEntrenadorModal(props) {
                     text: respuesta.data.message,
                     icon: 'success'
                 })
-                setShowModalAsignarEntrenador(false);
 
-                const response = await procesarPeticionGet(`entrenadorcliente/${respuesta.data.id_asignacion}`);
-
-                onUpdate(response.data.entrenadorcliente);
+                setShowModalEditarAsignacionEntrenador(false);
+                onUpdate(respuesta.data.entrenadorcliente);
 
             } catch (error) {
                 setLoading(false);
@@ -110,23 +107,18 @@ function AsignarEntrenadorModal(props) {
     };
 
     return (
-        <Dialog open={showModalAsignarEntrenador} onClose={handleCancelar} >
-            <DialogTitle>Asignación de entrenador</DialogTitle>
+        <Dialog open={showModalEditarAsignacionEntrenador} onClose={handleCancelar} >
+            <DialogTitle>Cambio de entrenador</DialogTitle>
             <DialogContent>
 
                 <TextField name="entrenador" margin="normal" select label="Entrenador" onChange={handleEntrenador}
                     fullWidth variant="outlined" value={entrenadorSeleccionado} helperText="Por favor seleccione el entrenador">
-                    <MenuItem key="S" value="S">
-                            Seleccionar
-                    </MenuItem>
-                    {entrenadores != null 
-                        ? entrenadores.map((trainer) => (
-                            <MenuItem key={trainer.id_usuario} value={trainer.id_usuario}>
-                                {trainer.nombre + " " + trainer.apellido}
-                            </MenuItem>
-                        )) 
-                        : console.log("cargando") 
-                    }
+                    <MenuItem key="S" value="S">Seleccionar</MenuItem>
+                    {entrenadores != null ? entrenadores.map((trainer) => (
+                        <MenuItem key={trainer.id_usuario} value={trainer.id_usuario}>
+                            {trainer.nombre + " " + trainer.apellido}
+                        </MenuItem>
+                    )) : console.log("cargando menu item entrenadores por jornada") }
                     
                 </TextField>
 
@@ -148,4 +140,4 @@ function AsignarEntrenadorModal(props) {
     )
 }
 
-export default AsignarEntrenadorModal;
+export default EditarAsignacionEntrenadorModal;

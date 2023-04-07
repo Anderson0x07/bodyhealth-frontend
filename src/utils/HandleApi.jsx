@@ -18,7 +18,7 @@ export const procesarPeticionPost = async (endpoint, datos) => {
 
   let response;
 
-  if(token !== null){
+  if (token !== null) {
     response = await axios.post(url, datos, config)
   } else {
     response = await axios.post(url, datos)
@@ -38,5 +38,16 @@ export const procesarPeticionDelete = async (endpoint) => {
   const url = `${API_BASE_URL}/${endpoint}`;
 
   const response = await axios.delete(url, config)
+  return response;
+};
+
+
+export const procesarPeticionPdf = async (endpoint) => {
+  const url = `${API_BASE_URL}/${endpoint}`;
+
+  const response = await axios.get(url, {
+    headers: { Authorization: `Bearer ${token}` },
+    responseType: 'arraybuffer'
+  });
   return response;
 };
