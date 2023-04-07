@@ -211,7 +211,7 @@ function EjerciciosList() {
                                                 </TableCell>
                                                 <TableCell>
                                                     <Typography variant="subtitle2" noWrap>
-                                                        {musculo.descripcion}
+                                                        {musculo.nombre}
                                                     </Typography>
                                                 </TableCell>
 

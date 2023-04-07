@@ -105,7 +105,7 @@ function Ejercicio() {
     const handleUpdate = (updatedData) => {
         setEjercicio(updatedData)
     }
-    const descripcionMusculo = ejercicio.musculo?.descripcion;
+    const nombreMusculo = ejercicio.musculo?.nombre;
     return (
         <div>
             <Container >
@@ -164,7 +164,7 @@ function Ejercicio() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Musculo</TableCell>
-                                        <TableCell className='value' align="right">{descripcionMusculo}</TableCell>
+                                        <TableCell className='value' align="right">{nombreMusculo}</TableCell>
                                     </TableRow>
                                 </TableBody>
 

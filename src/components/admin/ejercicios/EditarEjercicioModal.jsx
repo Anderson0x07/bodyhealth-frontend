@@ -114,7 +114,7 @@ function EditarEjercicioModal(props) {
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
                     {musculos != null ? musculos.map((musculo) => (
                         <MenuItem key={musculo.id_musculo} value={musculo.id_musculo}>
-                            {musculo.descripcion}
+                            {musculo.nombre}
                         </MenuItem>
                     )) : console.log("cargando")}
 
