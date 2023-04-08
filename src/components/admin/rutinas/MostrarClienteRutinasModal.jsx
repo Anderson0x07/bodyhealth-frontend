@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
     Button,
+    Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
+    IconButton,
     Paper,
     Slide,
     Table,
@@ -17,10 +19,9 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { Delete } from '@mui/icons-material';
+import { CheckCircleRounded, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import Scrollbar from '../dashboard/scrollbar/Scrollbar';
-import Swal from 'sweetalert2';
 
 // ----------------------------------------------------------------------
 
@@ -28,11 +29,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function MostrarComprasMetodoModal(props) {
+function MostrarClienteRutinasModal(props) {
 
-    const { compras, showModalComprasMetodo, setShowModalComprasMetodo } = props;
-
-
+    const { clienteRutinas, showModalClienteRutinas, setShowModalClienteRutinas } = props;
     const [loading, setLoading] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -40,23 +39,8 @@ function MostrarComprasMetodoModal(props) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const handleCancelarAndOk = () => {
-        setShowModalComprasMetodo(false);
+        setShowModalClienteRutinas(false);
     };
-
-    const handleDelete = () => {
-        setLoading(true);
-
-        Swal.fire({
-            title: 'Atención',
-            text: 'No se puede eliminar el método de pago, está siendo utilizado en otros servicios.',
-            icon: 'error',
-            customClass: {
-                container: 'my-swal'
-            }
-        });
-
-        setLoading(false);
-    }
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -67,61 +51,63 @@ function MostrarComprasMetodoModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRowsCompras = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - compras.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clienteRutinas.length) : 0;
+
+
 
     return (
-        <Dialog open={showModalComprasMetodo} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
-            <DialogTitle>Usos del método de pago</DialogTitle>
+        <Dialog open={showModalClienteRutinas} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
+            <DialogTitle>Usos de la rutina</DialogTitle>
             <DialogContent>
-                <Grid item xs={6} sm={3} md={5} ml={1}>
-
+                <Grid item xs={6} sm={8} md={12} >
                     <Typography variant="subtitle2" align="center" >
-                        Compras donde se usó el método de pago
+                        clienteRutinas que tiene la rutina
                     </Typography>
-
-                    <Scrollbar>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow hover >
 
-                                        <TableCell align="center"># Compra</TableCell>
+                                        <TableCell align="center"># Cliente Rutina</TableCell>
 
-                                        <TableCell align="center">Fecha de Compra</TableCell>
+                                        <TableCell align="center">Documento</TableCell>
 
-                                        <TableCell align="center">Cliente</TableCell>
+                                        <TableCell align="center">Nombre</TableCell>
+
+                                        <TableCell align="center">Rutina</TableCell>
                                     </TableRow>
                                 </TableHead>
 
                                 <TableBody>
-                                    {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    {clienteRutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_compra, fecha_compra, cliente } = row;
+                                        const { id_clienterutina, cliente, rutina } = row;
 
                                         return (
-                                            <TableRow hover key={id_compra} >
+                                            <TableRow hover key={id_clienterutina} >
 
-                                                <TableCell align="center">{id_compra}</TableCell>
+                                                <TableCell align="center">{id_clienterutina}</TableCell>
 
-                                                <TableCell align="center">{fecha_compra}</TableCell>
+                                                <TableCell align="center">{cliente.documento}</TableCell>
 
-                                                <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
+                                                <TableCell align="center">{cliente.nombre}</TableCell>
+
+                                                <TableCell align="center">{rutina.nombre_rutina}</TableCell>
                                             </TableRow>
                                         );
                                     })}
-                                    {emptyRowsCompras > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRowsCompras }}>
-                                            <TableCell colSpan={3} />
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: 53 * emptyRows }}>
+                                            <TableCell colSpan={4} />
                                         </TableRow>
                                     )}
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    </Scrollbar>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={compras.length}
+                        count={clienteRutinas.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -133,17 +119,17 @@ function MostrarComprasMetodoModal(props) {
                 <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
-                    onClick={handleDelete}
+                    onClick={handleCancelarAndOk}
                     loading={loading}
                     loadingPosition="start"
-                    startIcon={<Delete />}
+                    startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >
-                    Eliminar
+                    ¡Vale!
                 </LoadingButton>
             </DialogActions>
         </Dialog>
     )
 }
 
-export default MostrarComprasMetodoModal;
+export default MostrarClienteRutinasModal;

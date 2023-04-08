@@ -22,6 +22,8 @@ import Ejercicios from '../pages/admin/ejercicios/Ejercicios';
 import Ejercicio from '../components/admin/ejercicios/Ejercicio';
 import LoginPage from '../pages/index/LoginPage';
 import Musculo from '../components/admin/musculos/Musculo';
+import Rutinas from '../pages/admin/rutinas/Rutinas';
+import Rutina from '../components/admin/rutinas/Rutina';
 
 
 
@@ -47,6 +49,8 @@ function RoutesAdmin() {
                 { path: 'musculo/:id', element: <Musculo /> },
                 { path: 'ejercicios', element: <Ejercicios /> },
                 { path: 'ejercicio/:id', element: <Ejercicio /> },
+                { path: 'rutinas', element: <Rutinas /> },
+                { path: 'rutina/:id', element: <Rutina /> },
                 { path: 'metodospago',element:<MetodoPago />},
                 { path: 'fact-pedidos', element: <FactPedidos /> },
                 { path: 'fact-planes', element: <FactPlanes /> },

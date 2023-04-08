@@ -131,7 +131,7 @@ function Musculo() {
                                             <TableCell className='value' align="right">{musculo.id_musculo}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell className='clave'>nombre</TableCell>
+                                            <TableCell className='clave'>Nombre</TableCell>
                                             <TableCell className='value' align="right">{musculo.nombre}</TableCell>
                                         </TableRow>
                                         <TableRow>

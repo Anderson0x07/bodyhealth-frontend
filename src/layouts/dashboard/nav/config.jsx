@@ -8,6 +8,7 @@ import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
 import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import PaymentTwoToneIcon from '@mui/icons-material/PaymentTwoTone';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 
 
@@ -51,6 +52,11 @@ const navConfig = [
     title: 'ejercicios',
     path: '/admin/dashboard/ejercicios',
     icon: <FitnessCenterIcon/>,
+  },
+  {
+    title: 'rutinas',
+    path: '/admin/dashboard/rutinas',
+    icon: <AssignmentTurnedInIcon/>,
   },
   {
     title: 'métodos de pago',
