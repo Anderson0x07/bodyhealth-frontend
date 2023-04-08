@@ -9,7 +9,7 @@ import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import PaymentTwoToneIcon from '@mui/icons-material/PaymentTwoTone';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 
 const navConfig = [
@@ -27,6 +27,11 @@ const navConfig = [
     title: 'entrenadores',
     path: '/admin/dashboard/entrenadores',
     icon: <SportsKabaddiIcon/>,
+  },
+  {
+    title: 'planes',
+    path: '/admin/dashboard/planes',
+    icon: <AssignmentIcon/>,
   },
   {
     title: 'maquinas',
