@@ -26,6 +26,7 @@ import Rutinas from '../pages/admin/rutinas/Rutinas';
 import Rutina from '../components/admin/rutinas/Rutina';
 import Planes from '../pages/admin/planes/Planes';
 import Plan from '../components/admin/planes/Plan';
+import Entrenador from '../components/admin/Entrenadores/Entrenador';
 
 
 
@@ -42,6 +43,7 @@ function RoutesAdmin() {
                 { path: 'clientes/:id', element: <Cliente /> },
                 { path: 'clientes/expand-delete/:id', element: <ClienteDelete /> },
                 { path: 'entrenadores', element: <Entrenadores /> },
+                { path: 'entrenador/:id', element: <Entrenador /> },
                 { path: 'planes', element: <Planes />},
                 { path: 'planes/:id', element: <Plan />},
                 { path: 'maquinas', element: <Maquinas /> },
