@@ -105,7 +105,7 @@ function MusculoList() {
     }
 
     const handleExpandMusculo = (id_musculo) => {
-        navigate(`/admin/dashboard/musculo/${id_musculo}`);
+        navigate(`/admin/dashboard/musculos/${id_musculo}`);
     };
 
     const handleRequestSort = (event, property) => {

@@ -57,7 +57,7 @@ function AccountPopover({ entrenador }) {
             }),
           }}
         >
-          <Avatar src={url+entrenador.foto} alt="photoURL" />
+          <Avatar src={url + entrenador.foto} alt="photoURL" />
         </IconButton>
 
         <Popover
@@ -81,7 +81,7 @@ function AccountPopover({ entrenador }) {
         >
           <Box sx={{ my: 1.5, px: 2.5 }}>
             <Typography variant="subtitle2" noWrap>
-              {entrenador.nombre+" "+entrenador.apellido}
+              {entrenador.nombre + " " + entrenador.apellido}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
               {entrenador.email}
@@ -92,7 +92,10 @@ function AccountPopover({ entrenador }) {
 
           <Stack sx={{ p: 1 }}>
 
-            <MenuItem onClick={() => navigate("/entrenador/dashboard/home")}>Inicio</MenuItem>
+            <MenuItem onClick={() => {
+              navigate("/entrenador/dashboard/home");
+              setOpen(null);
+            }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>
 
           </Stack>

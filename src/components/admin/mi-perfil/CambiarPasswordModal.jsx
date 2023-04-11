@@ -1,5 +1,5 @@
-import { useState} from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import React, { useState } from 'react';
+import { procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Button,
@@ -9,15 +9,17 @@ import {
     DialogTitle,
     TextField
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
-function EditarMusculoModal(props) {
-    const { musculo, showModalEditarMusculo, setShowModalEditarMusculo, onUpdate } = props;
+
+function CambiarPasswordModal(props) {
+
+    const { admin, showModalCambioPassword, setShowModalCambioPassword } = props;
 
     const [loading, setLoading] = useState(false);
-    const [data, setData] = useState(musculo);
 
+    const [data, setData] = useState({});
 
 
     const handleChange = (event) => {
@@ -25,20 +27,18 @@ function EditarMusculoModal(props) {
     };
 
     const handleCancelar = () => {
-        setShowModalEditarMusculo(false);
+        setShowModalCambioPassword(false);
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         setLoading(true);
-        
-        console.log("DATA");
-        console.log(data);
-      
         try {
-            const respuesta = await procesarPeticionPut(`musculo/editar/${musculo.id_musculo}`, data);
+            console.log(data)
+            const respuesta = await procesarPeticionPost(`admin/verificar-token`, data);
             setLoading(false);
+
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -48,14 +48,9 @@ function EditarMusculoModal(props) {
                 icon: 'success'
             })
 
-            setShowModalEditarMusculo(false);
-
-            const response = await procesarPeticionGet('musculo/all')
-            console.log(response)
-            onUpdate(response.data.musculos);
+            setShowModalCambioPassword(false);
 
         } catch (error) {
-            console.log(error)
             setLoading(false);
 
             Swal.fire({
@@ -69,20 +64,22 @@ function EditarMusculoModal(props) {
         }
     };
 
-
     return (
-        <Dialog open={showModalEditarMusculo} onClose={handleCancelar} >
-            <DialogTitle>Editar musculo</DialogTitle>
+        <Dialog open={showModalCambioPassword} onClose={handleCancelar} >
+            <DialogTitle>Cambio de contraseña</DialogTitle>
             <DialogContent>
 
-                <TextField margin="normal" type="text" name="descripcion" label="Musculo"
-                    onChange={handleChange} defaultValue={ musculo.descripcion} fullWidth variant="outlined" />
 
+                <TextField margin="normal" type="text" name="token" label="Token"
+                    onChange={handleChange} fullWidth variant="outlined" />
+
+                <TextField margin="normal" type="text" name="newPassword" label="Contraseña nueva"
+                    onChange={handleChange} fullWidth variant="outlined" />
+
+                
             </DialogContent>
-
             <DialogActions>
-                <Button onClick={handleCancelar}>Cancelar</Button>
-
+                <Button variant="outlined" onClick={handleCancelar}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleSubmit}
@@ -95,7 +92,7 @@ function EditarMusculoModal(props) {
                 </LoadingButton>
             </DialogActions>
         </Dialog>
-    );
+    )
 }
 
-export default EditarMusculoModal
+export default CambiarPasswordModal

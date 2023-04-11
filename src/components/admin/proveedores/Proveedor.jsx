@@ -18,12 +18,15 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 function Proveedor() {
     const [proveedor, setProveedor] = useState({});
     const [error, setError] = useState("");
+    const [logo, setLogo] = useState("");
+
     const [showModalEditarProveedor, setShowModalEditarProveedor] = useState(false);
     const [showModalProductosProveedor, setShowModalProductosProveedor] = useState(false);
     const [showModalMaquinasProveedor, setShowModalMaquinasProveedor] = useState(false);
     const [showModalUsosProveedor, setShowModalUsosProveedor] = useState(false);
     const [maquinas, setMaquinas] = useState([]);
     const [productos, setProductos] = useState([]);
+
 
 
     const navigate = useNavigate();
@@ -38,7 +41,11 @@ function Proveedor() {
                 console.log(response);
                 setProveedor(response.data.proveedor);
                 setMaquinas(response.data.proveedor.maquinas);
-                setProductos(response.data.proveedor.productos)
+                setProductos(response.data.proveedor.productos);
+
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
+
             } catch (error) {
                 setError(error.response.data.error)
             }
@@ -110,14 +117,9 @@ function Proveedor() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            <Avatar
-                                src={logo}
-                                style={{
-                                    width: '350px',
-                                    height: '200px',
-                                    borderRadius: 0,
-                                }}
-                            />
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>

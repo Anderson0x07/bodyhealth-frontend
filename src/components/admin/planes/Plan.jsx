@@ -10,14 +10,16 @@ import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, Tab
 import EditarPlanModal from './EditarPlanModal';
 import MostrarUsosPlanModal from './MostrarUsosPlanModal';
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
 function Plan() {
 
     const [plan, setPlan] = useState({});
-    const [editedPlan, setEditedPlan] = useState({});
     const [error, setError] = useState("");
+    const [logo, setLogo] = useState("");
+
     const [showModalEditarPlan, setShowModalEditarPlan] = useState(false);
     const [showModalFactura, setShowModalFactura] = useState(false);
-    const [eliminar, setEliminar] = useState(false);
     const [facturas, setFacturas] = useState([]);
 
     const navigate = useNavigate();
@@ -32,6 +34,9 @@ function Plan() {
                 setPlan(response.data.plan);
                 setFacturas(response.data.plan.clienteDetalles);
 
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
+
             } catch (error) {
                 setError(error.response.data.error)
             }
@@ -43,12 +48,6 @@ function Plan() {
 
     const handleBack = () => {
         navigate(`/admin/dashboard/planes`);
-    };
-
-
-    const handleEditarPlan = () => {
-        setEditedPlan(plan);
-        setShowModalEditarPlan(true);
     };
 
     const handleDelete = () => {
@@ -93,14 +92,9 @@ function Plan() {
         }
     };
 
-    const handleShowFacturas = () => {
-        setShowModalFactura(true)
-        setEliminar(false)
-    }
     const handleUpdate = (updatedData) => {
         setPlan(updatedData)
     }
-
 
     return (
         <div>
@@ -112,14 +106,9 @@ function Plan() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            <Avatar
-                                src={logo}
-                                style={{
-                                    width: '350px',
-                                    height: '200px',
-                                    borderRadius: 0,
-                                }}
-                            />
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
@@ -158,11 +147,11 @@ function Plan() {
                     {facturas.length > 0
                         ?
                         <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<RemoveRedEyeRounded />} onClick={handleShowFacturas}>Uso de plan</Button>
+                            <Button variant="contained" startIcon={<RemoveRedEyeRounded />} onClick={() => { setShowModalFactura(true) }}>Uso de plan</Button>
                         </Grid>
                         : <>
                             <Grid item xs={2} sm={2} md={3} >
-                                <Button variant="contained" startIcon={<Edit />} onClick={handleEditarPlan}>Editar</Button>
+                                <Button variant="contained" startIcon={<Edit />} onClick={() => { setShowModalEditarPlan(true) }}>Editar</Button>
                             </Grid>
                             <Grid item xs={2} sm={2} md={3} >
                                 <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete}>Eliminar</Button>

@@ -11,7 +11,6 @@ import Page404 from '../pages/admin/Page404';
 import Productos from '../pages/admin/productos/Productos';
 import Proveedores from '../pages/admin/proveedores/Proveedores';
 import Cliente from '../components/admin/clientes/Cliente';
-import ClienteDelete from '../components/admin/clientes/ClienteDelete';
 import Producto from '../components/admin/productos/Producto';
 import Maquina from '../components/admin/maquinas/Maquina';
 import Proveedor from '../components/admin/proveedores/Proveedor';
@@ -33,6 +32,9 @@ import Home from '../pages/Home';
 import DashboardAdmin from '../layouts/dashboard-admin/DashboardAdmin';
 import DashboardEntrenador from '../layouts/dashboard-trainer/DashboardEntrenador';
 import Entrenador from '../components/admin/Entrenadores/Entrenador';
+import ProfilePage from '../pages/admin/ProfilePage';
+import HomeEntrenador from '../pages/entrenador/HomeEntrenador';
+import ClientesEntrenador from '../pages/entrenador/clientes/ClientesEntrenador';
 
 
 const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -100,7 +102,6 @@ function RutasRoles() {
                         <Route exact path="home" element={<HomeAdmin />} />
                         <Route exact path="clientes" element={<Clientes />} />
                         <Route exact path="clientes/:id" element={<Cliente />} />
-                        <Route exact path="clientes/expand-delete/:id" element={<ClienteDelete />} />
                         <Route exact path="entrenadores" element={<Entrenadores />} />
                         <Route exact path="entrenador/:id" element={<Entrenador />} />
                         <Route exact path="planes" element={<Planes />} />
@@ -121,6 +122,7 @@ function RutasRoles() {
                         <Route exact path="fact-pedidos" element={<FactPedidos />} />
                         <Route exact path="fact-planes" element={<FactPlanes />} />
                         <Route exact path="configuracion" element={<Configuracion />} />
+                        <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
                         <Route exact path="*" element={<Page404 />} />
                     </Route>
                 </Route>
@@ -129,8 +131,8 @@ function RutasRoles() {
                 {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
                 <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
                     <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
-                        <Route exact path="home" element={<div>Home</div>} />
-                        <Route exact path="clientes" element={<div>Home</div>} />
+                        <Route exact path="home" element={<HomeEntrenador/>} />
+                        <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario}/>} />
                         <Route exact path="clientes/:id" element={<div>Home</div>} />
                         <Route exact path="musculos" element={<div>Home</div>} />
                         <Route exact path="musculos/:id" element={<div>Home</div>} />
@@ -138,7 +140,7 @@ function RutasRoles() {
                         <Route exact path="ejercicios/:id" element={<div>Home</div>} />
                         <Route exact path="rutinas" element={<div>Home</div>} />
                         <Route exact path="rutinas/:id" element={<div>Home</div>} />
-                        <Route exact path="configuracion" element={<div>Home</div>} />
+                        <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
                     </Route>
                 </Route>
 

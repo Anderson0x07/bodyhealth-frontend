@@ -24,8 +24,8 @@ function AccountPopover({ admin }) {
   }
 
   const handleMiPerfil = () => {
-    console.log("MI PERFIL")
-    console.log(admin)
+    navigate("/admin/dashboard/mi-perfil");
+    setOpen(null);
   }
 
 
@@ -57,7 +57,7 @@ function AccountPopover({ admin }) {
             }),
           }}
         >
-          <Avatar src={url+admin.foto} alt="photoURL" />
+          <Avatar src={url + admin.foto} alt="photoURL" />
         </IconButton>
 
         <Popover
@@ -81,7 +81,7 @@ function AccountPopover({ admin }) {
         >
           <Box sx={{ my: 1.5, px: 2.5 }}>
             <Typography variant="subtitle2" noWrap>
-              {admin.nombre+" "+admin.apellido}
+              {admin.nombre + " " + admin.apellido}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
               {admin.email}
@@ -92,7 +92,10 @@ function AccountPopover({ admin }) {
 
           <Stack sx={{ p: 1 }}>
 
-            <MenuItem onClick={() => navigate("/admin/dashboard/home")}>Inicio</MenuItem>
+            <MenuItem onClick={() => {
+              navigate("/admin/dashboard/home");
+              setOpen(null);
+            }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>
 
           </Stack>

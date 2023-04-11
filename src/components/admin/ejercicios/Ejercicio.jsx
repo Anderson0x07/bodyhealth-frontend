@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/HandleApi";
 
 import Swal from 'sweetalert2';
-import logo from "../../../assets/Logo-BodyHealth.jpeg";
 import { ArrowBack, Delete, Edit, OpenInNewRounded, RemoveRedEyeRounded } from '@mui/icons-material';
 
 import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
@@ -12,9 +11,13 @@ import MostrarRutinaEjerciciosModal from './MostrarRutinaEjerciciosModal';
 import { LoadingButton } from '@mui/lab';
 
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
 function Ejercicio() {
     const [ejercicio, setEjercicio] = useState({});
     const [error, setError] = useState("");
+
+    const [logo, setLogo] = useState("");
 
     const [showModalEditarEjercicio, setShowModalEditarEjercicio] = useState(false);
     const [showModalRutinaEjercicios, setShowModalRutinaEjercicios] = useState(false);
@@ -30,9 +33,14 @@ function Ejercicio() {
     useEffect(() => {
         const getEjercicio = async () => {
             try {
+                
                 const response = await procesarPeticionGet(`ejercicio/${id}`);
                 setEjercicio(response.data.ejercicio);
                 setRutinaEjercicios(response.data.ejercicio.rutinaEjercicios);
+                
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
+                
 
             } catch (error) {
                 setError(error.response.data.error)
@@ -116,14 +124,9 @@ function Ejercicio() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            <Avatar
-                                src={logo}
-                                style={{
-                                    width: '350px',
-                                    height: '200px',
-                                    borderRadius: 0,
-                                }}
-                            />
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
@@ -149,7 +152,7 @@ function Ejercicio() {
                                     <TableRow>
                                         <TableCell className='clave'>URL Video</TableCell>
                                         <TableCell className='value' align="right">
-                                            
+
 
                                             <LoadingButton
                                                 size="large"

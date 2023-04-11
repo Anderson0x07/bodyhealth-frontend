@@ -11,10 +11,13 @@ import EditarMusculoModal from './EditarMusculoModal';
 import MostrarUsosMusculoModal from './MostrarUsosMusculoModal';
 
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function Musculo() {
     const [musculo, setMusculo] = useState({});
     const [error, setError] = useState("");
+    const [logo, setLogo] = useState("");
+
     const [showModalEditarmusculo, setShowModalEditarmusculo] = useState(false);
     const [showModalEjercicios, setShowModalEjercicios] = useState(false);
     const [eliminar, setEliminar] = useState(false);
@@ -33,6 +36,9 @@ function Musculo() {
                 setMusculo(response.data.musculo);
                 setEjercicios(response.data.musculo.ejercicios);
 
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
+
             } catch (error) {
                 setError(error.response.data.error)
             }
@@ -46,10 +52,6 @@ function Musculo() {
         navigate(`/admin/dashboard/musculos`);
     };
 
-
-    const handleEditarmusculo = () => {
-        setShowModalEditarmusculo(true);
-    };
 
     const handleDelete = () => {
         try {
@@ -99,6 +101,7 @@ function Musculo() {
         setMusculo(updatedData)
     }
 
+
     return (
         <div>
             <Container >
@@ -106,48 +109,40 @@ function Musculo() {
                     Datos del musculo
                 </Typography>
 
-                <Card>
-                    <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <Container>
-                                <Avatar
-                                    src={logo}
-                                    style={{
-                                        width: '350px',
-                                        height: '200px',
-                                        borderRadius: 0,
-                                    }}
-                                />
-                            </Container>
-                        </Grid>
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <TableContainer  >
-                                <Table style={{ border: "1px solid black" }}>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell className='clave' ># Musculo</TableCell>
-                                            <TableCell className='value' align="right">{musculo.id_musculo}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Nombre</TableCell>
-                                            <TableCell className='value' align="right">{musculo.nombre}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Grupo Muscular</TableCell>
-                                            <TableCell className='value' align="right">{musculo.grupo_muscular}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Descripcion</TableCell>
-                                            <TableCell className='value' align="right">{musculo.descripcion}</TableCell>
-                                        </TableRow>
-                                    </TableBody>
-
-                                </Table>
-                            </TableContainer>
-                        </Grid>
+                <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <Container>
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
+                        </Container>
                     </Grid>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <TableContainer  >
+                            <Table style={{ border: "1px solid black" }}>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell className='clave' ># Musculo</TableCell>
+                                        <TableCell className='value' align="right">{musculo.id_musculo}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Nombre</TableCell>
+                                        <TableCell className='value' align="right">{musculo.nombre}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Grupo Muscular</TableCell>
+                                        <TableCell className='value' align="right">{musculo.grupo_muscular}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Descripcion</TableCell>
+                                        <TableCell className='value' align="right">{musculo.descripcion}</TableCell>
+                                    </TableRow>
+                                </TableBody>
 
-                </Card>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+                </Grid>
 
 
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -155,7 +150,7 @@ function Musculo() {
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Edit />} onClick={handleEditarmusculo}>Editar</Button>
+                        <Button variant="contained" startIcon={<Edit />} onClick={() => {setShowModalEditarmusculo(true)}}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Cancel />} onClick={ejercicios.length > 0 ? handleDeletePass : handleDelete}>Eliminar</Button>

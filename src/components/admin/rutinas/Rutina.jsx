@@ -19,6 +19,8 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 function Rutina() {
     const [rutina, setRutina] = useState({});
     const [error, setError] = useState("");
+    const [logo, setLogo] = useState("");
+
     const [showModalEditarRutina, setShowModalEditarRutina] = useState(false);
     const [showModalRutinaEjercicios, setShowModalRutinaEjercicios] = useState(false);
     const [showModalClienteRutinas, setShowModalClienteRutinas] = useState(false);
@@ -40,7 +42,11 @@ function Rutina() {
                 console.log(response);
                 setRutina(response.data.rutina);
                 setRutinaEjercicios(response.data.rutina.rutinaEjercicios);
-                setClienteRutinas(response.data.rutina.clienteRutinas)
+                setClienteRutinas(response.data.rutina.clienteRutinas);
+
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
+
             } catch (error) {
                 setError(error.response.data.error)
             }
@@ -128,7 +134,6 @@ function Rutina() {
 
                     </Tooltip>
 
-
                     <Menu
                         keepMounted
                         anchorEl={open}
@@ -141,8 +146,6 @@ function Rutina() {
                         <MenuItem selected sx={{ typography: 'body2' }} onClick={() => setShowModalEditarRutina(true)}>
                             <DriveFileRenameOutlineTwoTone />Editar Rutina
                         </MenuItem>
-
-
                     </Menu>
 
                 </Stack>
@@ -150,14 +153,9 @@ function Rutina() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            <Avatar
-                                src={logo}
-                                style={{
-                                    width: '350px',
-                                    height: '200px',
-                                    borderRadius: 0,
-                                }}
-                            />
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>

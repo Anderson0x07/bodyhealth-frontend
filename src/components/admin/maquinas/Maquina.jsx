@@ -3,16 +3,18 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarMaquinaModal from './EditarMaquinaModal';
 import Swal from 'sweetalert2';
-import logo from '../../../assets/Logo-BodyHealth.jpeg'
-import { ArrowBack, Cancel, CheckCircleRounded, Edit } from '@mui/icons-material';
-import Label from '../dashboard/label/Label';
-import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { ArrowBack, Cancel, Edit } from '@mui/icons-material';
+import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 
+
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function Maquina() {
     const [maquina, setMaquina] = useState({});
-    const [editedMaquina, setEditedMaquina] = useState({});
     const [error, setError] = useState("");
+
+    const [logo, setLogo] = useState("");
+    
     const [showModalEditarMaquina, setShowModalEditarMaquina] = useState(false);
 
 
@@ -26,6 +28,9 @@ function Maquina() {
             try {
                 const response = await procesarPeticionGet(`maquina/${id}`);
                 setMaquina(response.data.maquina);
+
+                const res = await procesarPeticionGet('infobasica/logo/1');
+                setLogo(res.data.logo);
 
             } catch (error) {
                 setError(error.response.data.error)
@@ -42,7 +47,6 @@ function Maquina() {
 
 
     const handleEditarMaquina = () => {
-        setEditedMaquina(maquina);
         setShowModalEditarMaquina(true);
     };
 
@@ -99,49 +103,44 @@ function Maquina() {
                     Datos de la maquina
                 </Typography>
 
-                    <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <Container>
-                                <Avatar
-                                    src={logo}
-                                    style={{
-                                        width: '350px',
-                                        height: '200px',
-                                        borderRadius: 0,
-                                    }}
-                                />
-                            </Container>
-                        </Grid>
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <TableContainer  >
-                                <Table style={{ border: "1px solid black" }}>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell className='clave' >Serial</TableCell>
-                                            <TableCell className='value' align="right">{maquina.id_maquina}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Nombre</TableCell>
-                                            <TableCell className='value' align="right">{maquina.nombre}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Estado</TableCell>
-                                            <TableCell className='value' align="right">{maquina.estado}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Obsevrvacion</TableCell>
-                                            <TableCell className='value' align="right">{maquina.observacion}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Proveedor</TableCell>
-                                            <TableCell className='value' align="right">{nombreEmpresa}</TableCell>
-                                        </TableRow>
-                                    </TableBody>
-
-                                </Table>
-                            </TableContainer>
-                        </Grid>
+                <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <Container>
+                            {logo != ""
+                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
+                                : false}
+                        </Container>
                     </Grid>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <TableContainer  >
+                            <Table style={{ border: "1px solid black" }}>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell className='clave' >Serial</TableCell>
+                                        <TableCell className='value' align="right">{maquina.id_maquina}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Nombre</TableCell>
+                                        <TableCell className='value' align="right">{maquina.nombre}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Estado</TableCell>
+                                        <TableCell className='value' align="right">{maquina.estado}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Obsevrvacion</TableCell>
+                                        <TableCell className='value' align="right">{maquina.observacion}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Proveedor</TableCell>
+                                        <TableCell className='value' align="right">{nombreEmpresa}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+                </Grid>
 
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={2} sm={2} md={3} >
