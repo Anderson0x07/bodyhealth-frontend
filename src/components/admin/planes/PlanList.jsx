@@ -20,14 +20,10 @@ import {
     Alert,
     AlertTitle,
 } from '@mui/material';
-// components
-import Label from '../../../components/admin/dashboard/label';
-import Scrollbar from '../../../components/admin/dashboard/scrollbar';
 
 import TableHead from '../../../components/admin/dashboard/TableHead';
 import TableBuscar from '../../../components/admin/dashboard/TableBuscar';
 
-//icons
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
@@ -134,7 +130,6 @@ function PlanList() {
     const getAll = async () => {
         try {
             const response = await procesarPeticionGet("plan/all");
-            console.log(response)
             setStatus(response.status);
             setPlanes(response.data.planes);
         } catch (error) {
@@ -174,71 +169,66 @@ function PlanList() {
                 <Stack mb={5}>
                     <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
                 </Stack>
-                    <TableContainer sx={{ minWidth: 800 }}>
-                        <Table>
-                            <TableHead
-                                order={order}
-                                orderBy={orderBy}
-                                headLabel={TABLE_HEAD}
-                                onRequestSort={handleRequestSort}
-                            />
-                            <TableBody>
-                                {filteredPlanes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                        <TableHead
+                            order={order}
+                            orderBy={orderBy}
+                            headLabel={TABLE_HEAD}
+                            onRequestSort={handleRequestSort}
+                        />
+                        <TableBody>
+                            {filteredPlanes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                    const { id_plan, plan, precio, meses} = row;
+                                const { id_plan, plan, precio, meses } = row;
 
-                                    return (
-                                        <TableRow hover key={id_plan} >
-                                            <TableCell align="left">
+                                return (
+                                    <TableRow hover key={id_plan} >
+                                        <TableCell align="left">
+                                            <Typography variant="subtitle2" noWrap>
+                                                {plan}
+                                            </Typography>
+                                        </TableCell>
 
+                                        <TableCell align="left">{meses}</TableCell>
 
-                                                <Typography variant="subtitle2" noWrap>
-                                                    {plan}
-                                                </Typography>
+                                        <TableCell align="left">{precio}</TableCell>
 
-                                            </TableCell>
-
-                                            <TableCell align="left">{meses}</TableCell>
-
-                                            <TableCell align="left">{precio}</TableCell>
-
-
-                                            <TableCell align="right">
-                                                <IconButton size="large" color="inherit" onClick={() => handlePlanExpand(id_plan)}>
-                                                    <ReadMoreIcon />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                                {emptyRows > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows }}>
-                                        <TableCell colSpan={4} />
+                                        <TableCell align="right">
+                                            <IconButton size="large" color="inherit" onClick={() => handlePlanExpand(id_plan)}>
+                                                <ReadMoreIcon />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
-                                )} 
-                            </TableBody>
-                            {isNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
-                                                <Paper sx={{ textAlign: 'center' }}>
-                                                    <Typography variant="h6" paragraph>
-                                                        No Encontrado
-                                                    </Typography>
+                                );
+                            })}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={4} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+                        {isNotFound && (
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
+                                        <Paper sx={{ textAlign: 'center' }}>
+                                            <Typography variant="h6" paragraph>
+                                                No Encontrado
+                                            </Typography>
 
-                                                    <Typography variant="body2">
-                                                        No hay resultados para &nbsp;
-                                                        <strong>&quot;{filterName}&quot;</strong>.
-                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                    </Typography>
-                                                </Paper>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                        </Table>
-                    </TableContainer>
-               
+                                            <Typography variant="body2">
+                                                No hay resultados para &nbsp;
+                                                <strong>&quot;{filterName}&quot;</strong>.
+                                                <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                            </Typography>
+                                        </Paper>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        )}
+                    </Table>
+                </TableContainer>
 
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}

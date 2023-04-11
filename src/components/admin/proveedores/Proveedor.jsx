@@ -100,10 +100,9 @@ function Proveedor() {
 
 
     return (
-        <div>
+        <>
 
             <Container>
-
                 <Typography variant="h4" gutterBottom mb={3}>
                     Datos del proveedor
                 </Typography>
@@ -148,9 +147,6 @@ function Proveedor() {
                     </Grid>
                 </Grid>
 
-
-
-
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
@@ -176,10 +172,7 @@ function Proveedor() {
                         : console.log("no tiene Máquinas.")
                     }
 
-
-
                 </Grid>
-
             </Container>
 
             {showModalEditarProveedor && (
@@ -220,7 +213,7 @@ function Proveedor() {
                 />
             )}
 
-        </div>
+        </>
     );
 }
 

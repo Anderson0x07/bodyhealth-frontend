@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 // components
 import Label from '../dashboard/label';
-import Scrollbar from '../dashboard/scrollbar';
 
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
@@ -70,8 +69,8 @@ function applySortFilter(array, comparator, query) {
         return a[1] - b[1];
     });
     if (query) {
-        return filter(array, (_user) => (_user.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 || 
-                                        _user.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1));
+        return filter(array, (_user) => (_user.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+            _user.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1));
     }
     return stabilizedThis.map((el) => el[0]);
 }
@@ -98,9 +97,9 @@ function EntrenadorList() {
     const navigate = useNavigate();
 
     const agregarEntrenador = (entrenadores) => {
-        
+
         setEntrenadores(entrenadores);
-        
+
     }
 
     const handleClienteExpand = (id_usuario) => {
@@ -141,8 +140,6 @@ function EntrenadorList() {
     const getAll = async () => {
         try {
             const response = await procesarPeticionGet("entrenador/all");
-            console.log("****************************************+")
-            console.log(response)
             setStatus(response.status);
             setEntrenadores(response.data.entrenadores);
         } catch (error) {
@@ -151,36 +148,36 @@ function EntrenadorList() {
         }
     };
 
-  return (
-    <>
-    <Container>
-        {status !== 200 && (
-            <Alert sx={{marginBottom: '50px'}} variant="outlined" severity="error">
-                <AlertTitle>Error</AlertTitle>
-                {error} 
-            </Alert>
-        )}
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" gutterBottom>
-                Entrenadores
-            </Typography>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
-                Nuevo
-            </Button>
+    return (
+        <>
+            <Container>
+                {status !== 200 && (
+                    <Alert sx={{ marginBottom: '50px' }} variant="outlined" severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        {error}
+                    </Alert>
+                )}
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        Entrenadores
+                    </Typography>
+                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
+                        Nuevo
+                    </Button>
 
-            {showModal && (
-                <AgregarEntrenadorModal
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    agregarEntrenador={agregarEntrenador}
-                />
-            )}
-        </Stack>
+                    {showModal && (
+                        <AgregarEntrenadorModal
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                            agregarEntrenador={agregarEntrenador}
+                        />
+                    )}
+                </Stack>
 
-        <Stack mb={5}>
-            <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
-        </Stack>
-            
+                <Stack mb={5}>
+                    <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
+                </Stack>
+
 
                 <TableContainer sx={{ minWidth: 800 }}>
                     <Table>
@@ -199,13 +196,13 @@ function EntrenadorList() {
                                     <TableRow hover key={id_usuario} >
                                         <TableCell component="th" scope="row" padding="none">
                                             <Stack direction="row" alignItems="center" spacing={2}>
-                                                <Avatar alt={nombre} src={url+foto} />
+                                                <Avatar alt={nombre} src={url + foto} />
                                                 <Typography variant="subtitle2" noWrap>
                                                     {nombre}
                                                 </Typography>
                                             </Stack>
                                         </TableCell>
-                                        
+
                                         <TableCell align="left">{apellido}</TableCell>
 
                                         <TableCell align="left">{tipo_documento + ' - ' + documento}</TableCell>
@@ -220,7 +217,7 @@ function EntrenadorList() {
 
                                         <TableCell align="right">
                                             <IconButton size="large" color="inherit" onClick={() => handleClienteExpand(id_usuario)}>
-                                                <ReadMoreIcon/>
+                                                <ReadMoreIcon />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -237,7 +234,7 @@ function EntrenadorList() {
                             <TableBody>
                                 <TableRow>
                                     <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                                        <Paper sx={{textAlign: 'center'}}>
+                                        <Paper sx={{ textAlign: 'center' }}>
                                             <Typography variant="h6" paragraph>
                                                 No Encontrado
                                             </Typography>
@@ -256,19 +253,19 @@ function EntrenadorList() {
                 </TableContainer>
 
 
-            <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                count={entrenadores.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-    </Container>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={entrenadores.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Container>
 
-</>
-  )
+        </>
+    )
 }
 
 export default EntrenadorList

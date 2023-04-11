@@ -48,52 +48,57 @@ function Maquina() {
 
     const handleDelete = () => {
         try {
-    
-          Swal.fire({
-            title: 'Atención',
-            text: "¿Está seguro que desea eliminar la maquina?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, elimínalo',
-            customClass: {
-              container: 'my-swal'
-            }
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              const response = await procesarPeticionDelete(`maquina/eliminar/${id}`);
-              Swal.fire({
+
+            Swal.fire({
+                title: 'Atención',
+                text: "¿Está seguro que desea eliminar la maquina?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, elimínalo',
+                customClass: {
+                    container: 'my-swal'
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await procesarPeticionDelete(`maquina/eliminar/${id}`);
+                    Swal.fire({
+                        customClass: {
+                            container: 'my-swal'
+                        },
+                        title: 'Información',
+                        text: response.data.message,
+                        icon: 'success'
+                    }).then(() => {
+                        navigate(`/admin/dashboard/maquinas`);
+                    })
+                }
+            })
+
+        } catch (error) {
+            Swal.fire({
                 customClass: {
                     container: 'my-swal'
                 },
-                title: 'Información',
-                text: response.data.message,
-                icon: 'success'
-            }).then(() => {
-                navigate(`/admin/dashboard/maquinas`);
-              })
-            }
-          })
-    
-        } catch (error) {
-          console.log(error.response.data.error);
-          Swal.fire('Atención', error.response.data.error, 'error');
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error'
+            });
         }
-      };
+    };
 
     const handleUpdate = (updatedData) => {
         setMaquina(updatedData)
     }
     const nombreEmpresa = maquina.proveedor?.nombre_empresa;
     return (
-        <div>
+        <>
             <Container >
                 <Typography variant="h4" gutterBottom mb={3}>
                     Datos de la maquina
                 </Typography>
 
-                <Card>
                     <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={4} md={6} pb={5}>
                             <Container>
@@ -138,9 +143,6 @@ function Maquina() {
                         </Grid>
                     </Grid>
 
-                </Card>
-
-
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
@@ -149,10 +151,9 @@ function Maquina() {
                         <Button variant="contained" startIcon={<Edit />} onClick={handleEditarMaquina}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained"  startIcon={<Cancel />} onClick={handleDelete}>eliminar</Button> 
-                        </Grid>
+                        <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete}>eliminar</Button>
+                    </Grid>
                 </Grid>
-
             </Container>
 
             {showModalEditarMaquina && (
@@ -163,7 +164,7 @@ function Maquina() {
                     onUpdate={handleUpdate}
                 />
             )}
-        </div>
+        </>
     );
 }
 

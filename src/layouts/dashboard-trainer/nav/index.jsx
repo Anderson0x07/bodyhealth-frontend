@@ -31,7 +31,9 @@ Nav.propTypes = {
   onCloseNav: PropTypes.func,
 };
 
-export default function Nav({ openNav, onCloseNav }) {
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
+function Nav({ openNav, onCloseNav, entrenador }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
@@ -55,11 +57,11 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{  mx: 2.5,  px: 2.5, py: 3}}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src='https://e7.pngegg.com/pngimages/799/987/png-clipart-computer-icons-avatar-icon-design-avatar-heroes-computer-wallpaper-thumbnail.png' alt="photoURL" />
+            <Avatar src={url+entrenador.foto} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                Admin
+                {entrenador.nombre+" "+entrenador.apellido}
               </Typography>
 
             </Box>
@@ -113,3 +115,5 @@ export default function Nav({ openNav, onCloseNav }) {
     </Box>
   );
 }
+
+export default Nav;

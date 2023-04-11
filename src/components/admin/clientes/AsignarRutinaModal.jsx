@@ -4,11 +4,17 @@ import Swal from 'sweetalert2';
 import {
     Avatar,
     Button,
+    Checkbox,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
+    FormControl,
+    InputLabel,
+    ListItemText,
     MenuItem,
+    OutlinedInput,
+    Select,
     TextField
 } from '@mui/material';
 import { Save } from '@mui/icons-material';
@@ -17,10 +23,22 @@ import { LoadingButton } from '@mui/lab';
 
 function AsignarRutinaModal(props) {
 
-    const { cliente, showModalAsignarRutina, setShowModalAsignarRutina, onUpdate } = props;   
-    
+    const { cliente, showModalAsignarRutina, setShowModalAsignarRutina } = props;
+
     const [loading, setLoading] = useState(false);
-    const [rutinaSeleccionada, setRutinaSeleccionada] = useState('S');
+
+    const [rutinaSeleccion, setRutinaSeleccion] = useState([]);
+
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setRutinaSeleccion(
+            typeof value === 'string' ? value.split(',') : value,
+        );
+
+        console.log(rutinaSeleccion)
+    };
 
     const data = {};
 
@@ -51,9 +69,6 @@ function AsignarRutinaModal(props) {
         }
     }
 
-    const handleSeleccionRutina = (event) => {
-        setRutinaSeleccionada(event.target.value);
-    }
 
     const handleCancelar = () => {
         setShowModalAsignarRutina(false);
@@ -62,28 +77,17 @@ function AsignarRutinaModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
-        if (rutinaSeleccionada === "S") {
-            Swal.fire({
-                customClass: {
-                    container: 'my-swal'
-                },
-                title: 'Atención',
-                text: 'Debe seleccionar una rutina',
-                icon: 'warning'
-            })
+        data.cliente = cliente;
+        setLoading(true);
 
-        } else {
-            
-            data.cliente = cliente;
+        for (let i = 0; i < rutinaSeleccion.length; i++) {
 
             data.rutina = {
-                id_rutina: rutinaSeleccionada
+                id_rutina: rutinaSeleccion[i].split(":")[0]
             }
 
-            setLoading(true);
 
-            console.log("D-A-T-A DE LA RUTINA ASIGNADA")
+            console.log("D-A-T-A DE LA RUTINA ASIGNADA:"+i)
             console.log(data)
 
             try {
@@ -101,10 +105,10 @@ function AsignarRutinaModal(props) {
                 })
                 setShowModalAsignarRutina(false);
 
-                const response = await procesarPeticionGet(`clienterutina/${respuesta.data.id_clienterutina}`);
-                console.log(response)
+                //const response = await procesarPeticionGet(`clienterutina/${respuesta.data.id_clienterutina}`);
+                //console.log(response)
 
-                onUpdate(response.data.clienterutina);
+                //onUpdate(response.data.clienterutina);
 
             } catch (error) {
                 setLoading(false);
@@ -119,29 +123,41 @@ function AsignarRutinaModal(props) {
                     icon: 'error'
                 })
             }
+
         }
+
     };
+
 
     return (
         <Dialog open={showModalAsignarRutina} onClose={handleCancelar} maxWidth={'xl'}>
-            <DialogTitle>Asignación de rutina</DialogTitle>
+            <DialogTitle>Asignación de rutinas</DialogTitle>
             <DialogContent>
 
-                <TextField name="rutina" margin="normal" select label="Rutina" onChange={handleSeleccionRutina}
-                    fullWidth variant="outlined" value={rutinaSeleccionada} helperText="Por favor seleccione la rutina">
-                    <MenuItem key="S" value="S">
-                            Seleccionar
-                    </MenuItem>
-                    {rutinas != null 
-                        ? rutinas.map((rutina) => (
-                            <MenuItem key={rutina.id_rutina} value={rutina.id_rutina}>
-                                {rutina.nombre_rutina}
-                            </MenuItem>
-                        )) 
-                        : console.log("cargando rutinas") 
-                    }
-                    
-                </TextField>
+
+                <FormControl sx={{ m: 1, width: 300 }} fullWidth>
+                    <InputLabel id="demo-multiple-checkbox-label">Rutinas</InputLabel>
+                    <Select
+                        multiple
+                        value={rutinaSeleccion}
+                        onChange={handleChange}
+                        input={<OutlinedInput label="Rutinas" />}
+                        renderValue={(selected) => selected.join(', ')}
+
+                    >
+
+                        {rutinas != null
+                            ? rutinas.map((rutina) => (
+                                <MenuItem key={rutina.id_rutina} value={rutina.id_rutina + ":" + rutina.nombre_rutina}>
+                                    <Checkbox checked={rutinaSeleccion.indexOf(rutina.id_rutina + ":" + rutina.nombre_rutina) > -1} />
+                                    <ListItemText primary={rutina.nombre_rutina} />
+                                </MenuItem>
+                            ))
+                            : console.log("cargando rutinas")
+                        }
+                    </Select>
+                </FormControl>
+
 
             </DialogContent>
             <DialogActions>

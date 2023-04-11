@@ -13,18 +13,16 @@ function AgregarMetodoPagoModal(props) {
     const handleCancelar = () => {
         setShowModal(false);
     };
-  
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-  
+
         setLoading(true);
         console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`metodopago/guardar`, data);
-            console.log("-----------------------------")
             console.log(respuesta)
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -33,15 +31,15 @@ function AgregarMetodoPagoModal(props) {
                 text: respuesta.data.message,
                 icon: 'success'
             })
-  
+
             setShowModal(false);
             const response = await procesarPeticionGet("metodopago/all");
-  
+
             agregarMetodoPago(response.data.metodospago);
         } catch (error) {
             setLoading(false);
             console.log(error);
-  
+
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -51,37 +49,37 @@ function AgregarMetodoPagoModal(props) {
                 icon: 'error'
             })
         }
-  
+
     }
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
     };
-  
-  return (
-    <Dialog open={showModal} onClose={handleCancelar} >
-    <DialogTitle>Agregar Metodo de pago</DialogTitle>
-    <DialogContent>
-        <TextField margin="normal" type="text" name="descripcion" label="Metodo de pago"
-            onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el metodo de pago" />
 
-    </DialogContent>
-    <DialogActions>
-        <Button onClick={handleCancelar}>Cancelar</Button>
+    return (
+        <Dialog open={showModal} onClose={handleCancelar} >
+            <DialogTitle>Agregar Metodo de pago</DialogTitle>
+            <DialogContent>
+                <TextField margin="normal" type="text" name="descripcion" label="Metodo de pago"
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el metodo de pago" />
 
-        <LoadingButton
-           color="secondary"
-           onClick={handleSubmit}
-           loading={loading}
-           loadingPosition="start"
-           startIcon={<Save />}
-           variant="contained"
-        >
-            Guardar
-        </LoadingButton>
-    </DialogActions>
-</Dialog>
-  )
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCancelar}>Cancelar</Button>
+
+                <LoadingButton
+                    color="secondary"
+                    onClick={handleSubmit}
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<Save />}
+                    variant="contained"
+                >
+                    Guardar
+                </LoadingButton>
+            </DialogActions>
+        </Dialog>
+    )
 }
 
 export default AgregarMetodoPagoModal

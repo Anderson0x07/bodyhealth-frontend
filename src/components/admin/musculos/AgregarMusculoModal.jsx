@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from "../../../utils/HandleApi";
 import Swal from 'sweetalert2';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, TextField, InputLabel } from '@mui/material';
@@ -23,10 +23,8 @@ function AgregarMusculoModal(props) {
         console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`musculo/guardar`, data);
-            console.log("-----------------------------")
             console.log(respuesta)
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -37,10 +35,10 @@ function AgregarMusculoModal(props) {
             })
 
             setShowModal(false);
-          const response = await procesarPeticionGet("musculo/all");
+            const response = await procesarPeticionGet("musculo/all");
 
             agregarMusculos(response.data.musculos);
-         
+
         } catch (error) {
             setLoading(false);
             console.log(error);

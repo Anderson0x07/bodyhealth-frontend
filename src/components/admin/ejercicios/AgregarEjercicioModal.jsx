@@ -25,17 +25,16 @@ function AgregarEjercicioModal(props) {
             const respuesta = await procesarPeticionGet(`musculo/all`);
             console.log(respuesta)
             setMusculos(respuesta.data.musculos)
-            
 
         } catch (error) {
             console.log(error);
         }
     }
-    useEffect(() => {
-       
-        getMusculos();
 
-    }, [])
+    useEffect(() => {
+        getMusculos();
+    }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         data.musculo = {
@@ -46,10 +45,8 @@ function AgregarEjercicioModal(props) {
         console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`ejercicio/guardar`, data);
-            console.log("-----------------------------")
-            console.log(respuesta)
             setLoading(false);
-            console.log(respuesta);
+
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -102,7 +99,7 @@ function AgregarEjercicioModal(props) {
 
                 <TextField margin="normal" type="text" name="url_video" label="URL video"
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la URL del video del ejercicio." />
-                    <TextField select margin="normal" type="text" name="musculo" label="Musculo" onChange={handleMusculo}
+                <TextField select margin="normal" type="text" name="musculo" label="Musculo" onChange={handleMusculo}
                     fullWidth variant="outlined" value={musculoSeleccionado} helperText="Por favor seleccione un musculo">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
                     {musculos != null ? musculos.map((musculo) => (

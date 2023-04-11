@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 // components
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import Scrollbar from '../dashboard/scrollbar';
 
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
@@ -158,77 +157,75 @@ function FactPlanList() {
           <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
         </Stack>
 
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 800 }}>
-            <Table>
-              <TableHead
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {filteredFacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+        <TableContainer sx={{ minWidth: 800 }}>
+          <Table>
+            <TableHead
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {filteredFacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                  const { id_factura, cliente, plan, fecha_inicio, fecha_fin, metodoPago } = row;
+                const { id_factura, cliente, plan, fecha_inicio, fecha_fin, metodoPago } = row;
 
-                  return (
-                    <TableRow hover key={id_factura} >
+                return (
+                  <TableRow hover key={id_factura} >
 
 
-                      <TableCell align="center">{id_factura}</TableCell>
-                      <TableCell align="left">
-                        <Typography variant="subtitle2" noWrap>
-                          {cliente.nombre + " " + cliente.apellido}
-                        </Typography>
+                    <TableCell align="center">{id_factura}</TableCell>
+                    <TableCell align="left">
+                      <Typography variant="subtitle2" noWrap>
+                        {cliente.nombre + " " + cliente.apellido}
+                      </Typography>
 
-                      </TableCell>
+                    </TableCell>
 
-                      <TableCell align="left">{plan.plan}</TableCell>
+                    <TableCell align="left">{plan.plan}</TableCell>
 
-                      <TableCell align="left">{fecha_inicio}</TableCell>
+                    <TableCell align="left">{fecha_inicio}</TableCell>
 
-                      <TableCell align="left">{fecha_fin}</TableCell>
+                    <TableCell align="left">{fecha_fin}</TableCell>
 
-                      <TableCell align="left">{metodoPago.descripcion} </TableCell>
+                    <TableCell align="left">{metodoPago.descripcion} </TableCell>
 
-                      <TableCell align="center">
-                        <IconButton size="large" color="inherit" onClick={() => handleVerFactura(id_factura)}>
-                          <ReceiptIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={7} />
-                  </TableRow>
-                )}
-
-              </TableBody>
-              {isNotFound && (
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                      <Paper sx={{ textAlign: 'center' }}>
-                        <Typography variant="h6" paragraph>
-                          No Encontrado
-                        </Typography>
-
-                        <Typography variant="body2">
-                          No hay resultados para &nbsp;
-                          <strong>&quot;{filterName}&quot;</strong>.
-                          <br /> Intente verificar errores tipográficos o usar palabras completas.
-                        </Typography>
-                      </Paper>
+                    <TableCell align="center">
+                      <IconButton size="large" color="inherit" onClick={() => handleVerFactura(id_factura)}>
+                        <ReceiptIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
-                </TableBody>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={7} />
+                </TableRow>
               )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+
+            </TableBody>
+            {isNotFound && (
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                    <Paper sx={{ textAlign: 'center' }}>
+                      <Typography variant="h6" paragraph>
+                        No Encontrado
+                      </Typography>
+
+                      <Typography variant="body2">
+                        No hay resultados para &nbsp;
+                        <strong>&quot;{filterName}&quot;</strong>.
+                        <br /> Intente verificar errores tipográficos o usar palabras completas.
+                      </Typography>
+                    </Paper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
 
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}

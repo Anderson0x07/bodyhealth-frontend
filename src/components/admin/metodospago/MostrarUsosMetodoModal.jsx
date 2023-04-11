@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import Swal from 'sweetalert2';
 
 // ----------------------------------------------------------------------
@@ -83,45 +82,43 @@ function MostrarUsosMetodoModal(props) {
                                 Compras donde se usó el método de pago
                             </Typography>
 
-                            <Scrollbar>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow hover >
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow hover >
 
-                                                <TableCell align="center"># Compra</TableCell>
+                                            <TableCell align="center"># Compra</TableCell>
 
-                                                <TableCell align="center">Fecha de Compra</TableCell>
+                                            <TableCell align="center">Fecha de Compra</TableCell>
 
-                                                <TableCell align="center">Cliente</TableCell>
-                                            </TableRow>
-                                        </TableHead>
+                                            <TableCell align="center">Cliente</TableCell>
+                                        </TableRow>
+                                    </TableHead>
 
-                                        <TableBody>
-                                            {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    <TableBody>
+                                        {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                                const { id_compra, fecha_compra, cliente } = row;
+                                            const { id_compra, fecha_compra, cliente } = row;
 
-                                                return (
-                                                    <TableRow hover key={id_compra} >
+                                            return (
+                                                <TableRow hover key={id_compra} >
 
-                                                        <TableCell align="center">{id_compra}</TableCell>
+                                                    <TableCell align="center">{id_compra}</TableCell>
 
-                                                        <TableCell align="center">{fecha_compra}</TableCell>
+                                                    <TableCell align="center">{fecha_compra}</TableCell>
 
-                                                        <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                            {emptyRowsCompras > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRowsCompras }}>
-                                                    <TableCell colSpan={3} />
+                                                    <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
                                                 </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Scrollbar>
+                                            );
+                                        })}
+                                        {emptyRowsCompras > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsCompras }}>
+                                                <TableCell colSpan={3} />
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
@@ -138,54 +135,52 @@ function MostrarUsosMetodoModal(props) {
                                 Planes que se compraron utilizado el método de pago
                             </Typography>
 
-                            <Scrollbar>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow hover >
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow hover >
 
-                                                <TableCell align="center"># Factura</TableCell>
+                                            <TableCell align="center"># Factura</TableCell>
 
-                                                <TableCell align="center">Cliente</TableCell>
+                                            <TableCell align="center">Cliente</TableCell>
 
-                                                <TableCell align="center">Plan</TableCell>
+                                            <TableCell align="center">Plan</TableCell>
 
-                                                <TableCell align="center">Fecha de Inicio</TableCell>
+                                            <TableCell align="center">Fecha de Inicio</TableCell>
 
-                                                <TableCell align="center">Fecha de Fin</TableCell>
-                                            </TableRow>
-                                        </TableHead>
+                                            <TableCell align="center">Fecha de Fin</TableCell>
+                                        </TableRow>
+                                    </TableHead>
 
-                                        <TableBody>
-                                            {planes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    <TableBody>
+                                        {planes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                                const { id_factura, cliente, plan, fecha_inicio, fecha_fin } = row;
+                                            const { id_factura, cliente, plan, fecha_inicio, fecha_fin } = row;
 
-                                                return (
-                                                    <TableRow hover key={id_factura} >
+                                            return (
+                                                <TableRow hover key={id_factura} >
 
-                                                        <TableCell align="center">{id_factura}</TableCell>
+                                                    <TableCell align="center">{id_factura}</TableCell>
 
-                                                        <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
+                                                    <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
 
-                                                        <TableCell align="center">{plan.plan}</TableCell>
+                                                    <TableCell align="center">{plan.plan}</TableCell>
 
-                                                        <TableCell align="center">{fecha_inicio}</TableCell>
+                                                    <TableCell align="center">{fecha_inicio}</TableCell>
 
-                                                        <TableCell align="center">{fecha_fin}</TableCell>
+                                                    <TableCell align="center">{fecha_fin}</TableCell>
 
-                                                    </TableRow>
-                                                );
-                                            })}
-                                            {emptyRowsPlanes > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRowsPlanes }}>
-                                                    <TableCell colSpan={5} />
                                                 </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Scrollbar>
+                                            );
+                                        })}
+                                        {emptyRowsPlanes > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsPlanes }}>
+                                                <TableCell colSpan={5} />
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
@@ -200,7 +195,7 @@ function MostrarUsosMetodoModal(props) {
                     :
                     console.log("Cargando ambas tablas")
                 }
-            </DialogContent>
+            </DialogContent >
             <DialogActions>
                 <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
@@ -214,7 +209,7 @@ function MostrarUsosMetodoModal(props) {
                     Eliminar
                 </LoadingButton>
             </DialogActions>
-        </Dialog>
+        </Dialog >
     )
 }
 

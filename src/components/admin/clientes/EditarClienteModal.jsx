@@ -155,7 +155,7 @@ function EditarClienteModal(props) {
                 <TextField name="jornada" margin="normal" select label="Jornada" onChange={handleJornada}
                     fullWidth variant="outlined" defaultValue={cliente.jornada} helperText="Por favor seleccione jornada">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    <MenuItem key="M" value="Mañana">Mañana</MenuItem>
+                    <MenuItem key="M" value="Manana">Mañana</MenuItem>
                     <MenuItem key="T" value="Tarde">Tarde</MenuItem>
                 </TextField>
 

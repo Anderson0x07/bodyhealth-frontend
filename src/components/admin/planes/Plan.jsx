@@ -4,12 +4,11 @@ import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/Hand
 
 import Swal from 'sweetalert2';
 import logo from "../../../assets/Logo-BodyHealth.jpeg";
-import { ArrowBack, Cancel, CheckCircleRounded, Delete, Edit, OpenInNewRounded, RemoveRedEyeRounded } from '@mui/icons-material';
+import { ArrowBack, Cancel, Delete, Edit, RemoveRedEyeRounded } from '@mui/icons-material';
 
-import { Avatar, Button, Card, Container, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarPlanModal from './EditarPlanModal';
 import MostrarUsosPlanModal from './MostrarUsosPlanModal';
-import { LoadingButton } from '@mui/lab';
 
 function Plan() {
 
@@ -30,8 +29,6 @@ function Plan() {
         const getPlan = async () => {
             try {
                 const response = await procesarPeticionGet(`plan/${id}`);
-                console.log("******************************")
-                console.log(response)
                 setPlan(response.data.plan);
                 setFacturas(response.data.plan.clienteDetalles);
 
@@ -85,12 +82,16 @@ function Plan() {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
-            Swal.fire('Atención', error.response.data.error, 'error');
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error'
+            })
         }
     };
-
-
 
     const handleShowFacturas = () => {
         setShowModalFactura(true)
@@ -159,18 +160,17 @@ function Plan() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEyeRounded />} onClick={handleShowFacturas}>Uso de plan</Button>
                         </Grid>
-                        : <><Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Edit />} onClick={handleEditarPlan}>Editar</Button>
-                        </Grid>
+                        : <>
                             <Grid item xs={2} sm={2} md={3} >
-                                <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete}>eliminar</Button>
+                                <Button variant="contained" startIcon={<Edit />} onClick={handleEditarPlan}>Editar</Button>
+                            </Grid>
+                            <Grid item xs={2} sm={2} md={3} >
+                                <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete}>Eliminar</Button>
                             </Grid>
                         </>
-
                     }
 
                 </Grid>
-
             </Container>
 
             {showModalEditarPlan && (
@@ -188,7 +188,6 @@ function Plan() {
                     facturas={facturas}
                     showModalFactura={showModalFactura}
                     setShowModalFactura={setShowModalFactura}
-                    
                 />
             )}
         </div>

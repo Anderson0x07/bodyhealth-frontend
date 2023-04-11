@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { CheckCircleRounded, Delete, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import { useNavigate } from 'react-router-dom';
 import { procesarPeticionDelete } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
@@ -102,46 +101,44 @@ function MostrarUsosMusculoModal(props) {
                         Ejercicios donde es usado el Musculo
                     </Typography>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Ejercicio</TableCell>
+                                    <TableCell align="center"># Ejercicio</TableCell>
 
-                                        <TableCell align="center">Descripción</TableCell>
+                                    <TableCell align="center">Descripción</TableCell>
 
-                                        <TableCell align="center">Nombre Musculo</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Nombre Musculo</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {ejercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {ejercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_ejercicio, descripcion } = row;
+                                    const { id_ejercicio, descripcion } = row;
 
-                                        return (
-                                            <TableRow hover key={id_ejercicio} >
+                                    return (
+                                        <TableRow hover key={id_ejercicio} >
 
-                                                <TableCell align="center">{id_ejercicio}</TableCell>
+                                            <TableCell align="center">{id_ejercicio}</TableCell>
 
-                                                <TableCell align="center">{descripcion}</TableCell>
+                                            <TableCell align="center">{descripcion}</TableCell>
 
-                                                <TableCell align="center">{musculo.nombre}</TableCell>
-                                                
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRowsMusculos > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={2} />
+                                            <TableCell align="center">{musculo.nombre}</TableCell>
+
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                    );
+                                })}
+                                {emptyRowsMusculos > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={3} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"

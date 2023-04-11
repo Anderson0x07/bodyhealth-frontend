@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
+    Avatar,
     Button,
-    Container,
     Dialog,
     DialogActions,
     DialogContent,
@@ -10,6 +10,7 @@ import {
     IconButton,
     Paper,
     Slide,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -19,9 +20,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { Delete, OpenInNewRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import Swal from 'sweetalert2';
 import { procesarPeticionDelete } from '../../../utils/HandleApi';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +31,8 @@ import { useNavigate } from 'react-router-dom';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function MostrarUsosRutinaModal(props) {
     const navigate = useNavigate();
@@ -44,19 +46,21 @@ function MostrarUsosRutinaModal(props) {
 
 
     const handleDelete = () => {
+
         try {
 
             Swal.fire({
                 title: 'Atención',
                 icon: 'warning',
                 showCancelButton: true,
-                text: "¿Está seguro que desea eliminar la rutina?  ,\n Se eliminará la rutina junto con todos las rutinaEjercicios y clienteRutinas que tenga enlazado.",
+                text: "¿Está seguro que desea eliminar la rutina?  ,\n Se eliminará la rutina junto con todos los ejercicios y de los clientes.",
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Si, elimínalo',
                 customClass: {
                     container: 'my-swal'
                 }
+
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const response = await procesarPeticionDelete(`rutina/eliminar/${rutina.id_rutina}`);
@@ -76,14 +80,24 @@ function MostrarUsosRutinaModal(props) {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
-            Swal.fire('Atención', error.response.data.error, 'error');
+            Swal.fire({
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error',
+                customClass: {
+                    container: 'my-swal'
+                }
+            });
         }
     };
 
     const handleCancelarAndOk = () => {
         setShowModalUsosRutina(false);
     };
+
+    const handleAbrirRecurso = (url_video) => {
+        window.open(url_video, '_blank');
+    }
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -94,10 +108,8 @@ function MostrarUsosRutinaModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rutinaEjercicios.length) : 0;
-    const emptyRowsclienteRutinas = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clienteRutinas.length) : 0;
-
-
+    const emptyRowsRutinaEjercicios = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rutinaEjercicios.length) : 0;
+    const emptyRowsClienteRutinas = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clienteRutinas.length) : 0;
 
     return (
         <Dialog open={showModalUsosRutina} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
@@ -108,44 +120,46 @@ function MostrarUsosRutinaModal(props) {
                     <Grid container columns={{ xs: 6, sm: 9, md: 13 }} m={1}>
                         <Grid item xs={6} sm={4} md={6} mr={1}>
                             <Typography variant="subtitle2" align="center" >
-                                rutinaEjercicios que tiene la rutina
+                                Ejercicios de la rutina
                             </Typography>
                             <TableContainer component={Paper}>
                                 <Table>
                                     <TableHead>
                                         <TableRow hover >
 
-                                            <TableCell align="center"># Rutina Ejercicio</TableCell>
-
-                                            <TableCell align="center">Ejercicio</TableCell>
-
+                                            <TableCell align="center"># Ejercicio</TableCell>
                                             <TableCell align="center">Musculo</TableCell>
+                                            <TableCell align="center">Ejercicio</TableCell>
+                                            <TableCell align="center">Series</TableCell>
+                                            <TableCell align="center">Repeticiones</TableCell>
+                                            <TableCell align="center">Abrir recurso</TableCell>
 
-                                            <TableCell align="center">Rutina</TableCell>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {rutinaEjercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                            const { id_rutina_ejercicio, rutina, ejercicio } = row;
+                                            const { ejercicio } = row;
 
                                             return (
-                                                <TableRow hover key={id_rutina_ejercicio} >
-
-                                                    <TableCell align="center">{id_rutina_ejercicio}</TableCell>
-
-                                                    <TableCell align="center">{ejercicio.descripcion}</TableCell>
-
+                                                <TableRow hover key={ejercicio.id_ejercicio} >
+                                                    <TableCell align="center">{ejercicio.id_ejercicio}</TableCell>
                                                     <TableCell align="center">{ejercicio.musculo.nombre}</TableCell>
-
-                                                    <TableCell align="center">{rutina.nombre_rutina}</TableCell>
+                                                    <TableCell align="center">{ejercicio.descripcion}</TableCell>
+                                                    <TableCell align="center">{ejercicio.series}</TableCell>
+                                                    <TableCell align="center">{ejercicio.repeticiones}</TableCell>
+                                                    <TableCell align="center">
+                                                        <IconButton size="large" color="inherit" onClick={() => handleAbrirRecurso(ejercicio.url_video)}>
+                                                            <OpenInNewRounded />
+                                                        </IconButton>
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{ height: 53 * emptyRows }}>
-                                                <TableCell colSpan={3} />
+                                        {emptyRowsRutinaEjercicios > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsRutinaEjercicios }}>
+                                                <TableCell colSpan={6} />
                                             </TableRow>
                                         )}
                                     </TableBody>
@@ -164,44 +178,51 @@ function MostrarUsosRutinaModal(props) {
                         <Grid item xs={6} sm={4} md={6} ml={1}>
 
                             <Typography variant="subtitle2" align="center" >
-                                ClienteRutinas que tiene la rutina
+                                Clientes que utlizan la rutina
                             </Typography>
                             <TableContainer component={Paper}>
                                 <Table>
                                     <TableHead>
                                         <TableRow hover >
 
-                                            <TableCell align="center"># Cliente Rutina</TableCell>
-
+                                            <TableCell align="center">Nombres</TableCell>
                                             <TableCell align="center">Documento</TableCell>
+                                            <TableCell align="center">Telefono</TableCell>
+                                            <TableCell align="center">Email</TableCell>
 
-                                            <TableCell align="center">Nombre</TableCell>
-
-                                            <TableCell align="center">Rutina</TableCell>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {clienteRutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                            const { id_clienterutina, cliente, rutina } = row;
+                                            const { cliente } = row;
 
                                             return (
-                                                <TableRow hover key={id_clienterutina} >
+                                                <TableRow hover key={cliente.id_usuario} >
 
-                                                    <TableCell align="center">{id_clienterutina}</TableCell>
+                                                    <TableCell align="center">
+                                                        <Stack direction="row" alignItems="center" spacing={2}>
+                                                            <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                                                            <Typography variant="subtitle2" noWrap>
+                                                                {cliente.nombre + " " + cliente.apellido}
+                                                            </Typography>
+                                                        </Stack>
 
-                                                    <TableCell align="center">{cliente.documento}</TableCell>
+                                                    </TableCell>
 
-                                                    <TableCell align="center">{cliente.nombre}</TableCell>
+                                                    <TableCell align="center">{cliente.email}</TableCell>
 
-                                                    <TableCell align="center">{rutina.nombre_rutina}</TableCell>
+                                                    <TableCell align="center">{cliente.tipo_documento + " - " + cliente.documento}</TableCell>
+
+                                                    <TableCell align="center">{cliente.telefono}</TableCell>
+
                                                 </TableRow>
                                             );
                                         })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{ height: 53 * emptyRows }}>
-                                                <TableCell colSpan={4} />
+                                        {emptyRowsClienteRutinas > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsClienteRutinas }}>
+                                                <TableCell colSpan={3} />
                                             </TableRow>
                                         )}
                                     </TableBody>
@@ -224,44 +245,46 @@ function MostrarUsosRutinaModal(props) {
                         <Grid item columns={{ xs: 6, sm: 8, md: 12 }} >
 
                             <Typography variant="subtitle2" align="center" >
-                                rutinaEjercicios que tiene la rutina
+                                Ejercicios de la rutina
                             </Typography>
                             <TableContainer component={Paper}>
                                 <Table>
                                     <TableHead>
                                         <TableRow hover >
 
-                                            <TableCell align="center"># Rutina Ejercicio</TableCell>
-
-                                            <TableCell align="center">Ejercicio</TableCell>
-
+                                            <TableCell align="center"># Ejercicio</TableCell>
                                             <TableCell align="center">Musculo</TableCell>
+                                            <TableCell align="center">Ejercicio</TableCell>
+                                            <TableCell align="center">Series</TableCell>
+                                            <TableCell align="center">Repeticiones</TableCell>
+                                            <TableCell align="center">Abrir recurso</TableCell>
 
-                                            <TableCell align="center">Rutina</TableCell>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {rutinaEjercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                            const { id_rutina_ejercicio, rutina, ejercicio } = row;
+                                            const { ejercicio } = row;
 
                                             return (
-                                                <TableRow hover key={id_rutina_ejercicio} >
-
-                                                    <TableCell align="center">{id_rutina_ejercicio}</TableCell>
-
-                                                    <TableCell align="center">{ejercicio.descripcion}</TableCell>
-
+                                                <TableRow hover key={ejercicio.id_ejercicio} >
+                                                    <TableCell align="center">{ejercicio.id_ejercicio}</TableCell>
                                                     <TableCell align="center">{ejercicio.musculo.nombre}</TableCell>
-
-                                                    <TableCell align="center">{rutina.nombre_rutina}</TableCell>
+                                                    <TableCell align="center">{ejercicio.descripcion}</TableCell>
+                                                    <TableCell align="center">{ejercicio.series}</TableCell>
+                                                    <TableCell align="center">{ejercicio.repeticiones}</TableCell>
+                                                    <TableCell align="center">
+                                                        <IconButton size="large" color="inherit" onClick={() => handleAbrirRecurso(ejercicio.url_video)}>
+                                                            <OpenInNewRounded />
+                                                        </IconButton>
+                                                    </TableCell>
                                                 </TableRow>
                                             );
                                         })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{ height: 53 * emptyRows }}>
-                                                <TableCell colSpan={3} />
+                                        {emptyRowsRutinaEjercicios > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsRutinaEjercicios }}>
+                                                <TableCell colSpan={6} />
                                             </TableRow>
                                         )}
                                     </TableBody>
@@ -281,45 +304,51 @@ function MostrarUsosRutinaModal(props) {
                         :
                         <Grid item columns={{ xs: 6, sm: 8, md: 12 }} >
                             <Typography variant="subtitle2" align="center" >
-                                ClienteRutinas que tiene la rutina
+                                Clientes que utlizan la rutina
                             </Typography>
-
                             <TableContainer component={Paper}>
                                 <Table>
                                     <TableHead>
                                         <TableRow hover >
 
-                                            <TableCell align="center"># Cliente Rutina</TableCell>
-
+                                            <TableCell align="center">Nombres</TableCell>
                                             <TableCell align="center">Documento</TableCell>
+                                            <TableCell align="center">Telefono</TableCell>
+                                            <TableCell align="center">Email</TableCell>
 
-                                            <TableCell align="center">Nombre</TableCell>
-
-                                            <TableCell align="center">Rutina</TableCell>
                                         </TableRow>
                                     </TableHead>
 
                                     <TableBody>
                                         {clienteRutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                            const { id_clienterutina, cliente, rutina } = row;
+                                            const { cliente } = row;
 
                                             return (
-                                                <TableRow hover key={id_clienterutina} >
+                                                <TableRow hover key={cliente.id_usuario} >
 
-                                                    <TableCell align="center">{id_clienterutina}</TableCell>
+                                                    <TableCell align="center">
+                                                        <Stack direction="row" alignItems="center" spacing={2}>
+                                                            <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                                                            <Typography variant="subtitle2" noWrap>
+                                                                {cliente.nombre + " " + cliente.apellido}
+                                                            </Typography>
+                                                        </Stack>
 
-                                                    <TableCell align="center">{cliente.documento}</TableCell>
+                                                    </TableCell>
 
-                                                    <TableCell align="center">{cliente.nombre}</TableCell>
+                                                    <TableCell align="center">{cliente.email}</TableCell>
 
-                                                    <TableCell align="center">{rutina.nombre_rutina}</TableCell>
+                                                    <TableCell align="center">{cliente.tipo_documento + " - " + cliente.documento}</TableCell>
+
+                                                    <TableCell align="center">{cliente.telefono}</TableCell>
+
                                                 </TableRow>
                                             );
                                         })}
-                                        {emptyRows > 0 && (
-                                            <TableRow style={{ height: 53 * emptyRows }}>
-                                                <TableCell colSpan={4} />
+                                        {emptyRowsClienteRutinas > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsClienteRutinas }}>
+                                                <TableCell colSpan={3} />
                                             </TableRow>
                                         )}
                                     </TableBody>
@@ -346,7 +375,7 @@ function MostrarUsosRutinaModal(props) {
                     onClick={handleDelete}
                     loading={loading}
                     loadingPosition="start"
-                    startIcon={<CheckCircleRounded />}
+                    startIcon={<Delete />}
                     variant="contained"
                 >
                     Eliminar

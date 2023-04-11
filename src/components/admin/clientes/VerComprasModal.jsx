@@ -82,65 +82,63 @@ function VerComprasModal(props) {
 
                 <Container>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Factura</TableCell>
+                                    <TableCell align="center"># Factura</TableCell>
 
-                                        <TableCell align="center">Fecha de compra</TableCell>
+                                    <TableCell align="center">Fecha de compra</TableCell>
 
-                                        <TableCell align="center">Método de pago</TableCell>
+                                    <TableCell align="center">Método de pago</TableCell>
 
-                                        <TableCell align="center">Total de compra</TableCell>
+                                    <TableCell align="center">Total de compra</TableCell>
 
-                                        <TableCell align="center">Generar reporte</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Generar reporte</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {clienteCompras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {clienteCompras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_compra, fecha_compra, metodoPago, total } = row;
+                                    const { id_compra, fecha_compra, metodoPago, total } = row;
 
-                                        return (
-                                            <TableRow hover key={id_compra} >
+                                    return (
+                                        <TableRow hover key={id_compra} >
 
-                                                <TableCell align="center">{id_compra}</TableCell>
+                                            <TableCell align="center">{id_compra}</TableCell>
 
-                                                <TableCell align="center">{fecha_compra}</TableCell>
+                                            <TableCell align="center">{fecha_compra}</TableCell>
 
-                                                <TableCell align="center">{metodoPago.descripcion}</TableCell>
+                                            <TableCell align="center">{metodoPago.descripcion}</TableCell>
 
-                                                <TableCell align="center">{total}</TableCell>
+                                            <TableCell align="center">{total}</TableCell>
 
-                                                <TableCell align="center">
-                                                    <LoadingButton
-                                                        size="large"
-                                                        color="inherit"
-                                                        onClick={() => handleVerFactura(id_compra)}
-                                                        loading={loadingPdf}
-                                                        variant="text"
-                                                    >
-                                                        <Receipt />
-                                                    </LoadingButton>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={5} />
+                                            <TableCell align="center">
+                                                <LoadingButton
+                                                    size="large"
+                                                    color="inherit"
+                                                    onClick={() => handleVerFactura(id_compra)}
+                                                    loading={loadingPdf}
+                                                    variant="text"
+                                                >
+                                                    <Receipt />
+                                                </LoadingButton>
+                                            </TableCell>
                                         </TableRow>
-                                    )}
-                                </TableBody>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={5} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
 
 
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                        </Table>
+                    </TableContainer>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

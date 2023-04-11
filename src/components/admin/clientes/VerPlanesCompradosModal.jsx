@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { CheckCircleRounded, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
+import { procesarPeticionPdf } from '../../../utils/HandleApi';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +31,7 @@ function VerPlanesCompradosModal(props) {
 
     const { clienteDetalles, showModalPlanesCliente, setShowModalPlanesCliente } = props;
     const [loading, setLoading] = useState(false);
+    const [loadingPdf, setLoadingPdf] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -41,8 +42,23 @@ function VerPlanesCompradosModal(props) {
         setShowModalPlanesCliente(false);
     };
 
-    const handleVerFactura = (id_factura) => {
-        console.log("GENERANDO LA FACTURA DEL PLAN SELECCIONADO",id_factura)
+    const handleVerFactura = async (id_factura) => {
+
+        setLoadingPdf(true);
+        try {
+            const response = await procesarPeticionPdf(`clientedetalle/pdf/${id_factura}`)
+            console.log(response)
+
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            window.open(url);
+
+            setLoadingPdf(false);
+
+        } catch (error) {
+            console.log(error);
+            setLoadingPdf(false);
+        }
     }
 
     const handleChangePage = (event, newPage) => {
@@ -64,63 +80,67 @@ function VerPlanesCompradosModal(props) {
 
                 <Container>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Factura</TableCell>
+                                    <TableCell align="center"># Factura</TableCell>
 
-                                        <TableCell align="center">Plan</TableCell>
+                                    <TableCell align="center">Plan</TableCell>
 
-                                        <TableCell align="center">Fecha de inicio</TableCell>
+                                    <TableCell align="center">Fecha de inicio</TableCell>
 
-                                        <TableCell align="center">Fecha de fin</TableCell>
+                                    <TableCell align="center">Fecha de fin</TableCell>
 
-                                        <TableCell align="center">Método de pago</TableCell>
+                                    <TableCell align="center">Método de pago</TableCell>
 
-                                        <TableCell align="center">Generar reporte</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Generar reporte</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {clienteDetalles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {clienteDetalles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_factura, plan, fecha_inicio, fecha_fin, metodoPago } = row;
+                                    const { id_factura, plan, fecha_inicio, fecha_fin, metodoPago } = row;
 
-                                        return (
-                                            <TableRow hover key={id_factura} >
+                                    return (
+                                        <TableRow hover key={id_factura} >
 
-                                                <TableCell align="center">{id_factura}</TableCell>
+                                            <TableCell align="center">{id_factura}</TableCell>
 
-                                                <TableCell align="center">{plan.plan}</TableCell>
+                                            <TableCell align="center">{plan.plan}</TableCell>
 
-                                                <TableCell align="center">{fecha_inicio}</TableCell>
+                                            <TableCell align="center">{fecha_inicio}</TableCell>
 
-                                                <TableCell align="center">{fecha_fin}</TableCell>
+                                            <TableCell align="center">{fecha_fin}</TableCell>
 
-                                                <TableCell align="center">{metodoPago.descripcion}</TableCell>
+                                            <TableCell align="center">{metodoPago.descripcion}</TableCell>
 
-                                                <TableCell align="center">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleVerFactura(id_factura)}>
-                                                        <Receipt />
-                                                    </IconButton>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={6} />
+                                            <TableCell align="center">
+                                                <LoadingButton
+                                                    size="large"
+                                                    color="inherit"
+                                                    onClick={() => handleVerFactura(id_factura)}
+                                                    loading={loadingPdf}
+                                                    variant="text"
+                                                >
+                                                    <Receipt />
+                                                </LoadingButton>
+                                            </TableCell>
                                         </TableRow>
-                                    )}
-                                </TableBody>
+                                    );
+                                })}
 
-                                
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
@@ -132,8 +152,6 @@ function VerPlanesCompradosModal(props) {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Container>
-
-
 
             </DialogContent>
             <DialogActions>

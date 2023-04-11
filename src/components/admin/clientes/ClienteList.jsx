@@ -24,7 +24,6 @@ import {
 } from '@mui/material';
 // components
 import Label from '../../../components/admin/dashboard/label';
-import Scrollbar from '../../../components/admin/dashboard/scrollbar';
 
 import TableHead from '../../../components/admin/dashboard/TableHead';
 import TableBuscar from '../../../components/admin/dashboard/TableBuscar';
@@ -79,6 +78,10 @@ function applySortFilter(array, comparator, query) {
 }
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
+
+
+
 
 function ClienteList() {
     const [clientes, setClientes] = useState([]);
@@ -181,7 +184,6 @@ function ClienteList() {
                     <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
                 </Stack>
                     
-                    <Scrollbar>
                         <TableContainer sx={{ minWidth: 800 }}>
                             <Table>
                                 <TableHead
@@ -254,7 +256,6 @@ function ClienteList() {
                                 )}
                             </Table>
                         </TableContainer>
-                    </Scrollbar>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

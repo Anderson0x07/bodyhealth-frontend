@@ -18,14 +18,10 @@ import {
     Alert,
     AlertTitle,
 } from '@mui/material';
-// components
-
-import Scrollbar from '../dashboard/scrollbar';
 
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
-//icons
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 import { Delete, Edit } from "@mui/icons-material";
@@ -252,7 +248,6 @@ function MetodoPagoList() {
                         <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
                     </Stack>
 
-                    <Scrollbar>
                         <TableContainer sx={{ minWidth: 500 }}>
                             <Table>
                                 <TableHead
@@ -321,7 +316,6 @@ function MetodoPagoList() {
                                 )}
                             </Table>
                         </TableContainer>
-                    </Scrollbar>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

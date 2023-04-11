@@ -2,7 +2,7 @@ import { Container } from '@mui/material'
 import React from 'react'
 import MetodoPagoList from '../../../components/admin/metodospago/MetodoPagoList'
 
-function MetodoPago() {
+function MetodosPago() {
   return (
     <Container>
       <MetodoPagoList />
@@ -10,5 +10,5 @@ function MetodoPago() {
   )
 }
 
-export default MetodoPago
+export default MetodosPago
 

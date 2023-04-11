@@ -6,10 +6,11 @@ const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
 
-export const procesarPeticionGet = async (endpoint) => {
+export const procesarPeticionGet = (endpoint) => {
   const url = `${API_BASE_URL}/${endpoint}`;
 
-  const response = await axios.get(url, config)
+  const response = axios.get(url, config);
+
   return response;
 };
 
@@ -51,3 +52,43 @@ export const procesarPeticionPdf = async (endpoint) => {
   });
   return response;
 };
+
+export const procesarPeticionLogin = (endpoint) => {
+  const url = `${API_BASE_URL}/${endpoint}`;
+
+  const promise = axios.get(url, config);
+
+  return getSuspender(promise);
+};
+
+function getSuspender(promise) {
+  let status = 'pending';
+  let response;
+
+  const suspender = promise.then(
+    (res) => {
+      status = "success";
+      response = res;
+    },
+    (err) => {
+      status = "error";
+      response = err;
+    }
+  );
+
+
+  const read = () => {
+    switch (status) {
+      case "pending":
+        throw suspender;
+      case "error":
+        throw response;
+      default:
+        return response;
+    }
+  }
+
+  return { read };
+
+}
+

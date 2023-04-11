@@ -7,7 +7,6 @@ import {
     DialogContent,
     DialogTitle,
     Grid,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -19,9 +18,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded, Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import Swal from 'sweetalert2';
 import { procesarPeticionDelete } from '../../../utils/HandleApi';
 import { useNavigate } from 'react-router-dom';
@@ -76,8 +74,14 @@ function MostrarUsosProveedorModal(props) {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
-            Swal.fire('Atención', error.response.data.error, 'error');
+            Swal.fire({
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error',
+                customClass: {
+                    container: 'my-swal'
+                }
+            });
         }
     };
 
@@ -111,45 +115,44 @@ function MostrarUsosProveedorModal(props) {
                                 Productos que tiene el Proveedor
                             </Typography>
 
-                            <Scrollbar>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow hover >
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow hover >
 
-                                                <TableCell align="center">Id Producto</TableCell>
+                                            <TableCell align="center">Id Producto</TableCell>
 
-                                                <TableCell align="center">Nombre</TableCell>
+                                            <TableCell align="center">Nombre</TableCell>
 
-                                                <TableCell align="center">Precio</TableCell>
-                                            </TableRow>
-                                        </TableHead>
+                                            <TableCell align="center">Precio</TableCell>
+                                        </TableRow>
+                                    </TableHead>
 
-                                        <TableBody>
-                                            {productos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    <TableBody>
+                                        {productos.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                                const { id_producto, nombre, precio } = row;
+                                            const { id_producto, nombre, precio } = row;
 
-                                                return (
-                                                    <TableRow hover key={id_producto} >
+                                            return (
+                                                <TableRow hover key={id_producto} >
 
-                                                        <TableCell align="center">{id_producto}</TableCell>
+                                                    <TableCell align="center">{id_producto}</TableCell>
 
-                                                        <TableCell align="center">{nombre}</TableCell>
+                                                    <TableCell align="center">{nombre}</TableCell>
 
-                                                        <TableCell align="center">{precio}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                            {emptyRows > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRows }}>
-                                                    <TableCell colSpan={3} />
+                                                    <TableCell align="center">{precio}</TableCell>
                                                 </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Scrollbar>
+                                            );
+                                        })}
+                                        {emptyRows > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRows }}>
+                                                <TableCell colSpan={3} />
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
@@ -166,41 +169,39 @@ function MostrarUsosProveedorModal(props) {
                                 Máquinas que tiene el Proveedor
                             </Typography>
 
-                            <Scrollbar>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow hover >
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow hover >
 
-                                                <TableCell align="center">Id Máquina</TableCell>
+                                            <TableCell align="center">Id Máquina</TableCell>
 
-                                                <TableCell align="center">Nombre</TableCell>
-                                            </TableRow>
-                                        </TableHead>
+                                            <TableCell align="center">Nombre</TableCell>
+                                        </TableRow>
+                                    </TableHead>
 
-                                        <TableBody>
-                                            {maquinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    <TableBody>
+                                        {maquinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                                const { id_maquina, nombre } = row;
+                                            const { id_maquina, nombre } = row;
 
-                                                return (
-                                                    <TableRow hover key={id_maquina} >
+                                            return (
+                                                <TableRow hover key={id_maquina} >
 
-                                                        <TableCell align="center">{id_maquina}</TableCell>
+                                                    <TableCell align="center">{id_maquina}</TableCell>
 
-                                                        <TableCell align="center">{nombre}</TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                            {emptyRowsMaquinas > 0 && (
-                                                <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
-                                                    <TableCell colSpan={2} />
+                                                    <TableCell align="center">{nombre}</TableCell>
                                                 </TableRow>
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Scrollbar>
+                                            );
+                                        })}
+                                        {emptyRowsMaquinas > 0 && (
+                                            <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
+                                                <TableCell colSpan={2} />
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25]}
                                 component="div"
@@ -334,7 +335,7 @@ function MostrarUsosProveedorModal(props) {
                     onClick={handleDelete}
                     loading={loading}
                     loadingPosition="start"
-                    startIcon={<CheckCircleRounded />}
+                    startIcon={<Delete />}
                     variant="contained"
                 >
                     Eliminar

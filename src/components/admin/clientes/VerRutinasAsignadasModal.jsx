@@ -18,9 +18,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, OpenInNewRounded, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded, OpenInNewRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import { procesarPeticionGet } from '../../../utils/HandleApi';
 
 // ----------------------------------------------------------------------
@@ -33,33 +32,42 @@ function VerRutinasAsignadasModal(props) {
 
     const { clienteRutinas, showModalRutinasCliente, setShowModalRutinasCliente } = props;
 
-    const [rutina, setRutina] = useState(null);
-    const [rutinaEjercicios, setRutinaEjercicios] = useState([]);
 
-    const [loading, setLoading] = useState(false);
+    const [rutinasCompletas, setRutinasCompletas] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const [page, setPage] = useState(0);
 
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
+
         const getRutina = async () => {
+
             try {
-                const response = await procesarPeticionGet('rutina/' + clienteRutinas[clienteRutinas.length - 1].rutina.id_rutina);
-                console.log(response);
-                setRutina(response.data.rutina);
-                setRutinaEjercicios(response.data.rutina.rutinaEjercicios)
+                for (let i = 0; i < clienteRutinas.length; i++) {
+
+                    const response = await procesarPeticionGet('rutina/ejercicios/' + clienteRutinas[i].rutina.id_rutina);
+
+                    rutinasCompletas[i] = (response.data.rutina);
+                }
+
+                setIsLoading(false);
 
             } catch (error) {
                 console.log(error)
             }
+
         }
 
         getRutina();
-    }, [])
+
+    }, []);
 
 
     const handleCancelarAndOk = () => {
+
         setShowModalRutinasCliente(false);
     };
 
@@ -76,57 +84,42 @@ function VerRutinasAsignadasModal(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
     };
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rutinaEjercicios.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rutinasCompletas.length - page * rowsPerPage);
 
-    return (
-        <Dialog open={showModalRutinasCliente} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
-            <DialogTitle>Rutinas Asignadas {rutina != null ? rutina.nombre_rutina : console.log("Cargando rutina")}</DialogTitle>
-            <DialogContent>
+    function LlenarTabla({ rutina }) {
 
-                <Container>
+        return (
+            <>
+                {rutina != undefined
+                    ?
 
-                    <Typography variant="subtitle2" align="center" >
-                        {rutina != null ? rutina.descripcion : console.log("Cargando descripcion")}
-                    </Typography>
+                    <Container>
 
-                    <Scrollbar>
+                        <Typography variant="subtitle2" align="center" >
+                            {rutina}
+                        </Typography>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>
                                     <TableRow hover >
-
                                         <TableCell align="center"># Ejercicio</TableCell>
-
                                         <TableCell align="center">Musculo</TableCell>
-
                                         <TableCell align="center">Ejercicio</TableCell>
-
                                         <TableCell align="center">Series</TableCell>
-
                                         <TableCell align="center">Repeticiones</TableCell>
-
                                         <TableCell align="center">Abrir recurso</TableCell>
                                     </TableRow>
                                 </TableHead>
-
                                 <TableBody>
-                                    {rutinaEjercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-
+                                    {rutina.rutinaEjercicios.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                         const { ejercicio } = row;
-
                                         return (
                                             <TableRow hover key={ejercicio.id_ejercicio} >
-
                                                 <TableCell align="center">{ejercicio.id_ejercicio}</TableCell>
-
-                                                <TableCell align="center">{ejercicio.musculo.descripcion}</TableCell>
-
+                                                <TableCell align="center">{ejercicio.musculo.nombre}</TableCell>
                                                 <TableCell align="center">{ejercicio.descripcion}</TableCell>
-
                                                 <TableCell align="center">{ejercicio.series}</TableCell>
-
                                                 <TableCell align="center">{ejercicio.repeticiones}</TableCell>
-
                                                 <TableCell align="center">
                                                     <IconButton size="large" color="inherit" onClick={() => handleAbrirRecurso(ejercicio.url_video)}>
                                                         <OpenInNewRounded />
@@ -142,39 +135,77 @@ function VerRutinasAsignadasModal(props) {
                                     )}
                                 </TableBody>
 
-
                             </Table>
                         </TableContainer>
-                    </Scrollbar>
 
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={clienteRutinas.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                </Container>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={clienteRutinas.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+
+                    </Container>
+
+                    : false
+                }
+            </>
+        );
+    }
 
 
 
-            </DialogContent>
-            <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
-                <LoadingButton
-                    color="secondary"
-                    onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<CheckCircleRounded />}
-                    variant="contained"
-                >
-                    ¡Vale!
-                </LoadingButton>
-            </DialogActions>
-        </Dialog>
+    return (
+
+
+        <div>
+            {isLoading ? console.log("Cargando info del componente")
+
+                : <Dialog open={showModalRutinasCliente} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
+                    <DialogTitle>Rutinas Asignadas</DialogTitle>
+                    <DialogContent>
+
+
+
+                        {rutinasCompletas.length > 0
+                            ? rutinasCompletas.forEach(rutina => {
+
+                                if (rutina != null) {
+                                    let { descripcion, id_rutina, nombre_rutina, rutinaEjercicios } = rutina;
+
+                                    return (
+                                        <LlenarTabla rutina={descripcion} />
+
+                                    )
+                                }
+                                console.log("cargada");
+
+
+                            }) : false
+                        }
+
+
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+                        <LoadingButton
+                            color="secondary"
+                            onClick={handleCancelarAndOk}
+                            startIcon={<CheckCircleRounded />}
+                            variant="contained"
+                        >
+                            ¡Vale!
+                        </LoadingButton>
+                    </DialogActions>
+                </Dialog>
+            }
+        </div>
+
+
+
     )
 }
 

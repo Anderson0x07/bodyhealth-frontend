@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState,useEffect } from 'react';
-import { procesarPeticionPut,procesarPeticionGet } from '../../../utils/HandleApi';
+import { useState, useEffect } from 'react';
+import { procesarPeticionPut, procesarPeticionGet } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Button,
@@ -16,7 +16,7 @@ import { Save } from '@mui/icons-material';
 
 
 function EditarMaquinaModal(props) {
- const { showEditModal, setShowEditModal, maquina, onUpdate } = props;
+    const { showEditModal, setShowEditModal, maquina, onUpdate } = props;
 
     const [data, setData] = useState(maquina);
     const [loading, setLoading] = useState(false);
@@ -24,21 +24,21 @@ function EditarMaquinaModal(props) {
     const [proveedores, setProveedores] = useState(null)
 
     const getProveedores = async () => {
-      try {
-          const respuesta = await procesarPeticionGet(`proveedor/all`);
-          console.log(respuesta)
-          setProveedores(respuesta.data.proveedores)
-          
+        try {
+            const respuesta = await procesarPeticionGet(`proveedor/all`);
+            console.log(respuesta)
+            setProveedores(respuesta.data.proveedores)
 
-      } catch (error) {
-          console.log(error);
-      }
-  }
-  useEffect(() => {
-     
-      getProveedores();
 
-  }, [])
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+
+        getProveedores();
+
+    }, [])
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -49,58 +49,57 @@ function EditarMaquinaModal(props) {
     };
 
     const handleSubmit = async (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      data.proveedor = {
-          id_proveedor: proveedorSeleccionado
-      }
+        data.proveedor = {
+            id_proveedor: proveedorSeleccionado
+        }
 
-      setLoading(true);
-      console.log(data)
-      try {
-          const respuesta = await procesarPeticionPut(`maquina/editar/${maquina.id}`, data);
-          setLoading(false);
-          console.log(respuesta);
-          Swal.fire({
-            customClass: {
-                container: 'my-swal'
-            },
-            title: 'Información',
-            text: respuesta.data.message,
-            icon: 'success'
-        })
-        
-          setShowEditModal(false);
-          onUpdate(respuesta.data.maquina);
-      } catch (error) {
-          setLoading(false);
-          console.log(error);
+        setLoading(true);
+        console.log(data)
+        try {
+            const respuesta = await procesarPeticionPut(`maquina/editar/${maquina.id}`, data);
+            setLoading(false);
 
-          Swal.fire({
-              customClass: {
-                  container: 'my-swal'
-              },
-              title: 'Atención',
-              text: error.response.data.error,
-              icon: 'error'
-          })
-      }
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Información',
+                text: respuesta.data.message,
+                icon: 'success'
+            })
 
-        
+            setShowEditModal(false);
+            onUpdate(respuesta.data.maquina);
+        } catch (error) {
+            setLoading(false);
+
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error'
+            })
+        }
+
+
     };
-    
+
     const handleProveedor = (event) => {
-      setProveedorSeleccionado(event.target.value);
-  }
+        setProveedorSeleccionado(event.target.value);
+    }
     return (
-         <Dialog open={showEditModal} onClose={handleCancelar} >
+        <Dialog open={showEditModal} onClose={handleCancelar} >
             <DialogTitle>Editar Maquina</DialogTitle>
             <DialogContent>
 
-            <TextField margin="normal" type="text" name="id_maquina" label="Serial"
+                <TextField margin="normal" type="text" name="id_maquina" label="Serial"
                     onChange={handleChange} defaultValue={maquina.id_maquina} fullWidth variant="outlined" />
-                    
-            <TextField margin="normal" type="text" name="nombre" label="Nombre"
+
+                <TextField margin="normal" type="text" name="nombre" label="Nombre"
                     onChange={handleChange} defaultValue={maquina.nombre} fullWidth variant="outlined" />
 
                 <TextField margin="normal" type="text" name="estado" label="Estado"

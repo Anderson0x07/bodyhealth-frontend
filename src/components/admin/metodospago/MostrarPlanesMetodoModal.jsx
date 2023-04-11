@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import Swal from 'sweetalert2';
 
 // ----------------------------------------------------------------------
@@ -80,54 +79,52 @@ function MostrarPlanesMetodoModal(props) {
                         Planes que se compraron utilizado el método de pago
                     </Typography>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Factura</TableCell>
+                                    <TableCell align="center"># Factura</TableCell>
 
-                                        <TableCell align="center">Cliente</TableCell>
+                                    <TableCell align="center">Cliente</TableCell>
 
-                                        <TableCell align="center">Plan</TableCell>
+                                    <TableCell align="center">Plan</TableCell>
 
-                                        <TableCell align="center">Fecha de Inicio</TableCell>
+                                    <TableCell align="center">Fecha de Inicio</TableCell>
 
-                                        <TableCell align="center">Fecha de Fin</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Fecha de Fin</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {planes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {planes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_factura, cliente, plan, fecha_inicio, fecha_fin } = row;
+                                    const { id_factura, cliente, plan, fecha_inicio, fecha_fin } = row;
 
-                                        return (
-                                            <TableRow hover key={id_factura} >
+                                    return (
+                                        <TableRow hover key={id_factura} >
 
-                                                <TableCell align="center">{id_factura}</TableCell>
+                                            <TableCell align="center">{id_factura}</TableCell>
 
-                                                <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
+                                            <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
 
-                                                <TableCell align="center">{plan.plan}</TableCell>
+                                            <TableCell align="center">{plan.plan}</TableCell>
 
-                                                <TableCell align="center">{fecha_inicio}</TableCell>
+                                            <TableCell align="center">{fecha_inicio}</TableCell>
 
-                                                <TableCell align="center">{fecha_fin}</TableCell>
+                                            <TableCell align="center">{fecha_fin}</TableCell>
 
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRowsPlanes > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRowsPlanes }}>
-                                            <TableCell colSpan={5} />
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                    );
+                                })}
+                                {emptyRowsPlanes > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRowsPlanes }}>
+                                        <TableCell colSpan={5} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"

@@ -95,7 +95,7 @@ function ProveedorList() {
     }
 
     const handleExpandProveedor = (id_proveedor) => {
-        navigate(`/admin/dashboard/proveedor/${id_proveedor}`);
+        navigate(`/admin/dashboard/proveedores/${id_proveedor}`);
     };
 
     const handleRequestSort = (event, property) => {
@@ -173,81 +173,76 @@ function ProveedorList() {
                         <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
                     </Stack>
 
-                    <Scrollbar>
-                        <TableContainer sx={{ minWidth: 500 }}>
-                            <Table>
-                                <TableHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    onRequestSort={handleRequestSort}
-                                />
-                                <TableBody>
-                                    {filteredproveedores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    <TableContainer sx={{ minWidth: 500 }}>
+                        <Table>
+                            <TableHead
+                                order={order}
+                                orderBy={orderBy}
+                                headLabel={TABLE_HEAD}
+                                onRequestSort={handleRequestSort}
+                            />
+                            <TableBody>
+                                {filteredproveedores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_proveedor, nombre_empresa, direccion, telefono } = row;
+                                    const { id_proveedor, nombre_empresa, direccion, telefono } = row;
 
-                                        return (
+                                    return (
 
-                                            <TableRow hover key={id_proveedor} >
-                                                <TableCell align="left">
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {nombre_empresa}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {direccion}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {telefono}
-                                                    </Typography>
-                                                </TableCell>
-
-                                                <TableCell align="right">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_proveedor)}>
-                                                        <ReadMoreIcon />
-                                                    </IconButton>
-                                                </TableCell>
-
-
-                                            </TableRow>
-
-
-                                        );
-
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={4} />
-                                        </TableRow>
-                                    )}
-
-                                </TableBody>
-                                {isNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
-                                                <Paper sx={{ textAlign: 'center' }}>
-                                                    <Typography variant="h6" paragraph>
-                                                        No Encontrado
-                                                    </Typography>
-
-                                                    <Typography variant="body2">
-                                                        No hay resultados para &nbsp;
-                                                        <strong>&quot;{filterName}&quot;</strong>.
-                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                    </Typography>
-                                                </Paper>
+                                        <TableRow hover key={id_proveedor} >
+                                            <TableCell align="left">
+                                                <Typography variant="subtitle2" noWrap>
+                                                    {nombre_empresa}
+                                                </Typography>
                                             </TableCell>
+                                            <TableCell>
+                                                <Typography variant="subtitle2" noWrap>
+                                                    {direccion}
+                                                </Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography variant="subtitle2" noWrap>
+                                                    {telefono}
+                                                </Typography>
+                                            </TableCell>
+
+                                            <TableCell align="right">
+                                                <IconButton size="large" color="inherit" onClick={() => handleExpandProveedor(id_proveedor)}>
+                                                    <ReadMoreIcon />
+                                                </IconButton>
+                                            </TableCell>
+
                                         </TableRow>
-                                    </TableBody>
+                                    );
+                                })}
+
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={4} />
+                                    </TableRow>
                                 )}
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+
+                            </TableBody>
+                            {isNotFound && (
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
+                                            <Paper sx={{ textAlign: 'center' }}>
+                                                <Typography variant="h6" paragraph>
+                                                    No Encontrado
+                                                </Typography>
+
+                                                <Typography variant="body2">
+                                                    No hay resultados para &nbsp;
+                                                    <strong>&quot;{filterName}&quot;</strong>.
+                                                    <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                                </Typography>
+                                            </Paper>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            )}
+                        </Table>
+                    </TableContainer>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
@@ -262,7 +257,7 @@ function ProveedorList() {
 
                 </Container>
 
-                
+
 
             </>
         </div>

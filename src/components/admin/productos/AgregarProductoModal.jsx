@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2'
-import { 
-    Avatar, 
-    Button, 
-    Dialog, 
-    DialogActions, 
-    DialogContent, 
-    DialogTitle, 
-    FormControl, 
-    Grid, 
-    IconButton, 
-    InputAdornment, 
-    InputLabel, 
-    MenuItem, 
-    OutlinedInput, 
-    TextField } from '@mui/material';
-import { PhotoCamera, Visibility, VisibilityOff, Save } from '@mui/icons-material';
+import {
+    Avatar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    OutlinedInput,
+    TextField
+} from '@mui/material';
+import { PhotoCamera, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
 
@@ -27,7 +24,6 @@ function AgregarProductoModal(props) {
     const [fileName, setFileName] = useState(null);
     const [image, setImage] = useState('');
     const [previsualizar, setPrevisualizar] = useState('');
-    const [error, setError] = useState(null)
 
     const [loading, setLoading] = useState(false);
 
@@ -49,12 +45,6 @@ function AgregarProductoModal(props) {
     }
 
 
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
     const handleImageUpload = (event) => {
         const reader = new FileReader();
         const file = event.target.files[0];
@@ -74,21 +64,18 @@ function AgregarProductoModal(props) {
 
     const handleProveedor = (event) => {
         setProveedor(event.target.value);
-        
     }
-    
 
     const handleCancelar = () => {
         setShowModal(false);
     };
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         console.log(data);
 
-        if(proveedor === 'Seleccionar') {
+        if (proveedor === 'Seleccionar') {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -99,28 +86,35 @@ function AgregarProductoModal(props) {
             })
         } else {
             setLoading(true);
-            if(data.stock > 0){
+            if (data.stock > 0) {
                 data.estado = true;
-            }else{
+            } else {
                 data.estado = false;
             }
-            
+
             data.proveedor = {
                 id_proveedor: proveedor
             }
 
-            if(image != ""){
+            if (image != "") {
                 data.foto = image + " " + fileName;
             } else {
-                data.foto="";
+                data.foto = "";
             }
-            
+
 
             try {
                 const respuesta = await procesarPeticionPost(`producto/guardar`, data);
                 setLoading(false);
-                console.log(respuesta);
-                Swal.fire('Información', respuesta.data.message, 'success')
+
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Información',
+                    text: respuesta.data.message,
+                    icon: 'success'
+                })
 
                 setShowModal(false);
 
@@ -140,9 +134,8 @@ function AgregarProductoModal(props) {
                     text: error.response.data.error,
                     icon: 'error'
                 })
-            }   
+            }
         }
-
     }
 
     return (
@@ -161,7 +154,6 @@ function AgregarProductoModal(props) {
 
                 </TextField>
 
-
                 <TextField margin="normal" type="text" name="nombre" label="Nombre"
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su nombre" />
 
@@ -170,8 +162,6 @@ function AgregarProductoModal(props) {
 
                 <TextField margin="normal" type="number" name="precio" label="Precio"
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su número de telefono" />
-
-
 
                 <Button variant="outlined" component="label" size="large" >
                     Subir foto de producto

@@ -197,12 +197,9 @@ function MaquinaList() {
                   return (
                     <TableRow hover key={id} >
                       <TableCell align="left">
-                       
-
-                          <Typography variant="subtitle2" noWrap>
-                            {nombre}
-                          </Typography>
-                        
+                        <Typography variant="subtitle2" noWrap>
+                          {nombre}
+                        </Typography>
                       </TableCell>
 
                       <TableCell align="left">{id_maquina}</TableCell>
@@ -223,31 +220,35 @@ function MaquinaList() {
                     </TableRow>
                   );
                 })}
+
                 {emptyRows > 0 && (
                   <TableRow style={{ height: 53 * emptyRows }}>
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper sx={{ textAlign: 'center' }}>
-                          <Typography variant="h6" paragraph>
-                            No Encontrado
-                          </Typography>
 
-                          <Typography variant="body2">
-                            No hay resultados para &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Intente verificar errores tipográficos o usar palabras completas.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                )}
               </TableBody>
+
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper sx={{ textAlign: 'center' }}>
+                        <Typography variant="h6" paragraph>
+                          No Encontrado
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No hay resultados para &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Intente verificar errores tipográficos o usar palabras completas.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+
             </Table>
           </TableContainer>
         </Scrollbar>

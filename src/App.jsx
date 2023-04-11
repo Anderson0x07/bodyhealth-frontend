@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 // routes
-import RoutesAdmin from './routers/RoutesAdmin';
+import RutasRoles from './routers/RutasRoles';
 // theme
 import ThemeProvider from './theme';
 // components
@@ -9,17 +9,14 @@ import ScrollToTop from './components/admin/dashboard/scroll-to-top';
 import './App.css'
 
 
-function App() { //Pinta solo el index de la pagina.
+function App() {
   return (
-    //ADMIN
-    <div>
-      <BrowserRouter>
-        <ThemeProvider>
-          <ScrollToTop />
-          <RoutesAdmin />
-        </ThemeProvider>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <ThemeProvider>
+        <ScrollToTop />
+        <RutasRoles />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

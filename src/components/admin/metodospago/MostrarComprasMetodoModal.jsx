@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import Swal from 'sweetalert2';
 
 // ----------------------------------------------------------------------
@@ -79,45 +78,43 @@ function MostrarComprasMetodoModal(props) {
                         Compras donde se usó el método de pago
                     </Typography>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Compra</TableCell>
+                                    <TableCell align="center"># Compra</TableCell>
 
-                                        <TableCell align="center">Fecha de Compra</TableCell>
+                                    <TableCell align="center">Fecha de Compra</TableCell>
 
-                                        <TableCell align="center">Cliente</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Cliente</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {compras.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_compra, fecha_compra, cliente } = row;
+                                    const { id_compra, fecha_compra, cliente } = row;
 
-                                        return (
-                                            <TableRow hover key={id_compra} >
+                                    return (
+                                        <TableRow hover key={id_compra} >
 
-                                                <TableCell align="center">{id_compra}</TableCell>
+                                            <TableCell align="center">{id_compra}</TableCell>
 
-                                                <TableCell align="center">{fecha_compra}</TableCell>
+                                            <TableCell align="center">{fecha_compra}</TableCell>
 
-                                                <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRowsCompras > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRowsCompras }}>
-                                            <TableCell colSpan={3} />
+                                            <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                    );
+                                })}
+                                {emptyRowsCompras > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRowsCompras }}>
+                                        <TableCell colSpan={3} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"

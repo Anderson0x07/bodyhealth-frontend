@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
-import { procesarPeticionPost } from '../../utils/HandleApi';
+import { procesarPeticionPost } from '../utils/HandleApi';
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button, TextField, InputAdornment, IconButton, Checkbox, Alert, AlertTitle } from '@mui/material';
+import { Link, Container, Typography, Divider, Stack, Button, TextField, InputAdornment, IconButton, Alert, AlertTitle } from '@mui/material';
 
 
 import { Facebook, Google, Login, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
-import useResponsive from '../../utils/useResponsive'
+import useResponsive from '../utils/useResponsive'
 
-import img from '../../assets/image-login.png'
+import img from '../assets/image-login.png'
 import { LoadingButton } from '@mui/lab';
 
 // ----------------------------------------------------------------------
@@ -52,6 +52,7 @@ function LoginPage() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -69,6 +70,7 @@ function LoginPage() {
 
     const handleLogin = async (event) => {
         event.preventDefault();
+
         setLoading(true)
 
         try {
@@ -80,18 +82,34 @@ function LoginPage() {
             console.log(response);
 
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('email', response.data.username);
+            localStorage.setItem('rol', response.data.rol);
+            localStorage.setItem('isAuthenticated', true);
 
-            setLoading(false)
+            setLoading(false);
 
-            navigate('/admin/dashboard/home', { replace: true });
+            
+
+            if(response.data.rol === "ROLE_ADMIN") {
+                navigate('/admin/dashboard/home', { replace: true });
+                window.location.reload();
+            } 
+            if (response.data.rol === "ROLE_TRAINER") {
+                navigate('/entrenador/dashboard/home', { replace: true });
+                window.location.reload();
+            }
+            if (response.data.rol === "ROLE_CLIENTE") {
+                navigate('/cliente/dashboard/home', { replace: true });
+                window.location.reload();
+            }
+            
+
 
         } catch (error) {
             setError(error.response.data.message)
             setLoading(false)
         }
-
     };
-
 
     return (
         <>

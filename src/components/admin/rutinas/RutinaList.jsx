@@ -20,12 +20,9 @@ import {
     AlertTitle,
 } from '@mui/material';
 
-import Scrollbar from '../dashboard/scrollbar';
-
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
-//icons
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
@@ -39,6 +36,7 @@ const TABLE_HEAD = [
     { id: 'duracion', label: 'Duración', alignRight: false },
     { id: '' },
 ];
+
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
         return -1;
@@ -84,7 +82,7 @@ function RutinaList() {
 
     const [order, setOrder] = useState('asc');
 
-    const [orderBy, setOrderBy] = useState('nombre');
+    const [orderBy, setOrderBy] = useState('nombre_rutina');
 
     const [filterName, setFilterName] = useState('');
 
@@ -97,7 +95,7 @@ function RutinaList() {
     }
 
     const handleExpandRutina = (id_rutina) => {
-        navigate(`/admin/dashboard/rutina/${id_rutina}`);
+        navigate(`/admin/dashboard/rutinas/${id_rutina}`);
     };
 
     const handleRequestSort = (event, property) => {
@@ -143,129 +141,124 @@ function RutinaList() {
     };
 
     return (
-        <div>
-            <>
-                <Container>
+        <>
+            <Container>
 
-                    {status !== 200 && (
-                        <Alert sx={{ marginBottom: '50px' }} variant="outlined" severity="error">
-                            <AlertTitle>Error</AlertTitle>
-                            {error}
-                        </Alert>
+                {status !== 200 && (
+                    <Alert sx={{ marginBottom: '50px' }} variant="outlined" severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        {error}
+                    </Alert>
+                )}
+
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        Rutinas
+                    </Typography>
+                    <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
+                        Nuevo
+                    </Button>
+
+                    {showModal && (
+                        <AgregarRutinaModal
+                            showModal={showModal}
+                            setShowModal={setShowModal}
+                            agregarRutinas={agregarRutinas}
+                        />
                     )}
+                </Stack>
 
-                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                        <Typography variant="h4" gutterBottom>
-                            rutinas
-                        </Typography>
-                        <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
-                            Nuevo
-                        </Button>
+                <Stack mb={5}>
+                    <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
+                </Stack>
 
-                        {showModal && (
-                            <AgregarRutinaModal
-                                showModal={showModal}
-                                setShowModal={setShowModal}
-                                agregarRutinas={agregarRutinas}
-                            />
+                <TableContainer sx={{ minWidth: 500 }}>
+                    <Table>
+                        <TableHead
+                            order={order}
+                            orderBy={orderBy}
+                            headLabel={TABLE_HEAD}
+                            onRequestSort={handleRequestSort}
+                        />
+                        <TableBody>
+                            {filteredrutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+
+                                const { id_rutina, nombre_rutina, nivel, duracion } = row;
+
+                                return (
+
+                                    <TableRow hover key={id_rutina} >
+                                        <TableCell align="left">
+                                            <Typography variant="subtitle2" noWrap>
+                                                {nombre_rutina}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="subtitle2" noWrap>
+                                                {nivel}
+                                            </Typography>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Typography variant="subtitle2" noWrap>
+                                                {duracion}
+                                            </Typography>
+                                        </TableCell>
+
+                                        <TableCell align="right">
+                                            <IconButton size="large" color="inherit" onClick={() => handleExpandRutina(id_rutina)}>
+                                                <ReadMoreIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+
+
+                                );
+
+                            })}
+                            {emptyRows > 0 && (
+                                <TableRow style={{ height: 53 * emptyRows }}>
+                                    <TableCell colSpan={4} />
+                                </TableRow>
+                            )}
+
+                        </TableBody>
+
+                        {isNotFound && (
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
+                                        <Paper sx={{ textAlign: 'center' }}>
+                                            <Typography variant="h6" paragraph>
+                                                No Encontrado
+                                            </Typography>
+
+                                            <Typography variant="body2">
+                                                No hay resultados para &nbsp;
+                                                <strong>&quot;{filterName}&quot;</strong>.
+                                                <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                            </Typography>
+                                        </Paper>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
                         )}
-                    </Stack>
+                    </Table>
+                </TableContainer>
 
-                    <Stack mb={5}>
-                        <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
-                    </Stack>
-
-                        <TableContainer sx={{ minWidth: 500 }}>
-                            <Table>
-                                <TableHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    onRequestSort={handleRequestSort}
-                                />
-                                <TableBody>
-                                    {filteredrutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-
-                                        const { id_rutina, nombre_rutina, nivel, duracion } = row;
-
-                                        return (
-
-                                            <TableRow hover key={id_rutina} >
-                                                <TableCell align="left">
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {nombre_rutina}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {nivel}
-                                                    </Typography>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {duracion}
-                                                    </Typography>
-                                                </TableCell>
-
-                                                <TableCell align="right">
-                                                    <IconButton size="large" color="inherit" onClick={() => handleExpandRutina(id_rutina)}>
-                                                        <ReadMoreIcon />
-                                                    </IconButton>
-                                                </TableCell>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rutinas.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Container>
 
 
-                                            </TableRow>
 
-
-                                        );
-
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={4} />
-                                        </TableRow>
-                                    )}
-
-                                </TableBody>
-                                {isNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={4} sx={{ py: 3 }}>
-                                                <Paper sx={{ textAlign: 'center' }}>
-                                                    <Typography variant="h6" paragraph>
-                                                        No Encontrado
-                                                    </Typography>
-
-                                                    <Typography variant="body2">
-                                                        No hay resultados para &nbsp;
-                                                        <strong>&quot;{filterName}&quot;</strong>.
-                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                    </Typography>
-                                                </Paper>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                )}
-                            </Table>
-                        </TableContainer>
-
-                    <TablePagination
-                        rowsPerPageOptions={[5, 10, 25]}
-                        component="div"
-                        count={rutinas.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-
-
-                </Container>
-
-                
-
-            </>
-        </div>
+        </>
     )
 }
 

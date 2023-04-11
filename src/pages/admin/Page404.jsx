@@ -19,10 +19,11 @@ function Page404() {
             src="https://img.freepik.com/vector-premium/archivo-no-encontrado-ilustracion-personas-confundidas-sosteniendo-gran-lupa-buscar-resultados_258153-336.jpg"
             sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
           />
-
+          {/*
           <Button to="/" size="large" variant="contained" component={RouterLink}>
             Ir a Inicio
           </Button>
+          */}
       </Container>
     </>
   );

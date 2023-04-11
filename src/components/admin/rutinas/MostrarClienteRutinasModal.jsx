@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import {
-    Button,
-    Container,
+    Avatar,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
-    IconButton,
     Paper,
     Slide,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -21,7 +20,6 @@ import {
 } from '@mui/material';
 import { CheckCircleRounded, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 
 // ----------------------------------------------------------------------
 
@@ -29,10 +27,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
 function MostrarClienteRutinasModal(props) {
 
     const { clienteRutinas, showModalClienteRutinas, setShowModalClienteRutinas } = props;
-    const [loading, setLoading] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -53,57 +52,62 @@ function MostrarClienteRutinasModal(props) {
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clienteRutinas.length) : 0;
 
-
-
     return (
         <Dialog open={showModalClienteRutinas} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
             <DialogTitle>Usos de la rutina</DialogTitle>
             <DialogContent>
                 <Grid item xs={6} sm={8} md={12} >
                     <Typography variant="subtitle2" align="center" >
-                        clienteRutinas que tiene la rutina
+                        Clientes que utlizan la rutina
                     </Typography>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center"># Cliente Rutina</TableCell>
+                                    <TableCell align="center">Nombres</TableCell>
+                                    <TableCell align="center">Documento</TableCell>
+                                    <TableCell align="center">Telefono</TableCell>
+                                    <TableCell align="center">Email</TableCell>
 
-                                        <TableCell align="center">Documento</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                        <TableCell align="center">Nombre</TableCell>
+                            <TableBody>
+                                {clienteRutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        <TableCell align="center">Rutina</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    const { cliente } = row;
 
-                                <TableBody>
-                                    {clienteRutinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    return (
+                                        <TableRow hover key={cliente.id_usuario} >
 
-                                        const { id_clienterutina, cliente, rutina } = row;
+                                            <TableCell align="center">
+                                                <Stack direction="row" alignItems="center" spacing={2}>
+                                                    <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {cliente.nombre + " " + cliente.apellido}
+                                                    </Typography>
+                                                </Stack>
 
-                                        return (
-                                            <TableRow hover key={id_clienterutina} >
+                                            </TableCell>
 
-                                                <TableCell align="center">{id_clienterutina}</TableCell>
+                                            <TableCell align="center">{cliente.tipo_documento + " - " + cliente.documento}</TableCell>
 
-                                                <TableCell align="center">{cliente.documento}</TableCell>
+                                            <TableCell align="center">{cliente.telefono}</TableCell>
 
-                                                <TableCell align="center">{cliente.nombre}</TableCell>
-
-                                                <TableCell align="center">{rutina.nombre_rutina}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={4} />
+                                            <TableCell align="center">{cliente.email}</TableCell>
+                                            
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={3} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -116,12 +120,9 @@ function MostrarClienteRutinasModal(props) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >

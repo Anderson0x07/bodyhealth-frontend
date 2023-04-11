@@ -12,7 +12,6 @@ import {
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
   Alert,
@@ -20,7 +19,6 @@ import {
 } from '@mui/material';
 // components
 import ReceiptIcon from '@mui/icons-material/Receipt';
-import Scrollbar from '../dashboard/scrollbar';
 
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
@@ -75,12 +73,12 @@ function FactPedidoList() {
   const [fact, setFact] = useState([]);
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
-  const [loadingPdf,setLoadingPdf]= useState(false)
+  const [loadingPdf, setLoadingPdf] = useState(false)
 
 
 
   const [page, setPage] = useState(0);
-  
+
 
   const [order, setOrder] = useState('asc');
 
@@ -96,20 +94,19 @@ function FactPedidoList() {
   const handleGenerarFactura = async (id_compra) => {
 
     setLoadingPdf(true);
-        try {
-            const response = await procesarPeticionPdf(`pedido/pdf/${id_compra}`)
-           
+    try {
+      const response = await procesarPeticionPdf(`pedido/pdf/${id_compra}`)
 
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            const url = URL.createObjectURL(blob);
-            window.open(url);
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      window.open(url);
 
-            setLoadingPdf(false);
+      setLoadingPdf(false);
 
-        } catch (error) {
-            console.log(error);
-            setLoadingPdf(false);
-        }
+    } catch (error) {
+      console.log(error);
+      setLoadingPdf(false);
+    }
 
   };
 
@@ -174,76 +171,74 @@ function FactPedidoList() {
           <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
         </Stack>
 
-        <Scrollbar>
-          <TableContainer sx={{ minWidth: 800 }}>
-            <Table>
-              <TableHead
-                order={order}
-                orderBy={orderBy}
-                headLabel={TABLE_HEAD}
-                onRequestSort={handleRequestSort}
-              />
-              <TableBody>
-                {filteredFacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+        <TableContainer sx={{ minWidth: 800 }}>
+          <Table>
+            <TableHead
+              order={order}
+              orderBy={orderBy}
+              headLabel={TABLE_HEAD}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {filteredFacts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                  const { id_compra, cliente, fecha_compra, total, metodoPago } = row;
+                const { id_compra, cliente, fecha_compra, total, metodoPago } = row;
 
-                  return (
-                    <TableRow hover key={id_compra} >
+                return (
+                  <TableRow hover key={id_compra} >
 
 
-                      <TableCell align="center">{id_compra}</TableCell>
-                      <TableCell align="left">
-                        <Typography variant="subtitle2" noWrap>
-                          {cliente.nombre + " " + cliente.apellido}
-                        </Typography>
-                      </TableCell>
-                      <TableCell align="left">{fecha_compra}</TableCell>
-                      <TableCell align="left">{metodoPago.descripcion} </TableCell>
-                      <TableCell align="left">{total}</TableCell>
-                      <TableCell align="center">
-                        <LoadingButton
-                          size="large"
-                          color="inherit"
-                          onClick={() => handleGenerarFactura(id_compra)}
-                          loading={loadingPdf}
-                          variant="text"
-                        >
-                          <ReceiptIcon />
-                        </LoadingButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )}
-
-              </TableBody>
-              {isNotFound && (
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                      <Paper sx={{ textAlign: 'center' }}>
-                        <Typography variant="h6" paragraph>
-                          No Encontrado
-                        </Typography>
-
-                        <Typography variant="body2">
-                          No hay resultados para &nbsp;
-                          <strong>&quot;{filterName}&quot;</strong>.
-                          <br /> Intente verificar errores tipográficos o usar palabras completas.
-                        </Typography>
-                      </Paper>
+                    <TableCell align="center">{id_compra}</TableCell>
+                    <TableCell align="left">
+                      <Typography variant="subtitle2" noWrap>
+                        {cliente.nombre + " " + cliente.apellido}
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="left">{fecha_compra}</TableCell>
+                    <TableCell align="left">{metodoPago.descripcion} </TableCell>
+                    <TableCell align="left">{total}</TableCell>
+                    <TableCell align="center">
+                      <LoadingButton
+                        size="large"
+                        color="inherit"
+                        onClick={() => handleGenerarFactura(id_compra)}
+                        loading={loadingPdf}
+                        variant="text"
+                      >
+                        <ReceiptIcon />
+                      </LoadingButton>
                     </TableCell>
                   </TableRow>
-                </TableBody>
+                );
+              })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 53 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
               )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+
+            </TableBody>
+            {isNotFound && (
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                    <Paper sx={{ textAlign: 'center' }}>
+                      <Typography variant="h6" paragraph>
+                        No Encontrado
+                      </Typography>
+
+                      <Typography variant="body2">
+                        No hay resultados para &nbsp;
+                        <strong>&quot;{filterName}&quot;</strong>.
+                        <br /> Intente verificar errores tipográficos o usar palabras completas.
+                      </Typography>
+                    </Paper>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </TableContainer>
 
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { useState } from 'react';
+import { procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Button,

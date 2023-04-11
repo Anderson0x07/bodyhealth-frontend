@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, TextField, InputLabel } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
 
@@ -17,21 +17,18 @@ function AgregarMaquinaModal(props) {
     const getProveedores = async () => {
         try {
             const respuesta = await procesarPeticionGet(`proveedor/all`);
-            console.log(respuesta)
             setProveedores(respuesta.data.proveedores)
-            
 
         } catch (error) {
             console.log(error);
         }
     }
     useEffect(() => {
-       
+
         getProveedores();
 
     }, [])
 
-    
 
     const handleCancelar = () => {
         setShowModal(false);
@@ -45,6 +42,7 @@ function AgregarMaquinaModal(props) {
         }
 
         setLoading(true);
+        
         console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`maquina/guardar`, data);
@@ -121,12 +119,12 @@ function AgregarMaquinaModal(props) {
                 <Button onClick={handleCancelar}>Cancelar</Button>
 
                 <LoadingButton
-                   color="secondary"
-                   onClick={handleSubmit}
-                   loading={loading}
-                   loadingPosition="start"
-                   startIcon={<Save />}
-                   variant="contained"
+                    color="secondary"
+                    onClick={handleSubmit}
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<Save />}
+                    variant="contained"
                 >
                     Guardar
                 </LoadingButton>

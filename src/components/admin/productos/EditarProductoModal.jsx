@@ -23,19 +23,17 @@ function EditarProductoModal(props) {
 
     const { showEditModal, setShowEditModal, producto, onUpdate } = props;
 
-    
+
     const [fileName, setFileName] = useState(null);
     const [image, setImage] = useState(url + producto.foto);
     const [previsualizar, setPrevisualizar] = useState(url + producto.foto);
     const [loading, setLoading] = useState(false);
 
     const [data, setData] = useState(producto);
-    const prove = producto.proveedor;
-    console.log(prove)
-    const [proveedor, setProveedor] = useState(prove.id_proveedor);
+
+    const [proveedorSeleccionado, setProveedorSeleccionado] = useState(producto.proveedor.id_proveedor);
     const [proveedores, setProveedores] = useState(null);
-    const navigate = useNavigate();
-    
+
 
     useEffect(() => {
         getProveedores();
@@ -52,10 +50,7 @@ function EditarProductoModal(props) {
     }
 
     const handleProveedor = (event) => {
-        console.log("PASA")
-        setProveedor(event.target.value);
-        console.log(event.target.value)
-
+        setProveedorSeleccionado(event.target.value);
     }
 
     const handleImageUpload = (event) => {
@@ -84,7 +79,7 @@ function EditarProductoModal(props) {
         event.preventDefault();
         console.log(data)
 
-        if (proveedor === 'Seleccionar') {
+        if (proveedorSeleccionado === 'Seleccionar') {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -94,16 +89,15 @@ function EditarProductoModal(props) {
                 icon: 'warning'
             })
         } else {
-            if(data.stock > 0){
+            if (data.stock > 0) {
                 data.estado = true;
-            }else{
+            } else {
                 data.estado = false;
             }
 
             data.proveedor = {
-                id_proveedor: proveedor
+                id_proveedor: proveedorSeleccionado
             }
-          
 
             if (!image.startsWith("https")) {
                 data.foto = image + " " + fileName;
@@ -115,7 +109,7 @@ function EditarProductoModal(props) {
                 const respuesta = await procesarPeticionPut(`producto/editar/${producto.id_producto}`, data);
                 setLoading(false);
                 Swal.fire({
-                    title:'Información',
+                    title: 'Información',
                     text: respuesta.data.message,
                     icon: 'success',
                     customClass: {
@@ -124,7 +118,7 @@ function EditarProductoModal(props) {
                 })
                 setShowEditModal(false);
                 onUpdate(respuesta.data.producto);
-                
+
 
             } catch (error) {
                 setLoading(false);
@@ -146,9 +140,8 @@ function EditarProductoModal(props) {
         <Dialog open={showEditModal} onClose={handleCancelar} >
             <DialogTitle>Editar producto</DialogTitle>
             <DialogContent>
-
-               <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
-                    fullWidth variant="outlined" value={proveedor} helperText="Por favor seleccione un proveedor">
+                <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
+                    fullWidth variant="outlined" value={proveedorSeleccionado} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
                     {proveedores != null ? proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>

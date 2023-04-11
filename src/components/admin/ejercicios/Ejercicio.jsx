@@ -4,9 +4,9 @@ import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/Hand
 
 import Swal from 'sweetalert2';
 import logo from "../../../assets/Logo-BodyHealth.jpeg";
-import { ArrowBack, Cancel, CheckCircleRounded, Delete, Edit, OpenInNewRounded, RemoveRedEyeRounded } from '@mui/icons-material';
+import { ArrowBack, Delete, Edit, OpenInNewRounded, RemoveRedEyeRounded } from '@mui/icons-material';
 
-import { Avatar, Button, Card, Container, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarEjercicioModal from './EditarEjercicioModal';
 import MostrarRutinaEjerciciosModal from './MostrarRutinaEjerciciosModal';
 import { LoadingButton } from '@mui/lab';

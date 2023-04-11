@@ -4,7 +4,7 @@ import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/Hand
 
 import Swal from 'sweetalert2';
 import logo from "../../../assets/Logo-BodyHealth.jpeg";
-import { ArrowBack, Cancel, CheckCircleRounded, Edit } from '@mui/icons-material';
+import { ArrowBack, Cancel, Edit } from '@mui/icons-material';
 
 import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarMusculoModal from './EditarMusculoModal';
@@ -14,7 +14,6 @@ import MostrarUsosMusculoModal from './MostrarUsosMusculoModal';
 
 function Musculo() {
     const [musculo, setMusculo] = useState({});
-    const [editedMusculo, setEditedMusculo] = useState({});
     const [error, setError] = useState("");
     const [showModalEditarmusculo, setShowModalEditarmusculo] = useState(false);
     const [showModalEjercicios, setShowModalEjercicios] = useState(false);
@@ -28,7 +27,7 @@ function Musculo() {
 
 
     useEffect(() => {
-        const getmusculo = async () => {
+        const getMusculo = async () => {
             try {
                 const response = await procesarPeticionGet(`musculo/${id}`);
                 setMusculo(response.data.musculo);
@@ -39,7 +38,7 @@ function Musculo() {
             }
         };
 
-        getmusculo();
+        getMusculo();
     }, []);
 
 
@@ -49,7 +48,6 @@ function Musculo() {
 
 
     const handleEditarmusculo = () => {
-        setEditedMusculo(musculo);
         setShowModalEditarmusculo(true);
     };
 
@@ -89,18 +87,18 @@ function Musculo() {
         }
     };
 
-    const handleDeletePass=() =>{
+    const handleDeletePass = () => {
         setShowModalEjercicios(true)
         setEliminar(true)
     }
-    const handleShowejercicios=() =>{
+    const handleShowejercicios = () => {
         setShowModalEjercicios(true)
         setEliminar(false)
     }
     const handleUpdate = (updatedData) => {
         setMusculo(updatedData)
     }
-    //const descripcionMusculo = musculo.musculo?.descripcion;
+
     return (
         <div>
             <Container >
@@ -160,12 +158,12 @@ function Musculo() {
                         <Button variant="contained" startIcon={<Edit />} onClick={handleEditarmusculo}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Cancel />} onClick={ejercicios.length > 0 ? handleDeletePass: handleDelete}>eliminar</Button>
+                        <Button variant="contained" startIcon={<Cancel />} onClick={ejercicios.length > 0 ? handleDeletePass : handleDelete}>Eliminar</Button>
                     </Grid>
                     {ejercicios.length > 0
                         ?
                         <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleShowejercicios}>ejercicios</Button>
+                            <Button variant="contained" startIcon={<Cancel />} onClick={handleShowejercicios}>Ver Ejercicios</Button>
                         </Grid>
                         : false
                     }
@@ -186,13 +184,13 @@ function Musculo() {
             {/* MODAL PARA VER ejercicios DEL musculo */}
             {showModalEjercicios && (
                 <MostrarUsosMusculoModal
-                ejercicios={ejercicios}
-                showModalEjercicios={showModalEjercicios}
-                setShowModalEjercicios={setShowModalEjercicios}
-                eliminar={eliminar}
-                setEliminar={setEliminar}
-                musculo={musculo}
-                setMusculo={setMusculo}
+                    ejercicios={ejercicios}
+                    showModalEjercicios={showModalEjercicios}
+                    setShowModalEjercicios={setShowModalEjercicios}
+                    eliminar={eliminar}
+                    setEliminar={setEliminar}
+                    musculo={musculo}
+                    setMusculo={setMusculo}
                 />
             )}
         </div>

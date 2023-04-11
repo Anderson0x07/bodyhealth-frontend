@@ -19,7 +19,7 @@ function Entrenador() {
 
     const [showModalEditarEntrenador, setShowModalEditarEntrenador] = useState(false);
     const [showModalClientesAsignados, setShowModalClientesAsignados] = useState(false);
-    
+
     const [entrenadorClientes, setEntrenadorClientes] = useState([]);
     const [open, setOpen] = useState(null);
 

@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import { CheckCircleRounded, Delete, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import { useNavigate } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionPdf } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';

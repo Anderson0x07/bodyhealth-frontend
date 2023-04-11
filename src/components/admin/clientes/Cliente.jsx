@@ -56,7 +56,7 @@ function Cliente() {
             const response = await procesarPeticionGet(`cliente/${id}`);
             setCliente(response.data.cliente);
             setClienteEntrenador(response.data.cliente.clienteEntrenadores[0]);
-            setClienteRutinas(response.data.cliente.clienteRutinas);
+            setClienteRutinas(response.data.cliente.clienteRutinas); 
             setClienteCompras(response.data.cliente.compras);
             setClienteDetalles(response.data.cliente.clienteDetalles);
             setControlesCliente(response.data.cliente.controlClientes);
@@ -139,7 +139,7 @@ function Cliente() {
                             <MenuItem onClick={() => setShowModalEditarAsignacionEntrenador(true)} sx={{ typography: 'body2' }}>
                                 <DriveFileRenameOutlineTwoToneIcon />Cambiar entrenador
                             </MenuItem>
-                            : console.log("no tiene entrenador")
+                            : false
                         }
 
                         {clienteRutinas.length > 0
@@ -147,7 +147,7 @@ function Cliente() {
                             <MenuItem onClick={() => setShowModalEditarAsignacionRutina(true)} sx={{ typography: 'body2' }}>
                                 <DriveFileRenameOutlineTwoToneIcon />Cambiar rutina
                             </MenuItem>
-                            : console.log("no tiene rutinas")
+                            : false
                         }
 
 
@@ -160,9 +160,9 @@ function Cliente() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {cliente.foto != undefined
-                                    ? <Avatar src={url + cliente.foto} style={{ width: '400px', height: '400px' }} />
-                                    : console.log("cargando")}
+                                {cliente.foto != null
+                                    ? <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />
+                                    : false}
 
                             </Container>
                         </Grid>
@@ -177,7 +177,7 @@ function Cliente() {
                                     <AlertTitle>Tiempo restante {obtenerDiferenciaDias(clienteDetalles[clienteDetalles.length - 1].fecha_fin)} dias</AlertTitle>
                                 </Alert>
 
-                                : console.log("Sin plan activo")
+                                : false
                             }
 
 
@@ -198,7 +198,7 @@ function Cliente() {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell className='clave'>Fecha de nacimiento</TableCell>
-                                            <TableCell className='value' align="right">{cliente.fecha_nacimiento + ''}</TableCell>
+                                            <TableCell className='value' align="right">{cliente.fecha_nacimiento}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell className='clave'>Jornada</TableCell>
@@ -227,12 +227,12 @@ function Cliente() {
                                                 <TableCell className='value' align="right">
                                                     {clienteEntrenador.entrenador != null
                                                         ? clienteEntrenador.entrenador.nombre + " " + clienteEntrenador.entrenador.apellido
-                                                        : console.log("cargando entrenador asignado")
+                                                        : false
                                                     }
 
                                                 </TableCell>
                                             </TableRow>
-                                            : console.log("No hay entrenador para mostrar en tabla")
+                                            : false
                                         }
 
                                         {clienteDetalles.length > 0
@@ -242,12 +242,12 @@ function Cliente() {
                                                 <TableCell className='value' align="right">
                                                     {clienteDetalles[clienteDetalles.length - 1].plan != null
                                                         ? clienteDetalles[clienteDetalles.length - 1].plan.plan + " por " + clienteDetalles[clienteDetalles.length - 1].plan.meses + (clienteDetalles[clienteDetalles.length - 1].plan.meses == 1 ? " mes" : " meses")
-                                                        : console.log("cargando plan asignado")
+                                                        : false
                                                     }
 
                                                 </TableCell>
                                             </TableRow>
-                                            : console.log("No hay plan asignado para mostrar en tabla")
+                                            : false
                                         }
 
 
@@ -270,7 +270,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarEntrenador(true)}>Asignar entrenador</Button>
                         </Grid>
-                        : console.log("tiene entrenador")
+                        : false
                     }
 
                     {clienteDetalles.length == 0
@@ -278,7 +278,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarPlan(true)}>Asignar plan</Button>
                         </Grid>
-                        : console.log("tiene plan asignado")
+                        : false
                     }
 
                     {clienteDetalles.length > 0
@@ -286,7 +286,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalPlanesCliente(true)}>Ver planes</Button>
                         </Grid>
-                        : console.log("no tiene planes")
+                        : false
                     }
 
                     {clienteRutinas.length == 0
@@ -294,7 +294,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarRutina(true)}>Asignar rutina</Button>
                         </Grid>
-                        : console.log("tiene rutinas")
+                        : false
                     }
 
                     {clienteRutinas.length > 0
@@ -302,7 +302,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalRutinasCliente(true)}>Ver rutinas</Button>
                         </Grid>
-                        : console.log("no tiene planes")
+                        : false
                     }
 
                     {clienteCompras.length > 0
@@ -310,7 +310,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalComprasCliente(true)}>Ver compras</Button>
                         </Grid>
-                        : console.log("no tiene compras")
+                        : false
                     }
 
                     {controlesCliente.length > 0
@@ -318,7 +318,7 @@ function Cliente() {
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalControlesCliente(true)}>Ver control fisico</Button>
                         </Grid>
-                        : console.log("no tiene controles fisicos")
+                        : false
                     }
                 </Grid>
 
@@ -380,7 +380,7 @@ function Cliente() {
                     cliente={cliente}
                     showModalAsignarRutina={showModalAsignarRutina}
                     setShowModalAsignarRutina={setShowModalAsignarRutina}
-                    onUpdate={handleActualizarAsignacionRutina}
+                    
                 />
             )}
 

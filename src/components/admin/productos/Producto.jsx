@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
-//import EditarProductoModal from './EditarproductoModal';
-import Swal from 'sweetalert2';
-//import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, Delete, Edit, RemoveRedEye } from '@mui/icons-material';
+
+import { ArrowBack, Cancel, Delete, Edit, RemoveRedEye } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
-import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import Swal from 'sweetalert2';
 import EditarProductoModal from './EditarProductoModal';
-import MostrarventasProductosModal from './MostrarVentasProductoModal';
+import MostrarVentasProductosModal from './MostrarVentasProductoModal';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -25,12 +24,10 @@ function Producto() {
 
     const { id } = useParams();
 
-
     useEffect(() => {
-        const getproducto = async () => {
+        const getProducto = async () => {
             try {
                 const response = await procesarPeticionGet(`producto/${id}`);
-                console.log(response);
                 setProducto(response.data.producto);
                 setProveedor(response.data.producto.proveedor);
                 setPedidos(response.data.producto.pedidos);
@@ -38,7 +35,7 @@ function Producto() {
                 setError(error.response.data.error)
             }
         };
-        getproducto();
+        getProducto();
     }, []);
 
 
@@ -83,11 +80,18 @@ function Producto() {
             })
         } catch (error) {
             console.log(error.response.data.error);
-            Swal.fire('Atención', error.response.data.error, 'error');
+            Swal.fire({
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error',
+                customClass: {
+                    container: 'my-swal'
+                }
+            });
         }
     };
 
-    const handleEditarproducto = () => {
+    const handleEditarProducto = () => {
         setShowModalEditarProducto(true);
     };
 
@@ -98,117 +102,108 @@ function Producto() {
 
     const handleDelete = () => {
         try {
-    
-          Swal.fire({
-            title: 'Atención',
-            text: "¿Está seguro que desea eliminar el producto?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, elimínalo',
-            customClass: {
-              container: 'my-swal'
-            }
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              const response = await procesarPeticionDelete(`producto/eliminar/${id}`);
-              Swal.fire({
-                title: 'Información',
-                text: response.data.message,
-                icon: 'success',
+
+            Swal.fire({
+                title: 'Atención',
+                text: "¿Está seguro que desea eliminar el producto?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, elimínalo',
                 customClass: {
                     container: 'my-swal'
-                  }
-              }
-                
-              ).then(() => {
-                navigate(`/admin/dashboard/productos`);
-              })
-            }
-          })
-    
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const response = await procesarPeticionDelete(`producto/eliminar/${id}`);
+                    Swal.fire({
+                        title: 'Información',
+                        text: response.data.message,
+                        icon: 'success',
+                        customClass: {
+                            container: 'my-swal'
+                        }
+                    }
+
+                    ).then(() => {
+                        navigate(`/admin/dashboard/productos`);
+                    })
+                }
+            })
+
         } catch (error) {
-          console.log(error.response.data.error);
-          Swal.fire('Atención', error.response.data.error, 'error');
+            Swal.fire({
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error',
+                customClass: {
+                    container: 'my-swal'
+                }
+            });
         }
-      };
-
-    const handleUpdateAsignacion = (updatedData) => {
-        setDesactivarProducto(updatedData);
-    }
-    const handleActivar = () => {
-        console.log("Entrando a activar producto..")
-        setShowModalAsignarEntrenador(true);
-
-    }
+    };
 
     return (
-        <div>
-
+        <>
             <Container>
-
                 <Typography variant="h4" gutterBottom mb={3}>
                     Datos del producto
                 </Typography>
 
-                <Card>
-                    <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <Container>
-                                {producto.foto != undefined
-                                    ? <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
-                                    : console.log("cargando")}
+                <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <Container>
+                            {producto.foto != undefined
+                                ? <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
+                                : console.log("cargando")}
 
-                            </Container>
-                        </Grid>
-
-                        <Grid item xs={6} sm={4} md={6} pb={5}>
-                            <TableContainer  >
-                                <Table style={{ border: "1px solid black" }}>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell className='clave' >Id producto</TableCell>
-                                            <TableCell className='value' align="right">{producto.id_producto}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Nombre</TableCell>
-                                            <TableCell className='value' align="right">{producto.nombre}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Stock</TableCell>
-                                            <TableCell className='value' align="right">{producto.stock}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Precio</TableCell>
-                                            <TableCell className='value' align="right">{producto.precio + ''}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Proveedor</TableCell>
-                                            <TableCell className='value' align="right">{proveedor != null ? proveedor.nombre_empresa : console.log("NADA")}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Estado</TableCell>
-                                            <TableCell className='value' align="right">
-                                                <Label color={(producto.estado === false && 'error') || 'info'}>{producto.estado === true ? 'Activo' : 'Inactivo'}</Label>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-
-                                </Table >
-                            </TableContainer>
-                        </Grid>
+                        </Container>
                     </Grid>
 
-                </Card>
+                    <Grid item xs={6} sm={4} md={6} pb={5}>
+                        <TableContainer  >
+                            <Table style={{ border: "1px solid black" }}>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell className='clave' >Id producto</TableCell>
+                                        <TableCell className='value' align="right">{producto.id_producto}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Nombre</TableCell>
+                                        <TableCell className='value' align="right">{producto.nombre}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Stock</TableCell>
+                                        <TableCell className='value' align="right">{producto.stock}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Precio</TableCell>
+                                        <TableCell className='value' align="right">{producto.precio + ''}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Proveedor</TableCell>
+                                        <TableCell className='value' align="right">{proveedor != null ? proveedor.nombre_empresa : console.log("NADA")}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Estado</TableCell>
+                                        <TableCell className='value' align="right">
+                                            <Label color={(producto.estado === false && 'error') || 'info'}>{producto.estado === true ? 'Activo' : 'Inactivo'}</Label>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
 
+                            </Table >
+                        </TableContainer>
+                    </Grid>
+                </Grid>
 
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Edit />} onClick={handleEditarproducto}>Editar</Button>
+                        <Button variant="contained" startIcon={<Edit />} onClick={handleEditarProducto}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>Eliminar</Button>
@@ -225,12 +220,8 @@ function Producto() {
                         </Grid>
                         : console.log("no tiene pedidos")
                     }
-                    
-
-
 
                 </Grid>
-
             </Container>
 
             {showModalEditarProducto && (
@@ -244,14 +235,14 @@ function Producto() {
 
             {/* MODAL PARA VER PLANES ADQUIRIDOS */}
             {showModalVentasProducto && (
-                <MostrarventasProductosModal
+                <MostrarVentasProductosModal
                     pedidos={pedidos}
                     showModalVentasProducto={showModalVentasProducto}
                     setShowModalVentasProducto={setShowModalVentasProducto}
                 />
             )}
 
-        </div>
+        </>
     );
 }
 

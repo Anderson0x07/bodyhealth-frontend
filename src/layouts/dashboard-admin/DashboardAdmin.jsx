@@ -32,14 +32,14 @@ const Main = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout() {
+function DashboardAdmin({admin}) {
   const [open, setOpen] = useState(false);
 
   return (
     <StyledRoot>
-      <Header onOpenNav={() => setOpen(true)} />
+      <Header onOpenNav={() => setOpen(true)} admin={admin}/>
 
-      <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+      <Nav openNav={open} onCloseNav={() => setOpen(false)} admin={admin}/>
 
       <Main>
         <Outlet />
@@ -47,3 +47,5 @@ export default function DashboardLayout() {
     </StyledRoot>
   );
 }
+
+export default DashboardAdmin;

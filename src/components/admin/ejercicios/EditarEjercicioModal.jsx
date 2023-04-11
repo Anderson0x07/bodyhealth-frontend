@@ -1,6 +1,6 @@
 import React from 'react'
-import { useState,useEffect } from 'react';
-import { procesarPeticionPut,procesarPeticionGet } from '../../../utils/HandleApi';
+import { useState, useEffect } from 'react';
+import { procesarPeticionPut, procesarPeticionGet } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Button,
@@ -16,7 +16,7 @@ import { Save } from '@mui/icons-material';
 
 
 function EditarEjercicioModal(props) {
- const { showEditModal, setShowEditModal, ejercicio, onUpdate } = props;
+    const { showEditModal, setShowEditModal, ejercicio, onUpdate } = props;
 
     const [data, setData] = useState(ejercicio);
     const [loading, setLoading] = useState(false);
@@ -24,21 +24,18 @@ function EditarEjercicioModal(props) {
     const [musculos, setMusculos] = useState(null)
 
     const getMusculos = async () => {
-      try {
-          const respuesta = await procesarPeticionGet(`musculo/all`);
-          console.log(respuesta)
-          setMusculos(respuesta.data.musculos)
-          
+        try {
+            const respuesta = await procesarPeticionGet(`musculo/all`);
 
-      } catch (error) {
-          console.log(error);
-      }
-  }
-  useEffect(() => {
-     
-      getMusculos();
+            setMusculos(respuesta.data.musculos)
 
-  }, [])
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        getMusculos();
+    }, []);
 
     const handleChange = (event) => {
         setData({ ...data, [event.target.name]: event.target.value });
@@ -49,58 +46,58 @@ function EditarEjercicioModal(props) {
     };
 
     const handleSubmit = async (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      data.musculo = {
-          id_musculo: musculoSeleccionado
-      }
+        data.musculo = {
+            id_musculo: musculoSeleccionado
+        }
 
-      setLoading(true);
-      console.log(data)
-      try {
-          const respuesta = await procesarPeticionPut(`ejercicio/editar/${ejercicio.id_ejercicio}`, data);
-          setLoading(false);
-          console.log(respuesta);
-          Swal.fire({
-            customClass: {
-                container: 'my-swal'
-            },
-            title: 'Información',
-            text: respuesta.data.message,
-            icon: 'success'
-        })
-        
-          setShowEditModal(false);
-          onUpdate(respuesta.data.ejercicio);
-      } catch (error) {
-          setLoading(false);
-          console.log(error);
+        setLoading(true);
+        console.log(data)
+        try {
+            const respuesta = await procesarPeticionPut(`ejercicio/editar/${ejercicio.id_ejercicio}`, data);
+            setLoading(false);
+            console.log(respuesta);
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Información',
+                text: respuesta.data.message,
+                icon: 'success'
+            })
 
-          Swal.fire({
-              customClass: {
-                  container: 'my-swal'
-              },
-              title: 'Atención',
-              text: error.response.data.error,
-              icon: 'error'
-          })
-      }
+            setShowEditModal(false);
+            onUpdate(respuesta.data.ejercicio);
+        } catch (error) {
+            setLoading(false);
+            console.log(error);
 
-        
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: error.response.data.error,
+                icon: 'error'
+            })
+        }
+
+
     };
-    
+
     const handleMusculo = (event) => {
-      setMusculoSeleccionado(event.target.value);
-  }
+        setMusculoSeleccionado(event.target.value);
+    }
     return (
-         <Dialog open={showEditModal} onClose={handleCancelar} >
+        <Dialog open={showEditModal} onClose={handleCancelar} >
             <DialogTitle>Editar ejercicio</DialogTitle>
             <DialogContent>
 
-            <TextField margin="normal" type="text" name="descripcion" label="Descripción"
+                <TextField margin="normal" type="text" name="descripcion" label="Descripción"
                     onChange={handleChange} defaultValue={ejercicio.descripcion} fullWidth variant="outlined" />
-                    
-            <TextField margin="normal" type="text" name="series" label="Series"
+
+                <TextField margin="normal" type="text" name="series" label="Series"
                     onChange={handleChange} defaultValue={ejercicio.series} fullWidth variant="outlined" />
 
                 <TextField margin="normal" type="text" name="repeticiones" label="Repeticiones"

@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import {
-    Button,
-    Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     Grid,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -19,10 +16,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
-import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -31,10 +26,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function MostrarMaquinasProveedorModal(props) {
-    const navigate = useNavigate();
 
     const { maquinas, showModalMaquinasProveedor, setShowModalMaquinasProveedor } = props;
-    const [loading, setLoading] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -65,41 +58,39 @@ function MostrarMaquinasProveedorModal(props) {
                         Máquinas que tiene el Proveedor
                     </Typography>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center">Id Máquina</TableCell>
+                                    <TableCell align="center">Id Máquina</TableCell>
 
-                                        <TableCell align="center">Nombre</TableCell>
-                                    </TableRow>
-                                </TableHead>
+                                    <TableCell align="center">Nombre</TableCell>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {maquinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {maquinas.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_maquina, nombre } = row;
+                                    const { id_maquina, nombre } = row;
 
-                                        return (
-                                            <TableRow hover key={id_maquina} >
+                                    return (
+                                        <TableRow hover key={id_maquina} >
 
-                                                <TableCell align="center">{id_maquina}</TableCell>
+                                            <TableCell align="center">{id_maquina}</TableCell>
 
-                                                <TableCell align="center">{nombre}</TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRowsMaquinas > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
-                                            <TableCell colSpan={2} />
+                                            <TableCell align="center">{nombre}</TableCell>
                                         </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                                    );
+                                })}
+                                {emptyRowsMaquinas > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRowsMaquinas }}>
+                                        <TableCell colSpan={2} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -112,12 +103,9 @@ function MostrarMaquinasProveedorModal(props) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >

@@ -1,151 +1,152 @@
 import React, { useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2'
-import { 
-    Avatar, 
-    Button, 
-    Dialog, 
-    DialogActions, 
-    DialogContent, 
-    DialogTitle, 
-    FormControl, 
-    Grid, 
-    IconButton, 
-    InputAdornment, 
-    InputLabel, 
-    MenuItem, 
-    OutlinedInput, 
-    TextField } from '@mui/material';
+import {
+    Avatar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    TextField
+} from '@mui/material';
 import { PhotoCamera, Visibility, VisibilityOff, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
 function AgregarEntrenadorModal(props) {
 
-  const { showModal, setShowModal, agregarEntrenador } = props;
+    const { showModal, setShowModal, agregarEntrenador } = props;
 
-  const [data, setData] = useState({});
-  const [fileName, setFileName] = useState(null);
-  const [image, setImage] = useState('');
-  const [previsualizar, setPrevisualizar] = useState('');
+    const [data, setData] = useState({});
+    const [fileName, setFileName] = useState(null);
+    const [image, setImage] = useState('');
+    const [previsualizar, setPrevisualizar] = useState('');
 
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-  const [tipoDoc, setTipoDoc] = useState("Seleccionar");
-  const [jornada, setJornada] = useState("Seleccionar");
+    const [tipoDoc, setTipoDoc] = useState("Seleccionar");
+    const [jornada, setJornada] = useState("Seleccionar");
 
 
-  const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-      event.preventDefault();
-  };
-
-  const handleImageUpload = (event) => {
-    const reader = new FileReader();
-    const file = event.target.files[0];
-    setFileName(file.name)
-    reader.onload = (event) => {
-        const base64String = event.target.result.split(',')[1];
-        setImage(base64String);
-        const previsualizar = event.target.result;
-        setPrevisualizar(previsualizar);
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
     };
-    reader.readAsDataURL(file);
-};
 
-const handleChange = (event) => {
-    setData({ ...data, [event.target.name]: event.target.value });
-};
+    const handleImageUpload = (event) => {
+        const reader = new FileReader();
+        const file = event.target.files[0];
+        setFileName(file.name)
+        reader.onload = (event) => {
+            const base64String = event.target.result.split(',')[1];
+            setImage(base64String);
+            const previsualizar = event.target.result;
+            setPrevisualizar(previsualizar);
+        };
+        reader.readAsDataURL(file);
+    };
 
-const handleTipoDoc = (event) => {
-    setTipoDoc(event.target.value);
-    
-}
-const handleJornada = (event) => {
-    setJornada(event.target.value);
-}
+    const handleChange = (event) => {
+        setData({ ...data, [event.target.name]: event.target.value });
+    };
 
-const handleCancelar = () => {
-    setShowModal(false);
-};
+    const handleTipoDoc = (event) => {
+        setTipoDoc(event.target.value);
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
+    }
+    const handleJornada = (event) => {
+        setJornada(event.target.value);
+    }
 
-  if(tipoDoc === 'Seleccionar') {
-      Swal.fire({
-          customClass: {
-              container: 'my-swal'
-          },
-          title: 'Atención',
-          text: 'Debe seleccionar un tipo de documento',
-          icon: 'warning'
-      })
-  } else if (jornada === 'Seleccionar') {
-      Swal.fire({
-          customClass: {
-              container: 'my-swal'
-          },
-          title: 'Atención',
-          text: 'Debe seleccionar una jornada',
-          icon: 'warning'
-      })
+    const handleCancelar = () => {
+        setShowModal(false);
+    };
 
-  } else {
-      setLoading(true);
-      data.estado = true;
-      data.hoja_vida="hoja.pdf"
-      data.tipo_documento = tipoDoc;
-      data.jornada = jornada;
-      data.rol = {
-          id_rol: 3
-      }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
-      if(image != ""){
-          data.foto = image + " " + fileName;
-      } else {
-          data.foto="";
-      }
+        if (tipoDoc === 'Seleccionar') {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar un tipo de documento',
+                icon: 'warning'
+            })
+        } else if (jornada === 'Seleccionar') {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar una jornada',
+                icon: 'warning'
+            })
 
-      try {
+        } else {
+            setLoading(true);
+            data.estado = true;
+            data.hoja_vida = "hoja.pdf"
+            data.tipo_documento = tipoDoc;
+            data.jornada = jornada;
+            data.rol = {
+                id_rol: 3
+            }
 
-          const respuesta = await procesarPeticionPost(`entrenador/guardar`, data);
-          setLoading(false);
+            if (image != "") {
+                data.foto = image + " " + fileName;
+            } else {
+                data.foto = "";
+            }
 
-          Swal.fire({
-              customClass: {
-                  container: 'my-swal'
-              },
-              title: 'Información',
-              text: respuesta.data.message,
-              icon: 'success'
-          })
+            try {
 
-          setShowModal(false);
+                const respuesta = await procesarPeticionPost(`entrenador/guardar`, data);
+                setLoading(false);
 
-          const response = await procesarPeticionGet("entrenador/all");
-          agregarEntrenador(response.data.entrenadores);
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Información',
+                    text: respuesta.data.message,
+                    icon: 'success'
+                })
 
-      } catch (error) {
-          setLoading(false);
-          console.log(error);
+                setShowModal(false);
 
-          Swal.fire({
-              customClass: {
-                  container: 'my-swal'
-              },
-              title: 'Atención',
-              text: error.response.data.error,
-              icon: 'error'
-          })
-      }   
-  }
+                const response = await procesarPeticionGet("entrenador/all");
+                agregarEntrenador(response.data.entrenadores);
 
-}
+            } catch (error) {
+                setLoading(false);
+                console.log(error);
+
+                Swal.fire({
+                    customClass: {
+                        container: 'my-swal'
+                    },
+                    title: 'Atención',
+                    text: error.response.data.error,
+                    icon: 'error'
+                })
+            }
+        }
+
+    }
 
 
-  return (
-    <Dialog open={showModal} onClose={handleCancelar} >
+    return (
+        <Dialog open={showModal} onClose={handleCancelar} >
             <DialogTitle>Nuevo entrenador</DialogTitle>
             <DialogContent>
 
@@ -182,10 +183,10 @@ const handleSubmit = async (event) => {
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su email" />
 
                 <TextField margin="normal" type="text" name="experiencia" label="Experiencia"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la experiencia" />   
-                     
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la experiencia" />
+
                 <TextField margin="normal" type="text" name="titulo_academico" label="Titulo academico"
-                  onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su titulo academico" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su titulo academico" />
 
                 <FormControl margin="normal" fullWidth variant="outlined" >
                     <InputLabel htmlFor="pass">Contraseña</InputLabel>
@@ -243,7 +244,7 @@ const handleSubmit = async (event) => {
                 </LoadingButton>
             </DialogActions>
         </Dialog>
-  )
+    )
 }
 
 export default AgregarEntrenadorModal

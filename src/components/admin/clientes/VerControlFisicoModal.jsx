@@ -61,54 +61,52 @@ function VerControlFisicoModal(props) {
 
                 <Container>
 
-                    <Scrollbar>
-                        <TableContainer component={Paper}>
-                            <Table>
-                                <TableHead>
-                                    <TableRow hover >
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow hover >
 
-                                        <TableCell align="center">Control #</TableCell>
+                                    <TableCell align="center">Control #</TableCell>
 
-                                        <TableCell align="center">Fecha de control</TableCell>
+                                    <TableCell align="center">Fecha de control</TableCell>
 
-                                        <TableCell align="center">Peso</TableCell>
+                                    <TableCell align="center">Peso</TableCell>
 
-                                        <TableCell align="center">Estatura</TableCell>
+                                    <TableCell align="center">Estatura</TableCell>
 
-                                    </TableRow>
-                                </TableHead>
+                                </TableRow>
+                            </TableHead>
 
-                                <TableBody>
-                                    {controlesCliente.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            <TableBody>
+                                {controlesCliente.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_controlcliente, fecha, peso, estatura } = row;
+                                    const { id_controlcliente, fecha, peso, estatura } = row;
 
-                                        return (
-                                            <TableRow hover key={id_controlcliente} >
+                                    return (
+                                        <TableRow hover key={id_controlcliente} >
 
-                                                <TableCell align="center">{id_controlcliente}</TableCell>
+                                            <TableCell align="center">{id_controlcliente}</TableCell>
 
-                                                <TableCell align="center">{fecha}</TableCell>
+                                            <TableCell align="center">{fecha}</TableCell>
 
-                                                <TableCell align="center">{peso}</TableCell>
+                                            <TableCell align="center">{peso}</TableCell>
 
-                                                <TableCell align="center">{estatura}</TableCell>
+                                            <TableCell align="center">{estatura}</TableCell>
 
-                                                
-                                            </TableRow>
-                                        );
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={5} />
+
                                         </TableRow>
-                                    )}
-                                </TableBody>
+                                    );
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={4} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
 
 
-                            </Table>
-                        </TableContainer>
-                    </Scrollbar>
+                        </Table>
+                    </TableContainer>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

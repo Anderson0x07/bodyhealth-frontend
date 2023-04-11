@@ -39,7 +39,7 @@ Header.propTypes = {
   onOpenNav: PropTypes.func,
 };
 
-export default function Header({ onOpenNav }) {
+function Header({ onOpenNav, admin }) {
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -63,9 +63,11 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
-          <AccountPopover />
+          <AccountPopover admin={admin} />
         </Stack>
       </StyledToolbar>
     </StyledRoot>
   );
 }
+
+export default Header;
