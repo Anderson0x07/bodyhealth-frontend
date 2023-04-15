@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import Clientes from '../pages/admin/clientes/Clientes';
 import Configuracion from '../pages/admin/configuracion/Configuracion';
@@ -25,8 +25,8 @@ import Planes from '../pages/admin/planes/Planes';
 import Plan from '../components/admin/planes/Plan';
 import MetodosPago from '../pages/admin/metodo-pago/MetodosPago';
 import { ProtectedRouteAdmin } from './ProtectedRoute';
-import { Suspense } from 'react';
-import { procesarPeticionLogin } from '../utils/HandleApi';
+import { useEffect, useState } from 'react';
+import { procesarPeticionGet } from '../utils/HandleApi';
 import Index from '../pages/cliente/Index';
 import Home from '../pages/Home';
 import DashboardAdmin from '../layouts/dashboard-admin/DashboardAdmin';
@@ -45,136 +45,134 @@ import RutinaEntrenador from '../components/entrenador/rutinas/RutinaEntrenador'
 
 
 
-const isAuthenticated = localStorage.getItem('isAuthenticated');
+
 const email = localStorage.getItem('email');
-
-let promise;
-
-if (email != null) {
-    promise = procesarPeticionLogin(`usuario/login/${encodeURIComponent(email)}`);
-
-}
 
 function RutasRoles() {
 
-    let usuario = {};
+    const navigate = useNavigate();
 
-    //setUsuario(response.data.usuario) no se puede hacer el set directamente :(
+    const [usuario, setUsuario] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated'));
 
-    let response;
-
-    if (email != null) {
-        response = promise.read();
-        console.log("respuesta del user logueado")
-        console.log(response)
-
-        usuario = {
-            id_usuario: response.data.usuario.id_usuario,
-            clienteDetalles: response.data.usuario.clienteDetalles,
-            clienteEntrenadores: response.data.usuario.clienteEntrenadores,
-            clienteRutinas: response.data.usuario.clienteRutinas,
-            comentario: response.data.usuario.comentario,
-            compras: response.data.usuario.compras,
-            confirmado: response.data.usuario.confirmado,
-            controlClientes: response.data.usuario.controlClientes,
-            documento: response.data.usuario.documento,
-            email: response.data.usuario.email,
-            entrenadorClientes: response.data.usuario.entrenadorClientes,
-            estado: response.data.usuario.estado,
-            experiencia: response.data.usuario.experiencia,
-            fecha_nacimiento: response.data.usuario.fecha_nacimiento,
-            foto: response.data.usuario.foto,
-            hoja_vida: response.data.usuario.hoja_vida,
-            jornada: response.data.usuario.jornada,
-            nombre: response.data.usuario.nombre,
-            apellido: response.data.usuario.apellido,
-            password: response.data.usuario.password,
-            rol: response.data.usuario.rol,
-            telefono: response.data.usuario.telefono,
-            tipo_documento: response.data.usuario.tipo_documento,
-            titulo_academico: response.data.usuario.titulo_academico
+    useEffect(() => {
+        const getUser = async () => {
+            if (email != null) {
+                try {
+                    const response = await procesarPeticionGet(`usuario/login/${encodeURIComponent(email)}`);
+                    setUsuario(response.data.usuario);
+                    console.log(response)
+                } catch (error) {
+                    localStorage.clear();
+                }
+            } else {
+                localStorage.clear();
+                navigate("/login");
+            }
         }
-    }
 
+        getUser();
+    }, [])
 
+    useEffect(() => {
+        if (localStorage.length === 0) {
+            navigate("/login");
+            setIsLoading(false);
+        } else {
+            if (isAuthenticated == 'true' && usuario != null) {
+                setIsLoading(false);
+            }
+        }
+
+    }, [isAuthenticated, usuario]);
 
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <div >
 
-            <Routes>
+            {isLoading
+                ? <h2>Cargando...</h2>
 
-                {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
-                <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home"/>}>
-                    <Route path='/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
-                        <Route exact path="home" element={<HomeAdmin />} />
-                        <Route exact path="clientes" element={<Clientes />} />
-                        <Route exact path="clientes/:id" element={<Cliente />} />
-                        <Route exact path="entrenadores" element={<Entrenadores />} />
-                        <Route exact path="entrenador/:id" element={<Entrenador />} />
-                        <Route exact path="planes" element={<Planes />} />
-                        <Route exact path="planes/:id" element={<Plan />} />
-                        <Route exact path="maquinas" element={<Maquinas />} />
-                        <Route exact path="maquinas/:id" element={<Maquina />} />
-                        <Route exact path="productos" element={<Productos />} />
-                        <Route exact path="productos/:id" element={<Producto />} />
-                        <Route exact path="proveedores" element={<Proveedores />} />
-                        <Route exact path="proveedores/:id" element={<Proveedor />} />
-                        <Route exact path="musculos" element={<Musculos />} />
-                        <Route exact path="musculos/:id" element={<Musculo />} />
-                        <Route exact path="ejercicios" element={<Ejercicios />} />
-                        <Route exact path="ejercicios/:id" element={<Ejercicio />} />
-                        <Route exact path="rutinas" element={<Rutinas />} />
-                        <Route exact path="rutinas/:id" element={<Rutina />} />
-                        <Route exact path="metodospago" element={<MetodosPago />} />
-                        <Route exact path="fact-pedidos" element={<FactPedidos />} />
-                        <Route exact path="fact-planes" element={<FactPlanes />} />
-                        <Route exact path="configuracion" element={<Configuracion />} />
-                        <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
-                        <Route exact path="*" element={<Page404 />} />
+                :
+
+                <Routes>
+
+                    {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
+                    <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home" />}>
+                        <Route path='/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
+                            <Route exact path="home" element={<HomeAdmin />} />
+                            <Route exact path="clientes" element={<Clientes />} />
+                            <Route exact path="clientes/:id" element={<Cliente />} />
+                            <Route exact path="entrenadores" element={<Entrenadores />} />
+                            <Route exact path="entrenador/:id" element={<Entrenador />} />
+                            <Route exact path="planes" element={<Planes />} />
+                            <Route exact path="planes/:id" element={<Plan />} />
+                            <Route exact path="maquinas" element={<Maquinas />} />
+                            <Route exact path="maquinas/:id" element={<Maquina />} />
+                            <Route exact path="productos" element={<Productos />} />
+                            <Route exact path="productos/:id" element={<Producto />} />
+                            <Route exact path="proveedores" element={<Proveedores />} />
+                            <Route exact path="proveedores/:id" element={<Proveedor />} />
+                            <Route exact path="musculos" element={<Musculos />} />
+                            <Route exact path="musculos/:id" element={<Musculo />} />
+                            <Route exact path="ejercicios" element={<Ejercicios />} />
+                            <Route exact path="ejercicios/:id" element={<Ejercicio />} />
+                            <Route exact path="rutinas" element={<Rutinas />} />
+                            <Route exact path="rutinas/:id" element={<Rutina />} />
+                            <Route exact path="metodospago" element={<MetodosPago />} />
+                            <Route exact path="fact-pedidos" element={<FactPedidos />} />
+                            <Route exact path="fact-planes" element={<FactPlanes />} />
+                            <Route exact path="configuracion" element={<Configuracion />} />
+                            <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
+                            <Route exact path="*" element={<Page404 />} />
+                        </Route>
                     </Route>
-                </Route>
 
 
-                {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
-                <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
-                    <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
-                        <Route exact path="home" element={<HomeEntrenador/>} />
-                        <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario}/>} />
-                        <Route exact path="clientes/:id" element={<ClienteEntrenador/>} />
-                        <Route exact path="musculos" element={<MusculosEntrenador/>} />
-                        <Route exact path="musculos/:id" element={<MusculoEntrenador/>} />
-                        <Route exact path="ejercicios" element={<EjerciciosEntrenador/>} />
-                        <Route exact path="ejercicios/:id" element={<EjercicioEntrenador/>} />
-                        <Route exact path="rutinas" element={<RutinasEntrenador/>} />
-                        <Route exact path="rutinas/:id" element={<RutinaEntrenador/>} />
-                        <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
-                        <Route exact path="horario" element={<div>horario</div>} />
+                    {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
+                    <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
+                        <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
+                            <Route exact path="home" element={<HomeEntrenador />} />
+                            <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
+                            <Route exact path="clientes/:id" element={<ClienteEntrenador />} />
+                            <Route exact path="musculos" element={<MusculosEntrenador />} />
+                            <Route exact path="musculos/:id" element={<MusculoEntrenador />} />
+                            <Route exact path="ejercicios" element={<EjerciciosEntrenador />} />
+                            <Route exact path="ejercicios/:id" element={<EjercicioEntrenador />} />
+                            <Route exact path="rutinas" element={<RutinasEntrenador />} />
+                            <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
+                            <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
+                            <Route exact path="horario" element={<div>horario</div>} />
+                        </Route>
                     </Route>
-                </Route>
 
 
-                {/* RUTAS PARA EL CLIENTE */}
-                <Route exact path='/cliente/dashboard/home' element={
-                    <ProtectedRouteAdmin
-                        isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"}
-                        redirectTo="/home">
-                        <Index cliente={usuario} />
-                    </ProtectedRouteAdmin>
-                } />
+                    {/* RUTAS PARA EL CLIENTE */}
+                    <Route exact path='/cliente/dashboard/home' element={
+                        <ProtectedRouteAdmin
+                            isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"}
+                            redirectTo="/home">
+                            <Index cliente={usuario} />
+                        </ProtectedRouteAdmin>
+                    } />
 
 
-                {/* PAGINA DE LOGIN */}
-                <Route exact path='/login' element={<LoginPage />} />
+                    {/* PAGINA DE LOGIN */}
+                    <Route exact path='/login' element={<LoginPage />} />
 
 
-                {/* PAGINA HOME */}
-                <Route index element={<Home />} />
-                <Route exact path="/home" element={<Home />} />
-                <Route path='/*' element={<Page404 />} />
+                    {/* PAGINA HOME */}
+                    <Route index element={<Home />} />
+                    <Route exact path="/home" element={<Home />} />
+                    <Route path='/*' element={<Page404 />} />
 
-            </Routes>
-        </Suspense>
+                </Routes>
+
+            }
+
+
+        </div>
     )
 }
 
