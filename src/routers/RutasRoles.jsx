@@ -38,6 +38,10 @@ import ClientesEntrenador from '../pages/entrenador/clientes/ClientesEntrenador'
 import ClienteEntrenador from '../components/entrenador/clientes/ClienteEntrenador';
 import MusculosEntrenador from '../pages/entrenador/musculos/MusculosEntrenador';
 import MusculoEntrenador from '../components/entrenador/musculos/MusculoEntrenador';
+import EjerciciosEntrenador from '../pages/entrenador/ejercicios/EjerciciosEntrenador';
+import EjercicioEntrenador from '../components/entrenador/ejercicios/EjercicioEntrenador';
+import RutinasEntrenador from '../pages/entrenador/rutinas/RutinasEntrenador';
+import RutinaEntrenador from '../components/entrenador/rutinas/RutinaEntrenador';
 
 
 
@@ -140,11 +144,12 @@ function RutasRoles() {
                         <Route exact path="clientes/:id" element={<ClienteEntrenador/>} />
                         <Route exact path="musculos" element={<MusculosEntrenador/>} />
                         <Route exact path="musculos/:id" element={<MusculoEntrenador/>} />
-                        <Route exact path="ejercicios" element={<div>Home</div>} />
-                        <Route exact path="ejercicios/:id" element={<div>Home</div>} />
-                        <Route exact path="rutinas" element={<div>Home</div>} />
-                        <Route exact path="rutinas/:id" element={<div>Home</div>} />
+                        <Route exact path="ejercicios" element={<EjerciciosEntrenador/>} />
+                        <Route exact path="ejercicios/:id" element={<EjercicioEntrenador/>} />
+                        <Route exact path="rutinas" element={<RutinasEntrenador/>} />
+                        <Route exact path="rutinas/:id" element={<RutinaEntrenador/>} />
                         <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
+                        <Route exact path="horario" element={<div>horario</div>} />
                     </Route>
                 </Route>
 

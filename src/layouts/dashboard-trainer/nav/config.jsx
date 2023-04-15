@@ -4,6 +4,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import HandymanRoundedIcon from '@mui/icons-material/HandymanRounded';
 import SportsGymnasticsIcon from '@mui/icons-material/SportsGymnastics';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import TodayIcon from '@mui/icons-material/Today';
 
 
 const navConfig = [
@@ -33,9 +34,9 @@ const navConfig = [
     icon: <AssignmentTurnedInIcon/>,
   },
   {
-    title: 'configuracion',
-    path: '/entrenador/dashboard/configuracion',
-    icon: <HandymanRoundedIcon/>,
+    title: 'horario',
+    path: '/entrenador/dashboard/horario',
+    icon: <TodayIcon/>,
   }
 ];
 
