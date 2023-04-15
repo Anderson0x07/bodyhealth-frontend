@@ -35,6 +35,10 @@ import Entrenador from '../components/admin/Entrenadores/Entrenador';
 import ProfilePage from '../pages/admin/ProfilePage';
 import HomeEntrenador from '../pages/entrenador/HomeEntrenador';
 import ClientesEntrenador from '../pages/entrenador/clientes/ClientesEntrenador';
+import ClienteEntrenador from '../components/entrenador/clientes/ClienteEntrenador';
+import MusculosEntrenador from '../pages/entrenador/musculos/MusculosEntrenador';
+import MusculoEntrenador from '../components/entrenador/musculos/MusculoEntrenador';
+
 
 
 const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -133,9 +137,9 @@ function RutasRoles() {
                     <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
                         <Route exact path="home" element={<HomeEntrenador/>} />
                         <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario}/>} />
-                        <Route exact path="clientes/:id" element={<div>Home</div>} />
-                        <Route exact path="musculos" element={<div>Home</div>} />
-                        <Route exact path="musculos/:id" element={<div>Home</div>} />
+                        <Route exact path="clientes/:id" element={<ClienteEntrenador/>} />
+                        <Route exact path="musculos" element={<MusculosEntrenador/>} />
+                        <Route exact path="musculos/:id" element={<MusculoEntrenador/>} />
                         <Route exact path="ejercicios" element={<div>Home</div>} />
                         <Route exact path="ejercicios/:id" element={<div>Home</div>} />
                         <Route exact path="rutinas" element={<div>Home</div>} />
