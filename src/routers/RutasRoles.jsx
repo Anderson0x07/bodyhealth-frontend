@@ -42,6 +42,7 @@ import EjerciciosEntrenador from '../pages/entrenador/ejercicios/EjerciciosEntre
 import EjercicioEntrenador from '../components/entrenador/ejercicios/EjercicioEntrenador';
 import RutinasEntrenador from '../pages/entrenador/rutinas/RutinasEntrenador';
 import RutinaEntrenador from '../components/entrenador/rutinas/RutinaEntrenador';
+import Horario from '../pages/entrenador/Horario';
 
 
 
@@ -143,7 +144,7 @@ function RutasRoles() {
                             <Route exact path="rutinas" element={<RutinasEntrenador />} />
                             <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
                             <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
-                            <Route exact path="horario" element={<div>horario</div>} />
+                            <Route exact path="horario" element={<Horario />} />
                         </Route>
                     </Route>
 
