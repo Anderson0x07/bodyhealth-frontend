@@ -144,7 +144,7 @@ function RutasRoles() {
                             <Route exact path="rutinas" element={<RutinasEntrenador />} />
                             <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
                             <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
-                            <Route exact path="horario" element={<Horario />} />
+                            <Route exact path="horario" element={<Horario entrenador={usuario}/>} />
                         </Route>
                     </Route>
 
