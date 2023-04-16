@@ -49,7 +49,7 @@ function Musculo() {
 
 
     const handleBack = () => {
-        navigate(`/admin/dashboard/musculos`);
+        navigate(`/bodyhealth-frontend/admin/dashboard/musculos`);
     };
 
 
@@ -78,7 +78,7 @@ function Musculo() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/admin/dashboard/musculos`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/musculos`);
                     })
                 }
             })

@@ -56,7 +56,7 @@ function Rutina() {
 
 
     const handleBack = () => {
-        navigate(`/admin/dashboard/rutinas`);
+        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
     };
 
     const handleUpdate = (updatedData) => {
@@ -91,7 +91,7 @@ function Rutina() {
                     }
 
                     ).then(() => {
-                        navigate(`/admin/dashboard/rutinas`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
                     })
                 }
             })

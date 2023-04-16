@@ -59,7 +59,7 @@ function SeleccionProductoCantidadModal(props) {
 
         setShowModalAgregarProducto(false);
 
-        navigate("/home/carrito");
+        navigate("/bodyhealth-frontend/home/carrito");
 
     }
 

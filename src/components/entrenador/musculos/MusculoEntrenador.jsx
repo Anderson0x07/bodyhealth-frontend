@@ -49,7 +49,7 @@ function MusculoEntrenador() {
 
 
     const handleBack = () => {
-        navigate(`/entrenador/dashboard/musculos`);
+        navigate(`/bodyhealth-frontend/entrenador/dashboard/musculos`);
     };
 
 

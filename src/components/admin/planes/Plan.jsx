@@ -47,7 +47,7 @@ function Plan() {
 
 
     const handleBack = () => {
-        navigate(`/admin/dashboard/planes`);
+        navigate(`/bodyhealth-frontend/admin/dashboard/planes`);
     };
 
     const handleDelete = () => {
@@ -75,7 +75,7 @@ function Plan() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/admin/dashboard/planes`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/planes`);
                     })
                 }
             })

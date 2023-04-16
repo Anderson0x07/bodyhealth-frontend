@@ -95,7 +95,7 @@ function ProveedorList() {
     }
 
     const handleExpandProveedor = (id_proveedor) => {
-        navigate(`/admin/dashboard/proveedores/${id_proveedor}`);
+        navigate(`/bodyhealth-frontend/admin/dashboard/proveedores/${id_proveedor}`);
     };
 
     const handleRequestSort = (event, property) => {

@@ -18,7 +18,7 @@ function AccountPopover({ cliente }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/", { replace: true });
+    navigate("/bodyhealth-frontend/", { replace: true });
     window.location.reload();
 
   }
@@ -26,7 +26,7 @@ function AccountPopover({ cliente }) {
   const handleMiPerfil = () => {
     console.log("MI PERFIL cliente")
     console.log(cliente)
-    navigate("/home/mi-perfil")
+    navigate("/bodyhealth-frontend/home/mi-perfil")
   }
 
 
@@ -106,7 +106,7 @@ function AccountPopover({ cliente }) {
           <Stack sx={{ p: 1 }}>
 
             <MenuItem onClick={() => {
-              navigate("/home");
+              navigate("/bodyhealth-frontend/home");
               setOpen(null);
             }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>

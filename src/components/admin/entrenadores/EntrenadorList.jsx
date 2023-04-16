@@ -103,7 +103,7 @@ function EntrenadorList() {
     }
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/admin/dashboard/entrenador/${id_usuario}`)
+        navigate(`/bodyhealth-frontend/admin/dashboard/entrenador/${id_usuario}`)
     };
 
 

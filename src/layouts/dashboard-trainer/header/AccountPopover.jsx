@@ -18,13 +18,13 @@ function AccountPopover({ entrenador }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/", { replace: true });
+    navigate("/bodyhealth-frontend/", { replace: true });
     window.location.reload();
 
   }
 
   const handleMiPerfil = () => {
-    navigate("/entrenador/dashboard/mi-perfil")
+    navigate("/bodyhealth-frontend/entrenador/dashboard/mi-perfil")
   }
 
 
@@ -92,7 +92,7 @@ function AccountPopover({ entrenador }) {
           <Stack sx={{ p: 1 }}>
 
             <MenuItem onClick={() => {
-              navigate("/entrenador/dashboard/home");
+              navigate("/bodyhealth-frontend/entrenador/dashboard/home");
               setOpen(null);
             }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>

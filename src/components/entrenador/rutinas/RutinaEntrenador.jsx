@@ -56,7 +56,7 @@ function RutinaEntrenador() {
 
 
     const handleBack = () => {
-        navigate(`/entrenador/dashboard/rutinas`);
+        navigate(`/bodyhealth-frontend/entrenador/dashboard/rutinas`);
     };
 
     const handleUpdate = (updatedData) => {
@@ -91,7 +91,7 @@ function RutinaEntrenador() {
                     }
 
                     ).then(() => {
-                        navigate(`/admin/dashboard/rutinas`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
                     })
                 }
             })

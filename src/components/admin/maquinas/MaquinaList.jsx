@@ -101,7 +101,7 @@ function MaquinaList() {
   }
 
   const handleMaquinaExpand = (id) => {
-    navigate(`/admin/dashboard/maquinas/${id}`)
+    navigate(`/bodyhealth-frontend/admin/dashboard/maquinas/${id}`)
   };
 
   const handleRequestSort = (event, property) => {

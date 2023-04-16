@@ -48,7 +48,7 @@ function ProductoList() {
   };
 
   const handleExpandProducto = (id_producto) => {
-    navigate(`/admin/dashboard/productos/${id_producto}`);
+    navigate(`/bodyhealth-frontend/admin/dashboard/productos/${id_producto}`);
   };
   const agregarProducto = (productos) => {
     setProductos(productos);
