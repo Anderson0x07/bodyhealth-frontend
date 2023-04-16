@@ -1,45 +1,23 @@
-import React, { useState } from "react";
-import Myroutes from "./routers/MyRoutes";
-import styled, { ThemeProvider } from "styled-components";
-import { BrowserRouter } from "react-router-dom";
-import DashBoard from "./components/admin/DashBoard";
-import { Light, Dark } from "./style/Theme";
-import 'bootstrap/dist/css/bootstrap.min.css';
-export const ThemeContext = React.createContext(null);
+import { BrowserRouter } from 'react-router-dom';
+// routes
+import RutasRoles from './routers/RutasRoles';
+// theme
+import ThemeProvider from './theme';
+// components
+import ScrollToTop from './components/admin/dashboard/scroll-to-top';
+
+import './App.css'
+
 
 function App() {
-  const [theme, setTheme] = useState("light");
-  const themeStyle = theme === "light" ? Light : Dark;
-
-
-  const [open, setOpen] = useState(true);
   return (
-    <>
-      <ThemeContext.Provider value={{ setTheme, theme }}>
-        <ThemeProvider theme={themeStyle}>
-          <BrowserRouter>
-            <Container
-              className={open ? "sidebarState active" : "sidebarState"}>
-              <DashBoard open={open} setOpen={setOpen} />
-              <Myroutes />
-            </Container>
-          </BrowserRouter>
-        </ThemeProvider>
-      </ThemeContext.Provider>
-    </>
+    <BrowserRouter>
+      <ThemeProvider>
+        <ScrollToTop />
+        <RutasRoles />
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
-
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 90px auto;
-  background: ${({ theme }) => theme.bgtotal};
-  transition: all 0.5s;
-  &.active {
-    grid-template-columns: 300px auto;
-  }
-
-  color:${({theme})=>theme.text};
-`;
 
 export default App;
