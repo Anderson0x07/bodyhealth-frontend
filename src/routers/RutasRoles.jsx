@@ -106,7 +106,7 @@ function RutasRoles() {
                     <Routes>
 
                         {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
-                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home" />}>
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/bodyhealth-frontend/home" />}>
                             <Route path='/bodyhealth-frontend/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
                                 <Route exact path="home" element={<HomeAdmin admin={usuario} />} />
                                 <Route exact path="clientes" element={<Clientes />} />
@@ -139,7 +139,7 @@ function RutasRoles() {
 
 
                         {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
-                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/bodyhealth-frontend/home" />}>
                             <Route path='/bodyhealth-frontend/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
                                 <Route exact path="home" element={<HomeEntrenador entrenador={usuario}/>} />
                                 <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
@@ -156,7 +156,7 @@ function RutasRoles() {
                         </Route>
 
                         {/* RUTAS PARA EL CLIENTE */}
-                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"} redirectTo="/login" />}>
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"} redirectTo="/bodyhealth-frontend/login" />}>
                             <Route exact path="/bodyhealth-frontend/home" element={<Home cliente={usuario} />} />
                             <Route exact path="/bodyhealth-frontend/home/planes" element={<PlanesCliente cliente={usuario} />} />
                             <Route exact path="/bodyhealth-frontend/home/productos" element={<ProductosCliente cliente={usuario} />} />
