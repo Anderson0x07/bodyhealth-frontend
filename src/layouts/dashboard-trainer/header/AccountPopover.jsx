@@ -18,7 +18,7 @@ function AccountPopover({ entrenador }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/login", { replace: true });
+    navigate("/", { replace: true });
     window.location.reload();
 
   }

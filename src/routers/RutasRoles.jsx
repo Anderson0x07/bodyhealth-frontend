@@ -27,7 +27,6 @@ import MetodosPago from '../pages/admin/metodo-pago/MetodosPago';
 import { ProtectedRouteAdmin } from './ProtectedRoute';
 import { useEffect, useState } from 'react';
 import { procesarPeticionGet } from '../utils/HandleApi';
-import Index from '../pages/cliente/Index';
 import Home from '../pages/Home';
 import DashboardAdmin from '../layouts/dashboard-admin/DashboardAdmin';
 import DashboardEntrenador from '../layouts/dashboard-trainer/DashboardEntrenador';
@@ -43,6 +42,12 @@ import EjercicioEntrenador from '../components/entrenador/ejercicios/EjercicioEn
 import RutinasEntrenador from '../pages/entrenador/rutinas/RutinasEntrenador';
 import RutinaEntrenador from '../components/entrenador/rutinas/RutinaEntrenador';
 import Horario from '../pages/entrenador/Horario';
+import MiPerfilCliente from '../pages/cliente/MiPerfilCliente';
+import PlanesCliente from '../pages/cliente/PlanesCliente';
+import ProductosCliente from '../pages/cliente/ProductosCliente';
+import { ShoppingCartProvider } from '../components/cliente/carrito/ShoppingCartContext';
+import CarritoCliente from '../pages/cliente/CarritoCliente';
+import HorarioAdmin from '../pages/admin/HorarioAdmin';
 
 
 
@@ -63,13 +68,13 @@ function RutasRoles() {
                 try {
                     const response = await procesarPeticionGet(`usuario/login/${encodeURIComponent(email)}`);
                     setUsuario(response.data.usuario);
-                    
+                    console.log(response)
                 } catch (error) {
                     localStorage.clear();
+                    navigate("/home");
                 }
             } else {
-                localStorage.clear();
-                navigate("/login");
+                navigate("/home");
             }
         }
 
@@ -78,7 +83,7 @@ function RutasRoles() {
 
     useEffect(() => {
         if (localStorage.length === 0) {
-            navigate("/login");
+            navigate("/");
             setIsLoading(false);
         } else {
             if (isAuthenticated == 'true' && usuario != null) {
@@ -96,80 +101,82 @@ function RutasRoles() {
                 ? <h2>Cargando...</h2>
 
                 :
+                <ShoppingCartProvider>
+                    <Routes>
 
-                <Routes>
-
-                    {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
-                    <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home" />}>
-                        <Route path='/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
-                            <Route exact path="home" element={<HomeAdmin admin={usuario} />} />
-                            <Route exact path="clientes" element={<Clientes />} />
-                            <Route exact path="clientes/:id" element={<Cliente />} />
-                            <Route exact path="entrenadores" element={<Entrenadores />} />
-                            <Route exact path="entrenador/:id" element={<Entrenador />} />
-                            <Route exact path="planes" element={<Planes />} />
-                            <Route exact path="planes/:id" element={<Plan />} />
-                            <Route exact path="maquinas" element={<Maquinas />} />
-                            <Route exact path="maquinas/:id" element={<Maquina />} />
-                            <Route exact path="productos" element={<Productos />} />
-                            <Route exact path="productos/:id" element={<Producto />} />
-                            <Route exact path="proveedores" element={<Proveedores />} />
-                            <Route exact path="proveedores/:id" element={<Proveedor />} />
-                            <Route exact path="musculos" element={<Musculos />} />
-                            <Route exact path="musculos/:id" element={<Musculo />} />
-                            <Route exact path="ejercicios" element={<Ejercicios />} />
-                            <Route exact path="ejercicios/:id" element={<Ejercicio />} />
-                            <Route exact path="rutinas" element={<Rutinas />} />
-                            <Route exact path="rutinas/:id" element={<Rutina />} />
-                            <Route exact path="metodospago" element={<MetodosPago />} />
-                            <Route exact path="fact-pedidos" element={<FactPedidos />} />
-                            <Route exact path="fact-planes" element={<FactPlanes />} />
-                            <Route exact path="configuracion" element={<Configuracion />} />
-                            <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
-                            <Route exact path="*" element={<Page404 />} />
+                        {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home" />}>
+                            <Route path='/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
+                                <Route exact path="home" element={<HomeAdmin admin={usuario} />} />
+                                <Route exact path="clientes" element={<Clientes />} />
+                                <Route exact path="clientes/:id" element={<Cliente />} />
+                                <Route exact path="entrenadores" element={<Entrenadores />} />
+                                <Route exact path="entrenador/:id" element={<Entrenador />} />
+                                <Route exact path="planes" element={<Planes />} />
+                                <Route exact path="planes/:id" element={<Plan />} />
+                                <Route exact path="maquinas" element={<Maquinas />} />
+                                <Route exact path="maquinas/:id" element={<Maquina />} />
+                                <Route exact path="productos" element={<Productos />} />
+                                <Route exact path="productos/:id" element={<Producto />} />
+                                <Route exact path="proveedores" element={<Proveedores />} />
+                                <Route exact path="proveedores/:id" element={<Proveedor />} />
+                                <Route exact path="musculos" element={<Musculos />} />
+                                <Route exact path="musculos/:id" element={<Musculo />} />
+                                <Route exact path="ejercicios" element={<Ejercicios />} />
+                                <Route exact path="ejercicios/:id" element={<Ejercicio />} />
+                                <Route exact path="rutinas" element={<Rutinas />} />
+                                <Route exact path="rutinas/:id" element={<Rutina />} />
+                                <Route exact path="metodospago" element={<MetodosPago />} />
+                                <Route exact path="fact-pedidos" element={<FactPedidos />} />
+                                <Route exact path="fact-planes" element={<FactPlanes />} />
+                                <Route exact path="horarios" element={<HorarioAdmin/>} />
+                                <Route exact path="configuracion" element={<Configuracion />} />
+                                <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
+                                <Route exact path="*" element={<Page404 />} />
+                            </Route>
                         </Route>
-                    </Route>
 
 
-                    {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
-                    <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
-                        <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
-                            <Route exact path="home" element={<HomeEntrenador entrenador={usuario}/>} />
-                            <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
-                            <Route exact path="clientes/:id" element={<ClienteEntrenador />} />
-                            <Route exact path="musculos" element={<MusculosEntrenador />} />
-                            <Route exact path="musculos/:id" element={<MusculoEntrenador />} />
-                            <Route exact path="ejercicios" element={<EjerciciosEntrenador />} />
-                            <Route exact path="ejercicios/:id" element={<EjercicioEntrenador />} />
-                            <Route exact path="rutinas" element={<RutinasEntrenador />} />
-                            <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
-                            <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
-                            <Route exact path="horario" element={<Horario entrenador={usuario}/>} />
+                        {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
+                            <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
+                                <Route exact path="home" element={<HomeEntrenador entrenador={usuario}/>} />
+                                <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
+                                <Route exact path="clientes/:id" element={<ClienteEntrenador />} />
+                                <Route exact path="musculos" element={<MusculosEntrenador />} />
+                                <Route exact path="musculos/:id" element={<MusculoEntrenador />} />
+                                <Route exact path="ejercicios" element={<EjerciciosEntrenador />} />
+                                <Route exact path="ejercicios/:id" element={<EjercicioEntrenador />} />
+                                <Route exact path="rutinas" element={<RutinasEntrenador />} />
+                                <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
+                                <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
+                                <Route exact path="horario" element={<Horario entrenador={usuario}/>} />
+                            </Route>
                         </Route>
-                    </Route>
 
+                        {/* RUTAS PARA EL CLIENTE */}
+                        <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"} redirectTo="/login" />}>
+                            <Route exact path="/home" element={<Home cliente={usuario} />} />
+                            <Route exact path="/home/planes" element={<PlanesCliente cliente={usuario} />} />
+                            <Route exact path="/home/productos" element={<ProductosCliente cliente={usuario} />} />
+                            <Route exact path="/home/mi-perfil" element={<MiPerfilCliente cliente={usuario} />} />
+                            <Route path="/home/carrito" element={<CarritoCliente cliente={usuario} />} />
 
-                    {/* RUTAS PARA EL CLIENTE */}
-                    <Route exact path='/cliente/dashboard/home' element={
-                        <ProtectedRouteAdmin
-                            isAllowed={isAuthenticated && usuario.rol.nombre === "CLIENTE"}
-                            redirectTo="/home">
-                            <Index cliente={usuario} />
-                        </ProtectedRouteAdmin>
-                    } />
+                        </Route>
 
+                        {/* PAGINA DE LOGIN */}
+                        <Route exact path='/login' element={<LoginPage />} />
 
-                    {/* PAGINA DE LOGIN */}
-                    <Route exact path='/login' element={<LoginPage />} />
+                        {/* PAGINA HOME */}
+                        <Route element={<ProtectedRouteAdmin isAllowed={localStorage.length == 0} redirectTo="/home" />}>
+                            <Route index element={<Home />} />
+                        </Route>
+                        
+                        <Route path='/*' element={<Page404 />} />
 
+                    </Routes>
 
-                    {/* PAGINA HOME */}
-                    <Route index element={<Home />} />
-                    <Route exact path="/home" element={<Home />} />
-                    <Route path='/*' element={<Page404 />} />
-
-                </Routes>
-
+                </ShoppingCartProvider>
             }
 
 
@@ -178,58 +185,3 @@ function RutasRoles() {
 }
 
 export default RutasRoles;
-
-
-/*function routes() {
-    const routes = useRoutes([
-        {
-            path: '/admin/dashboard',
-            element: <DashboardLayout />,
-            children: [
-                { element: <Navigate to="/admin/dashboard/home" />, index: true },
-                { path: 'home', element: <HomeAdmin /> },
-                { path: 'clientes', element: <Clientes /> },
-                { path: 'clientes/:id', element: <Cliente /> },
-                { path: 'clientes/expand-delete/:id', element: <ClienteDelete /> },
-                { path: 'entrenadores', element: <Entrenadores /> },
-                { path: 'planes', element: <Planes /> },
-                { path: 'planes/:id', element: <Plan /> },
-                { path: 'maquinas', element: <Maquinas /> },
-                { path: 'maquinas/:id', element: <Maquina /> },
-                { path: 'productos', element: <Productos /> },
-                { path: 'productos/:id', element: <Producto /> },
-                { path: 'proveedores', element: <Proveedores /> },
-                { path: 'proveedor/:id', element: <Proveedor /> },
-                { path: 'musculos', element: <Musculos /> },
-                { path: 'musculo/:id', element: <Musculo /> },
-                { path: 'ejercicios', element: <Ejercicios /> },
-                { path: 'ejercicio/:id', element: <Ejercicio /> },
-                { path: 'rutinas', element: <Rutinas /> },
-                { path: 'rutina/:id', element: <Rutina /> },
-                { path: 'metodospago', element: <MetodosPago /> },
-                { path: 'fact-pedidos', element: <FactPedidos /> },
-                { path: 'fact-planes', element: <FactPlanes /> },
-                { path: 'configuracion', element: <Configuracion /> },
-
-            ],
-        },
-        {
-            children: [
-                { element: <Navigate to="/admin/dashboard/home" />, index: true },
-                { path: '404', element: <Page404 /> },
-                { path: 'login', element: <LoginPage /> },
-                { path: '*', element: <Navigate to="/404" /> },
-            ],
-        },
-        {
-            path: '/login',
-            element: <LoginPage />
-        },
-        {
-            path: '*',
-            element: <Navigate to="/404" replace />,
-
-        },
-    ]);
-    return routes;
-}*/

@@ -27,6 +27,7 @@ function AsignarPlanModal(props) {
     //Planes y metodos disponibles
     const [planes, setPlanes] = useState(null);
     const [metodos, setMetodos] = useState(null);
+    const [meses, setMeses] = useState(0);
 
     useEffect(() => {
         getPlanesAndMetodos();
@@ -39,7 +40,7 @@ function AsignarPlanModal(props) {
             setPlanes(respuesta.data.planes)
 
             const response = await procesarPeticionGet('metodopago/all');
-            
+
             setMetodos(response.data.metodospago)
 
         } catch (error) {
@@ -56,14 +57,17 @@ function AsignarPlanModal(props) {
         }
     }
 
-    
+
     const handleSeleccionPlan = (event) => {
         setPlanSeleccionado(event.target.value);
+        const planSeleccionado = planes.find(plan => plan.id_plan === event.target.value);
+
+        setMeses(planSeleccionado.meses);
     }
 
     const handleSeleccionMetodoPago = (event) => {
         setMetodoPagoSeleccionado(event.target.value);
-        
+
     }
 
 
@@ -74,7 +78,7 @@ function AsignarPlanModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        
+
 
         if (planSeleccionado === "S") {
             Swal.fire({
@@ -86,7 +90,7 @@ function AsignarPlanModal(props) {
                 icon: 'warning'
             })
 
-        } else if(metodoPagoSeleccionado === "S") {
+        } else if (metodoPagoSeleccionado === "S") {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -96,7 +100,7 @@ function AsignarPlanModal(props) {
                 icon: 'warning'
             })
         } else {
-            
+
             data.cliente = cliente;
 
             data.plan = {
@@ -109,17 +113,12 @@ function AsignarPlanModal(props) {
 
             const fechaActual = new Date();
 
-            // Obtener la fecha actual como una cadena en el formato deseado
-            //const fechaActualFormateada = fechaActual.toLocaleDateString("en-US", { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
-
             data.fecha_inicio = fechaActual;
-
-            const mesesASumar = 3;
 
             const anio = fechaActual.getFullYear();
             const mes = fechaActual.getMonth();
             const dia = fechaActual.getDate();
-            const nuevaFecha = new Date(anio, mes + mesesASumar, dia);
+            const nuevaFecha = new Date(anio, mes + meses, dia);
 
             data.fecha_fin = nuevaFecha;
 
@@ -145,7 +144,6 @@ function AsignarPlanModal(props) {
                 setShowModalAsignarPlan(false);
 
                 const response = await procesarPeticionGet(`clientedetalle/${respuesta.data.id_factura}`);
-                console.log(response)
 
                 onUpdate(response.data.clientedetalle);
 
@@ -173,33 +171,33 @@ function AsignarPlanModal(props) {
                 <TextField name="plan" margin="normal" select label="Plan" onChange={handleSeleccionPlan}
                     fullWidth variant="outlined" value={planSeleccionado} helperText="Por favor seleccione el plan">
                     <MenuItem key="S" value="S">
-                            Seleccionar
+                        Seleccionar
                     </MenuItem>
-                    {planes != null 
+                    {planes != null
                         ? planes.map((plan) => (
                             <MenuItem key={plan.id_plan} value={plan.id_plan}>
-                                {plan.plan + " por " + plan.meses+ (plan.meses==1 ? " mes":" meses")}
+                                {plan.plan + " por " + plan.meses + (plan.meses == 1 ? " mes" : " meses")}
                             </MenuItem>
-                        )) 
-                        : console.log("cargando planes") 
+                        ))
+                        : console.log("cargando planes")
                     }
-                    
+
                 </TextField>
 
                 <TextField name="metodoPago" margin="normal" select label="Método de pago" onChange={handleSeleccionMetodoPago}
                     fullWidth variant="outlined" value={metodoPagoSeleccionado} helperText="Por favor seleccione el metodo de pago">
                     <MenuItem key="S" value="S">
-                            Seleccionar
+                        Seleccionar
                     </MenuItem>
-                    {metodos != null 
+                    {metodos != null
                         ? metodos.map((metodo) => (
                             <MenuItem key={metodo.id_metodopago} value={metodo.id_metodopago}>
                                 {metodo.descripcion}
                             </MenuItem>
-                        )) 
-                        : console.log("cargando metodos de pago") 
+                        ))
+                        : console.log("cargando metodos de pago")
                     }
-                    
+
                 </TextField>
 
 

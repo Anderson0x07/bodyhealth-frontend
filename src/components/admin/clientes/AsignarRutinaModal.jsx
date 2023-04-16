@@ -23,7 +23,7 @@ import { LoadingButton } from '@mui/lab';
 
 function AsignarRutinaModal(props) {
 
-    const { cliente, showModalAsignarRutina, setShowModalAsignarRutina } = props;
+    const { cliente, showModalAsignarRutina, setShowModalAsignarRutina, onUpdate } = props;
 
     const [loading, setLoading] = useState(false);
 
@@ -104,11 +104,10 @@ function AsignarRutinaModal(props) {
                     icon: 'success'
                 })
                 setShowModalAsignarRutina(false);
+                
+                const response = await procesarPeticionGet(`clienterutina/${respuesta.data.id_clienterutina}`);
 
-                //const response = await procesarPeticionGet(`clienterutina/${respuesta.data.id_clienterutina}`);
-                //console.log(response)
-
-                //onUpdate(response.data.clienterutina);
+                onUpdate(response.data.clienterutina);
 
             } catch (error) {
                 setLoading(false);

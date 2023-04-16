@@ -76,11 +76,12 @@ function Cliente() {
     }
 
     const handleActualizarAsignacionPlan = (asignacionPlanActualizada) => {
-        setClienteDetalles(asignacionPlanActualizada);
+        setClienteDetalles(prevState => [...prevState, asignacionPlanActualizada]);
     }
 
     const handleActualizarAsignacionRutina = (asignacionRutinaActualizada) => {
-        setClienteRutinas(asignacionRutinaActualizada)
+        setClienteRutinas(prevState => [...prevState, asignacionRutinaActualizada]);
+
     }
 
 
@@ -142,13 +143,7 @@ function Cliente() {
                             : false
                         }
 
-                        {clienteRutinas.length > 0
-                            ?
-                            <MenuItem onClick={() => setShowModalEditarAsignacionRutina(true)} sx={{ typography: 'body2' }}>
-                                <DriveFileRenameOutlineTwoToneIcon />Cambiar rutina
-                            </MenuItem>
-                            : false
-                        }
+                        
 
 
 
@@ -380,7 +375,7 @@ function Cliente() {
                     cliente={cliente}
                     showModalAsignarRutina={showModalAsignarRutina}
                     setShowModalAsignarRutina={setShowModalAsignarRutina}
-                    
+                    onUpdate={handleActualizarAsignacionRutina}
                 />
             )}
 

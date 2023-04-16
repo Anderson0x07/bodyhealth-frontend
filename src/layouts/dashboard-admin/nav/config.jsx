@@ -79,6 +79,11 @@ const navConfig = [
     icon: <ReceiptTwoToneIcon/>,
   },
   {
+    title: 'horarios',
+    path: '/admin/dashboard/horarios',
+    icon: <PaymentTwoToneIcon/>,
+  },
+  {
     title: 'configuracion',
     path: '/admin/dashboard/configuracion',
     icon: <HandymanRoundedIcon/>,

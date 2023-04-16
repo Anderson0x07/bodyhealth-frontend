@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -17,10 +15,8 @@ import {
     TablePagination,
     TableRow,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
-import { procesarPeticionPdf } from '../../../utils/HandleApi';
 
 // ----------------------------------------------------------------------
 
@@ -56,11 +52,10 @@ function VerControlFisicoModal(props) {
 
     return (
         <Dialog open={showModalControlesCliente} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
-            <DialogTitle>Compras realizadas</DialogTitle>
+            <DialogTitle>Controles Físicos</DialogTitle>
             <DialogContent>
 
                 <Container>
-
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
@@ -119,11 +114,8 @@ function VerControlFisicoModal(props) {
                     />
                 </Container>
 
-
-
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}

@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -30,7 +28,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function VerPlanesCompradosModal(props) {
 
     const { clienteDetalles, showModalPlanesCliente, setShowModalPlanesCliente } = props;
-    const [loading, setLoading] = useState(false);
     const [loadingPdf, setLoadingPdf] = useState(false);
 
     const [page, setPage] = useState(0);
@@ -155,12 +152,9 @@ function VerPlanesCompradosModal(props) {
 
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >

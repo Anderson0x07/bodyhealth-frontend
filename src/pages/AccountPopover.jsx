@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react';
 // @mui
-import { alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
-function AccountPopover({ admin }) {
+function AccountPopover({ cliente }) {
 
   const navigate = useNavigate();
 
@@ -24,8 +24,9 @@ function AccountPopover({ admin }) {
   }
 
   const handleMiPerfil = () => {
-    navigate("/admin/dashboard/mi-perfil");
-    setOpen(null);
+    console.log("MI PERFIL cliente")
+    console.log(cliente)
+    navigate("/home/mi-perfil")
   }
 
 
@@ -36,6 +37,14 @@ function AccountPopover({ admin }) {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const StyledAccount = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(2, 2.5),
+    borderRadius: Number(theme.shape.borderRadius) * 1.5,
+    backgroundColor: alpha(theme.palette.grey[500], 0.12),
+  }));
 
   return (
     <>
@@ -52,20 +61,24 @@ function AccountPopover({ admin }) {
                 height: '100%',
                 borderRadius: '50%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
               },
             }),
           }}
         >
-          <Avatar src={url + admin.foto} alt="photoURL" />
+          <StyledAccount>
+            <Avatar src={url + cliente.foto} alt="photoURL" />
+            <Typography variant="subtitle2" noWrap>
+              {cliente.nombre + " " + cliente.apellido}
+            </Typography>
+          </StyledAccount>
         </IconButton>
 
         <Popover
           open={Boolean(open)}
           anchorEl={open}
           onClose={handleClose}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           PaperProps={{
             sx: {
               p: 0,
@@ -81,10 +94,10 @@ function AccountPopover({ admin }) {
         >
           <Box sx={{ my: 1.5, px: 2.5 }}>
             <Typography variant="subtitle2" noWrap>
-              {admin.nombre + " " + admin.apellido}
+              {cliente.nombre + " " + cliente.apellido}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-              {admin.email}
+              {cliente.email}
             </Typography>
           </Box>
 
@@ -93,7 +106,7 @@ function AccountPopover({ admin }) {
           <Stack sx={{ p: 1 }}>
 
             <MenuItem onClick={() => {
-              navigate("/admin/dashboard/home");
+              navigate("/home");
               setOpen(null);
             }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>

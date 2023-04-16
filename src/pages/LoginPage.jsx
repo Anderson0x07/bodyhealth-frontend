@@ -88,21 +88,21 @@ function LoginPage() {
 
             setLoading(false);
 
-            
 
-            if(response.data.rol === "ROLE_ADMIN") {
+
+            if (response.data.rol === "ROLE_ADMIN") {
                 navigate('/admin/dashboard/home', { replace: true });
                 window.location.reload();
-            } 
+            }
             if (response.data.rol === "ROLE_TRAINER") {
                 navigate('/entrenador/dashboard/home', { replace: true });
                 window.location.reload();
             }
             if (response.data.rol === "ROLE_CLIENTE") {
-                navigate('/cliente/dashboard/home', { replace: true });
+                navigate('/home', { replace: true });
                 window.location.reload();
             }
-            
+
 
 
         } catch (error) {
@@ -131,7 +131,7 @@ function LoginPage() {
 
                         <Typography variant="body2" sx={{ mb: 5 }}>
                             ¿No tienes cuenta? {''}
-                            <Link variant="subtitle2">Registrate aquí</Link>
+                            <Link variant="subtitle2" onClick={() => navigate("/registro")}>Registrate aquí</Link>
                         </Typography>
 
                         <Stack direction="row" spacing={2}>
