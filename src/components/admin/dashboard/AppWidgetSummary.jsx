@@ -20,13 +20,7 @@ const StyledIcon = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-AppWidgetSummary.propTypes = {
-  color: PropTypes.string,
-  icon: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
-  sx: PropTypes.object,
-};
+
 
 function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
   return (
@@ -53,7 +47,7 @@ function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other 
       >
       </StyledIcon>
 
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
+      <Typography variant="h4">{total}</Typography>
 
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         {title}

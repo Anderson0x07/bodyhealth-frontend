@@ -63,7 +63,7 @@ function RutasRoles() {
                 try {
                     const response = await procesarPeticionGet(`usuario/login/${encodeURIComponent(email)}`);
                     setUsuario(response.data.usuario);
-                    console.log(response)
+                    
                 } catch (error) {
                     localStorage.clear();
                 }
@@ -102,7 +102,7 @@ function RutasRoles() {
                     {/* RUTAS PARA ADMINISTRADOR PROTEGIDAS */}
                     <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "ADMIN"} redirectTo="/home" />}>
                         <Route path='/admin/dashboard' element={<DashboardAdmin admin={usuario} />}>
-                            <Route exact path="home" element={<HomeAdmin />} />
+                            <Route exact path="home" element={<HomeAdmin admin={usuario} />} />
                             <Route exact path="clientes" element={<Clientes />} />
                             <Route exact path="clientes/:id" element={<Cliente />} />
                             <Route exact path="entrenadores" element={<Entrenadores />} />
@@ -134,7 +134,7 @@ function RutasRoles() {
                     {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
                     <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
                         <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
-                            <Route exact path="home" element={<HomeEntrenador />} />
+                            <Route exact path="home" element={<HomeEntrenador entrenador={usuario}/>} />
                             <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
                             <Route exact path="clientes/:id" element={<ClienteEntrenador />} />
                             <Route exact path="musculos" element={<MusculosEntrenador />} />
