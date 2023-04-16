@@ -1,5 +1,5 @@
 import { Container } from '@mui/material';
-import ProveedorList from '../../../components/admin/proveedores/proveedorList';
+import ProveedorList from '../../../components/admin/proveedores/ProveedorList';
 
 function Proveedores() {
   return (
