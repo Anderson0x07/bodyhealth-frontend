@@ -170,7 +170,7 @@ function RutasRoles() {
 
                         {/* PAGINA HOME */}
                         <Route element={<ProtectedRouteAdmin isAllowed={localStorage.length == 0} redirectTo="/bodyhealth-frontend/home" />}>
-                            <Route path="/bodyhealth-frontend/" index element={<Home />} />
+                            <Route path="/bodyhealth-frontend/" element={<Home />} />
                         </Route>
                         
                         <Route path='/bodyhealth-frontend/*' element={<Page404 />} />
