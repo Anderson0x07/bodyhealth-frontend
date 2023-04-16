@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://bodyhealthweb-env.eba-pmkeid5t.us-east-1.elasticbeanstalk.com";
+const API_BASE_URL = "https://www.antech-software.com";
 const token = localStorage.getItem('token');
 const config = {
   headers: { Authorization: `Bearer ${token}` }
