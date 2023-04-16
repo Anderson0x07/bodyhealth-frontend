@@ -24,8 +24,7 @@ function AccountPopover({ entrenador }) {
   }
 
   const handleMiPerfil = () => {
-    console.log("MI PERFIL entrenador")
-    console.log(entrenador)
+    navigate("/entrenador/dashboard/mi-perfil")
   }
 
 

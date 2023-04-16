@@ -48,6 +48,8 @@ import ProductosCliente from '../pages/cliente/ProductosCliente';
 import { ShoppingCartProvider } from '../components/cliente/carrito/ShoppingCartContext';
 import CarritoCliente from '../pages/cliente/CarritoCliente';
 import HorarioAdmin from '../pages/admin/HorarioAdmin';
+import MiPerfilEntrenador from '../pages/entrenador/MiPerfilEntrenador';
+import RegistroClienteModal from '../pages/RegistroClienteModal';
 
 
 
@@ -149,7 +151,7 @@ function RutasRoles() {
                                 <Route exact path="ejercicios/:id" element={<EjercicioEntrenador />} />
                                 <Route exact path="rutinas" element={<RutinasEntrenador />} />
                                 <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
-                                <Route exact path="mi-perfil" element={<div>Mi perfil</div>} />
+                                <Route exact path="mi-perfil" element={<MiPerfilEntrenador entrenador={usuario}/>} />
                                 <Route exact path="horario" element={<Horario entrenador={usuario}/>} />
                             </Route>
                         </Route>

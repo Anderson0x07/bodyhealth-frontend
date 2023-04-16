@@ -157,7 +157,7 @@ function ClienteList() {
     return (
         <>
             <Container>
-                {status !== 200 && (
+                {status !== 200  && (
                     <Alert sx={{marginBottom: '50px'}} variant="outlined" severity="error">
                         <AlertTitle>Error</AlertTitle>
                         {error} 

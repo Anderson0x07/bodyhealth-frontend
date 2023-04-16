@@ -29,8 +29,7 @@ function MiPerfil({ cliente }) {
     const [showModalVerEntrenador, setShowModalVerEntrenador] = useState(false);
     const [showModalComentario, setShowModalComentario] = useState(false);
 
-    
-
+    const [changePassword, setChangePassword] = useState(false);
 
 
     const [clienteDetalles, setClienteDetalles] = useState(cliente.clienteDetalles);
@@ -41,6 +40,7 @@ function MiPerfil({ cliente }) {
 
 
     const handleActualizarPerfil = (infoActualizada) => {
+        infoActualizada.fecha_nacimiento = infoActualizada.fecha_nacimiento.slice(0, 10);
         setData(infoActualizada)
     }
 
@@ -76,8 +76,10 @@ function MiPerfil({ cliente }) {
         <>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
                 <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarPerfil(true)}>Editar Información</Button>
-                <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
-                <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>
+
+                {!changePassword ?
+                    <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
+                    : <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>}
             </Stack>
 
             {cliente.clienteDetalles.length > 0 && obtenerDiferenciaDias(cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_fin) > 0

@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2'
-import { 
-    Avatar, 
-    Button, 
-    Dialog, 
-    DialogActions, 
-    DialogContent, 
-    DialogTitle, 
-    FormControl, 
-    Grid, 
-    IconButton, 
-    InputAdornment, 
-    InputLabel, 
-    MenuItem, 
-    OutlinedInput, 
-    TextField } from '@mui/material';
+import {
+    Avatar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    Grid,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    TextField
+} from '@mui/material';
 import { PhotoCamera, Visibility, VisibilityOff, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { esMayorDe15 } from '../../../utils/esMayorDe15';
 
 
 function AgregarClienteModal(props) {
@@ -29,6 +31,7 @@ function AgregarClienteModal(props) {
     const [previsualizar, setPrevisualizar] = useState('');
 
     const [loading, setLoading] = useState(false);
+
 
     const [tipoDoc, setTipoDoc] = useState("Seleccionar");
     const [jornada, setJornada] = useState("Seleccionar");
@@ -57,9 +60,10 @@ function AgregarClienteModal(props) {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
+
     const handleTipoDoc = (event) => {
         setTipoDoc(event.target.value);
-        
+
     }
     const handleJornada = (event) => {
         setJornada(event.target.value);
@@ -75,7 +79,7 @@ function AgregarClienteModal(props) {
 
         console.log(data);
 
-        if(tipoDoc === 'Seleccionar') {
+        if (tipoDoc === 'Seleccionar') {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -93,11 +97,20 @@ function AgregarClienteModal(props) {
                 text: 'Debe seleccionar una jornada',
                 icon: 'warning'
             })
-    
+
+        } else if (!esMayorDe15(data.fecha_nacimiento)) {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debes ser mayor a 15 años',
+                icon: 'warning'
+            })
+
         } else {
             setLoading(true);
             data.estado = false;
-            data.comentario = "hola";
 
             data.tipo_documento = tipoDoc;
             data.jornada = jornada;
@@ -105,10 +118,10 @@ function AgregarClienteModal(props) {
                 id_rol: 2
             }
 
-            if(image != ""){
+            if (image != "") {
                 data.foto = image + " " + fileName;
             } else {
-                data.foto="";
+                data.foto = "";
             }
 
             try {
@@ -141,7 +154,7 @@ function AgregarClienteModal(props) {
                     text: error.response.data.error,
                     icon: 'error'
                 })
-            }   
+            }
         }
 
     }

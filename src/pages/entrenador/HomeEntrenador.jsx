@@ -27,16 +27,16 @@ function HomeEntrenador({entrenador}) {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          ¡Hola {info.nombre}! <br></br> Aquí puedes ver información relacionada a ti y a la empresa.
+          ¡Hola {entrenador.nombre+" "+entrenador.apellido}! <br></br> Aquí puedes ver información relacionada a ti y a la empresa.
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Clientes Asigandos" total={info.clientes} icon={'ant-design:android-filled'} />
+            <AppWidgetSummary title="Clientes Asignados" total={info.clientes} icon={'ant-design:android-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Total Rutinas" total={info.rutinas} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="Total Rutinas Disponibles" total={info.rutinas} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>

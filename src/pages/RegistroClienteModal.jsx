@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2'
 import {
     Avatar,
@@ -19,11 +18,16 @@ import {
 } from '@mui/material';
 import { PhotoCamera, Visibility, VisibilityOff, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { esMayorDe18 } from '../../../utils/esMayorDe15';
+import { useNavigate } from 'react-router-dom';
+import { esMayorDe15 } from '../utils/esMayorDe15';
+import { procesarPeticionPost } from '../utils/HandleApi';
 
-function AgregarEntrenadorModal(props) {
 
-    const { showModal, setShowModal, agregarEntrenador } = props;
+function RegistroClienteModal(props) {
+
+    const navigate = useNavigate();
+
+    const { showModal, setShowModal } = props;
 
     const [data, setData] = useState({});
     const [fileName, setFileName] = useState(null);
@@ -31,6 +35,7 @@ function AgregarEntrenadorModal(props) {
     const [previsualizar, setPrevisualizar] = useState('');
 
     const [loading, setLoading] = useState(false);
+
 
     const [tipoDoc, setTipoDoc] = useState("Seleccionar");
     const [jornada, setJornada] = useState("Seleccionar");
@@ -59,6 +64,7 @@ function AgregarEntrenadorModal(props) {
         setData({ ...data, [event.target.name]: event.target.value });
     };
 
+
     const handleTipoDoc = (event) => {
         setTipoDoc(event.target.value);
 
@@ -71,8 +77,10 @@ function AgregarEntrenadorModal(props) {
         setShowModal(false);
     };
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
 
         if (tipoDoc === 'Seleccionar') {
             Swal.fire({
@@ -93,24 +101,24 @@ function AgregarEntrenadorModal(props) {
                 icon: 'warning'
             })
 
-        } else if (!esMayorDe18(data.fecha_nacimiento)) {
+        } else if (!esMayorDe15(data.fecha_nacimiento)) {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
                 },
                 title: 'Atención',
-                text: 'Debes ser mayor a 18 años',
+                text: 'Debes ser mayor a 15 años',
                 icon: 'warning'
             })
 
         } else {
             setLoading(true);
-            data.estado = true;
-            data.hoja_vida = "hoja.pdf"
+            data.estado = false;
+
             data.tipo_documento = tipoDoc;
             data.jornada = jornada;
             data.rol = {
-                id_rol: 3
+                id_rol: 2
             }
 
             if (image != "") {
@@ -119,9 +127,12 @@ function AgregarEntrenadorModal(props) {
                 data.foto = "";
             }
 
-            try {
+            console.log("******")
+            console.log(data)
 
-                const respuesta = await procesarPeticionPost(`entrenador/guardar`, data);
+            try {
+                const respuesta = await procesarPeticionPost(`cliente/guardar`, data);
+                console.log(respuesta)
                 setLoading(false);
 
                 Swal.fire({
@@ -129,14 +140,13 @@ function AgregarEntrenadorModal(props) {
                         container: 'my-swal'
                     },
                     title: 'Información',
-                    text: respuesta.data.message,
+                    text: 'Cuenta creada con éxito',
                     icon: 'success'
                 })
 
                 setShowModal(false);
 
-                const response = await procesarPeticionGet("entrenador/all");
-                agregarEntrenador(response.data.entrenadores);
+                navigate("/login");
 
             } catch (error) {
                 setLoading(false);
@@ -147,7 +157,7 @@ function AgregarEntrenadorModal(props) {
                         container: 'my-swal'
                     },
                     title: 'Atención',
-                    text: error.response.data.error,
+                    text: error,
                     icon: 'error'
                 })
             }
@@ -155,10 +165,10 @@ function AgregarEntrenadorModal(props) {
 
     }
 
-
     return (
+
         <Dialog open={showModal} onClose={handleCancelar} >
-            <DialogTitle>Nuevo entrenador</DialogTitle>
+            <DialogTitle>Crear Cuenta</DialogTitle>
             <DialogContent>
 
                 <Grid container spacing={2}>
@@ -192,12 +202,6 @@ function AgregarEntrenadorModal(props) {
 
                 <TextField margin="normal" type="email" name="email" label="Email"
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su email" />
-
-                <TextField margin="normal" type="text" name="experiencia" label="Experiencia"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la experiencia" />
-
-                <TextField margin="normal" type="text" name="titulo_academico" label="Titulo academico"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su titulo academico" />
 
                 <FormControl margin="normal" fullWidth variant="outlined" >
                     <InputLabel htmlFor="pass">Contraseña</InputLabel>
@@ -251,11 +255,14 @@ function AgregarEntrenadorModal(props) {
                     startIcon={<Save />}
                     variant="contained"
                 >
-                    Guardar
+                    Crear cuenta
                 </LoadingButton>
             </DialogActions>
         </Dialog>
-    )
+
+    );
 }
 
-export default AgregarEntrenadorModal
+export default RegistroClienteModal;
+
+

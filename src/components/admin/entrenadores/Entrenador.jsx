@@ -93,6 +93,7 @@ function Entrenador() {
         setOpen(null);
     };
     const handleUpdate = (updatedData) => {
+        updatedData.fecha_nacimiento = updatedData.fecha_nacimiento.slice(0, 10);
         setEntrenador(updatedData)
     }
 

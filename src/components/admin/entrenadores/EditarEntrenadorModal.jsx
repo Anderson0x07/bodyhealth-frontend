@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { esMayorDe18 } from '../../../utils/esMayorDe15';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -71,6 +72,16 @@ function EditarEntrenadorModal(props) {
         icon: 'warning'
       })
 
+    } else if (!esMayorDe18(data.fecha_nacimiento)) {
+      Swal.fire({
+        customClass: {
+          container: 'my-swal'
+        },
+        title: 'Atención',
+        text: 'Debes ser mayor a 18 años',
+        icon: 'warning'
+      })
+
     } else {
       data.jornada = jornada;
 
@@ -93,6 +104,7 @@ function EditarEntrenadorModal(props) {
         })
 
         setShowModalEditarEntrenador(false);
+        console.log("hola")
         onUpdate(respuesta.data.entrenador);
 
       } catch (error) {

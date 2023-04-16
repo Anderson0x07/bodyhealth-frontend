@@ -10,12 +10,16 @@ import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
 import AccountPopover from "./AccountPopover";
 import { CartContext } from "../components/cliente/carrito/ShoppingCartContext";
+import RegistroClienteModal from "./RegistroClienteModal";
+import { truncate } from "lodash";
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg";
 
 function Navbar({ cliente }) {
 
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
 
   const [mobileMenu, setMobileMenu] = useState({
     left: false,
@@ -153,7 +157,7 @@ function Navbar({ cliente }) {
           >
             <NavLink variant="body2" onClick={() => navigate("/login")}>Iniciar sesión</NavLink>
 
-            <div onClick={() => navigate("/registro")}>
+            <div onClick={() => setShowModal(true)}>
               <CustomButton
                 backgroundColor="#0F1B4C"
                 color="#fff"
@@ -164,6 +168,13 @@ function Navbar({ cliente }) {
         }
 
       </NavbarContainer>
+
+      {showModal && (
+        <RegistroClienteModal
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
 
     </div>
   )

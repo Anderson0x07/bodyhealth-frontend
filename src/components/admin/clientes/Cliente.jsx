@@ -68,6 +68,7 @@ function Cliente() {
 
 
     const handleActualizarCliente = (clienteActualizado) => {
+        clienteActualizado.fecha_nacimiento = clienteActualizado.fecha_nacimiento.slice(0, 10);
         setCliente(clienteActualizado)
     }
 

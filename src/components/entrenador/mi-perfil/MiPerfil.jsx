@@ -1,23 +1,22 @@
 import React, { useState } from 'react'
 import { Avatar, Button, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material'
 import { Edit } from '@mui/icons-material';
-import EditarPerfilAdminModal from './EditarPerfilModal';
+import EditarPerfilEntrenador from './EditarPerfilModal';
 import CambiarPasswordModal from './CambiarPasswordModal';
 import Swal from 'sweetalert2';
 import { procesarPeticionPost } from '../../../utils/HandleApi';
+import EditarPerfilEntrenadorModal from './EditarPerfilModal';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
-function MiPerfil({ admin }) {
+function MiPerfil({ entrenador }) {
 
-    const [data, setData] = useState(admin);
+    const [data, setData] = useState(entrenador);
 
     const [showModalEditarPerfil, setShowModalEditarPerfil] = useState(false);
     const [showModalCambioPassword, setShowModalCambioPassword] = useState(false);
-
     const [changePassword, setChangePassword] = useState(false);
-
 
     const handleActualizarPerfil = (infoActualizada) => {
         infoActualizada.fecha_nacimiento = infoActualizada.fecha_nacimiento.slice(0, 10);
@@ -27,7 +26,7 @@ function MiPerfil({ admin }) {
     const handleTokenPassword = async () => {
 
         try {
-            const respuesta = await procesarPeticionPost(`admin/restablecer-password/${admin.id_usuario}`);
+            const respuesta = await procesarPeticionPost(`entrenador/restablecer-password/${entrenador.id_usuario}`);
 
             Swal.fire({
                 customClass: {
@@ -37,6 +36,8 @@ function MiPerfil({ admin }) {
                 text: respuesta.data.message,
                 icon: 'success'
             })
+
+            setChangePassword(true);
 
         } catch (error) {
             console.log(error)
@@ -59,6 +60,8 @@ function MiPerfil({ admin }) {
                 {!changePassword ?
                     <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
                     : <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>}
+
+
             </Stack>
 
             <div style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -93,11 +96,19 @@ function MiPerfil({ admin }) {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='clave'>Fecha de nacimiento</TableCell>
-                                    <TableCell className='value' align="right">{data.fecha_nacimiento}</TableCell>
+                                    <TableCell className='value' align="right">{data.fecha_nacimiento+""}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='clave'>Email</TableCell>
                                     <TableCell className='value' align="right">{data.email}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className='clave'>Jornada</TableCell>
+                                    <TableCell className='value' align="right">{data.jornada}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className='clave'>Titulo académico</TableCell>
+                                    <TableCell className='value' align="right">{data.titulo_academico}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -107,8 +118,8 @@ function MiPerfil({ admin }) {
 
             {/* MODAL PARA EDITAR LA INFO */}
             {showModalEditarPerfil && (
-                <EditarPerfilAdminModal
-                    admin={data}
+                <EditarPerfilEntrenadorModal
+                    entrenador={data}
                     showModalEditarPerfil={showModalEditarPerfil}
                     setShowModalEditarPerfil={setShowModalEditarPerfil}
                     onUpdate={handleActualizarPerfil}
@@ -118,7 +129,7 @@ function MiPerfil({ admin }) {
             {/* MODAL PARA CAMBIAR CONTRASEÑA */}
             {showModalCambioPassword && (
                 <CambiarPasswordModal
-                    admin={data}
+                    entrenador={data}
                     showModalCambioPassword={showModalCambioPassword}
                     setShowModalCambioPassword={setShowModalCambioPassword}
                 />
