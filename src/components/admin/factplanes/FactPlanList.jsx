@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { procesarPeticionGet } from "../../../utils/HandleApi";
+import { procesarPeticionGet, procesarPeticionPdf } from "../../../utils/HandleApi";
 
 import { filter } from 'lodash';
 // @mui
@@ -90,8 +90,18 @@ function FactPlanList() {
   const navigate = useNavigate();
 
 
-  const handleVerFactura = (id_factura) => {
-    console.log("gereando factura")
+  const handleVerFactura = async (id_factura) => {
+    try {
+      const response = await procesarPeticionPdf(`clientedetalle/pdf/${id_factura}`)
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleRequestSort = (event, property) => {

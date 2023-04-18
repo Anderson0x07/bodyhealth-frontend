@@ -12,6 +12,7 @@ import VerRutinasAsignadasModal from '../../admin/clientes/VerRutinasAsignadasMo
 import VerPlanesCompradosModal from '../../admin/clientes/VerPlanesCompradosModal';
 import VerEntrenadorAsignadoModal from './VerEntrenadorAsignadoModal';
 import ComentarioModal from './ComentarioModal';
+import { LoadingButton } from '@mui/lab';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -30,6 +31,7 @@ function MiPerfil({ cliente }) {
     const [showModalComentario, setShowModalComentario] = useState(false);
 
     const [changePassword, setChangePassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
     const [clienteDetalles, setClienteDetalles] = useState(cliente.clienteDetalles);
@@ -45,6 +47,7 @@ function MiPerfil({ cliente }) {
     }
 
     const handleTokenPassword = async () => {
+        setLoading(true);
 
         try {
             const respuesta = await procesarPeticionPost(`cliente/restablecer-password/${cliente.id_usuario}`);
@@ -58,8 +61,13 @@ function MiPerfil({ cliente }) {
                 icon: 'success'
             })
 
+            setChangePassword(true);
+            setLoading(false);
+
+
         } catch (error) {
-            console.log(error)
+            setLoading(false);
+
 
             Swal.fire({
                 customClass: {
@@ -78,8 +86,28 @@ function MiPerfil({ cliente }) {
                 <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarPerfil(true)}>Editar Información</Button>
 
                 {!changePassword ?
-                    <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
-                    : <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>}
+
+                    <LoadingButton
+                        color="secondary"
+                        onClick={handleTokenPassword}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Solicitar cambio de contraseña
+                    </LoadingButton>
+                    : <LoadingButton
+                        color="secondary"
+                        onClick={() => setShowModalCambioPassword(true)}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Cambiar Contraseña
+                    </LoadingButton>
+                }
             </Stack>
 
             {cliente.clienteDetalles.length > 0 && obtenerDiferenciaDias(cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_fin) > 0

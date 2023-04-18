@@ -48,7 +48,7 @@ function AgregarPlanModal(props) {
                     container: 'my-swal'
                 },
                 title: 'Atención',
-                text: error.response.data.error,
+                text: error.response.data.errors != null ? "Campos obligatorios" : error.response.data.error,
                 icon: 'error'
             })
         }

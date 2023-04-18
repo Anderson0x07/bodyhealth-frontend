@@ -26,17 +26,16 @@ function SeleccionProductoCantidadModal(props) {
     const handleAgregarProducto = () => {
         setCart((currItems) => {
             const isItemsFound = currItems.find((item) => item.id_producto === producto.id_producto);
+            
             if (isItemsFound) {
                 return currItems.map((item) => {
                     if (item.id_producto === producto.id_producto) {
-                        console.log(item.cantidad)
                         return { ...item, cantidad: item.cantidad + cantidad};
                     } else {
                         return item;
                     }
                 });
             } else {
-                console.log(cantidad)
                 return [...currItems, { 
                     id_producto: producto.id_producto, 
                     foto: producto.foto,
@@ -45,8 +44,6 @@ function SeleccionProductoCantidadModal(props) {
                 }];
             }
         });
-
-        console.log(cart)
 
         Swal.fire({
             customClass: {
@@ -57,9 +54,9 @@ function SeleccionProductoCantidadModal(props) {
             icon: 'success'
         })
 
-        setShowModalAgregarProducto(false);
+        producto.stock -= cantidad;
 
-        navigate("/home/carrito");
+        setShowModalAgregarProducto(false);
 
     }
 

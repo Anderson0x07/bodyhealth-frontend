@@ -48,7 +48,6 @@ export const CarritoCompras = ({ cliente }) => {
   }, []);
 
   const handleMetodo = (event) => {
-    console.log("Metodo seleccionado: --")
     setMetodoPagoSeleccionado(event.target.value);
   }
 
@@ -82,8 +81,6 @@ export const CarritoCompras = ({ cliente }) => {
 
       setLoading(true);
 
-      console.log("D-A-T-A DE LA COMPRA")
-      console.log(data)
 
       try {
         const respuesta = await procesarPeticionPost("compra/guardar", data);
@@ -103,7 +100,10 @@ export const CarritoCompras = ({ cliente }) => {
           try {
             const respuesta = await procesarPeticionPost(`pedido/guardar`, pedido);
             const res = await procesarPeticionPut(`producto/compra/${cart[i].id_producto}/${cart[i].cantidad}`);
-            console.log(respuesta)
+            console.log(respuesta);
+            setLoading(false);
+
+            setCart([]);
 
           } catch (error) {
             console.log(error);

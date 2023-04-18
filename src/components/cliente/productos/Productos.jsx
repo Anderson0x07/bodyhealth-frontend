@@ -37,7 +37,6 @@ function Productos() {
     const getProductos = async () => {
         try {
             const response = await procesarPeticionGet("producto/activos");
-            console.log(response);
             setProductos(response.data.productos);
         } catch (error) {
             console.log(error)

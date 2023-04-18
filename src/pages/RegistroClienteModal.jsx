@@ -127,7 +127,6 @@ function RegistroClienteModal(props) {
                 data.foto = "";
             }
 
-            console.log("******")
             console.log(data)
 
             try {
@@ -157,7 +156,7 @@ function RegistroClienteModal(props) {
                         container: 'my-swal'
                     },
                     title: 'Atención',
-                    text: error,
+                    text: error.response.data.errors != null ? "Campos obligatorios" : error.response.data.error,
                     icon: 'error'
                 })
             }

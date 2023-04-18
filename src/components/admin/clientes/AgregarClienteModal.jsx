@@ -77,7 +77,6 @@ function AgregarClienteModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(data);
 
         if (tipoDoc === 'Seleccionar') {
             Swal.fire({
@@ -144,14 +143,13 @@ function AgregarClienteModal(props) {
 
             } catch (error) {
                 setLoading(false);
-                console.log(error);
 
                 Swal.fire({
                     customClass: {
                         container: 'my-swal'
                     },
                     title: 'Atención',
-                    text: error.response.data.error,
+                    text: error.response.data.errors != null ? "Campos obligatorios" : error.response.data.error,
                     icon: 'error'
                 })
             }
