@@ -99,7 +99,7 @@ function EjerciciosList() {
 
 
     const handleExpandProveedor = (id_ejercicio) => {
-        navigate(`/entrenador/dashboard/ejercicios/${id_ejercicio}`);
+        navigate(`/bodyhealth-frontend/entrenador/dashboard/ejercicios/${id_ejercicio}`);
     };
 
     const handleRequestSort = (event, property) => {

@@ -42,7 +42,7 @@ function Maquina() {
 
 
     const handleBack = () => {
-        navigate(`/admin/dashboard/maquinas`);
+        navigate(`/bodyhealth-frontend/admin/dashboard/maquinas`);
     };
 
 
@@ -75,7 +75,7 @@ function Maquina() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/admin/dashboard/maquinas`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/maquinas`);
                     })
                 }
             })

@@ -68,7 +68,7 @@ function MostrarUsosProveedorModal(props) {
                     }
 
                     ).then(() => {
-                        navigate(`/admin/dashboard/proveedores`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/proveedores`);
                     })
                 }
             })

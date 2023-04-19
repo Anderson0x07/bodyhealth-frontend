@@ -77,7 +77,7 @@ function MostrarUsosMusculoModal(props) {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/admin/dashboard/musculos`);
+                        navigate(`/bodyhealth-frontend/admin/dashboard/musculos`);
                     })
                 }
             })

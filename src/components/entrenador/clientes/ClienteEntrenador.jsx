@@ -170,7 +170,7 @@ function ClienteEntrenador() {
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/entrenador/dashboard/clientes`)}>Atras</Button>
+                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/bodyhealth-frontend/entrenador/dashboard/clientes`)}>Atras</Button>
                     </Grid>
 
 

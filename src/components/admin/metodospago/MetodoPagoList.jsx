@@ -153,7 +153,7 @@ function MetodoPagoList() {
                         }).then(async () => {
                             const response = await procesarPeticionGet("metodopago/all");
                             setMetodos(response.data.metodospago);
-                            navigate(`/admin/dashboard/metodospago`);
+                            navigate(`/bodyhealth-frontend/admin/dashboard/metodospago`);
                         })
                     }
                 })

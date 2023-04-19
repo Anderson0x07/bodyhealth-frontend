@@ -52,7 +52,7 @@ function EjercicioEntrenador() {
 
 
     const handleBack = () => {
-        navigate(`/entrenador/dashboard/ejercicios`);
+        navigate(`/bodyhealth-frontend/entrenador/dashboard/ejercicios`);
     };
 
 

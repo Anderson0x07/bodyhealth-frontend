@@ -91,15 +91,15 @@ function LoginPage() {
 
 
             if (response.data.rol === "ROLE_ADMIN") {
-                navigate('/admin/dashboard/home', { replace: true });
+                navigate('/bodyhealth-frontend/admin/dashboard/home', { replace: true });
                 window.location.reload();
             }
             if (response.data.rol === "ROLE_TRAINER") {
-                navigate('/entrenador/dashboard/home', { replace: true });
+                navigate('/bodyhealth-frontend/entrenador/dashboard/home', { replace: true });
                 window.location.reload();
             }
             if (response.data.rol === "ROLE_CLIENTE") {
-                navigate('/home', { replace: true });
+                navigate('/bodyhealth-frontend/home', { replace: true });
                 window.location.reload();
             }
 
