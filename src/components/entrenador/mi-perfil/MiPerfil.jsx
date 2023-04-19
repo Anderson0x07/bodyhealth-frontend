@@ -6,6 +6,7 @@ import CambiarPasswordModal from './CambiarPasswordModal';
 import Swal from 'sweetalert2';
 import { procesarPeticionPost } from '../../../utils/HandleApi';
 import EditarPerfilEntrenadorModal from './EditarPerfilModal';
+import { LoadingButton } from '@mui/lab';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -17,6 +18,7 @@ function MiPerfil({ entrenador }) {
     const [showModalEditarPerfil, setShowModalEditarPerfil] = useState(false);
     const [showModalCambioPassword, setShowModalCambioPassword] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleActualizarPerfil = (infoActualizada) => {
         infoActualizada.fecha_nacimiento = infoActualizada.fecha_nacimiento.slice(0, 10);
@@ -24,6 +26,8 @@ function MiPerfil({ entrenador }) {
     }
 
     const handleTokenPassword = async () => {
+
+        setLoading(true);
 
         try {
             const respuesta = await procesarPeticionPost(`entrenador/restablecer-password/${entrenador.id_usuario}`);
@@ -36,11 +40,15 @@ function MiPerfil({ entrenador }) {
                 text: respuesta.data.message,
                 icon: 'success'
             })
+            setLoading(false);
+
 
             setChangePassword(true);
 
         } catch (error) {
             console.log(error)
+            setLoading(false);
+
 
             Swal.fire({
                 customClass: {
@@ -58,8 +66,28 @@ function MiPerfil({ entrenador }) {
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
                 <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarPerfil(true)}>Editar Información</Button>
                 {!changePassword ?
-                    <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
-                    : <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>}
+
+                    <LoadingButton
+                        color="secondary"
+                        onClick={handleTokenPassword}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Solicitar cambio de contraseña
+                    </LoadingButton>
+                    : <LoadingButton
+                        color="secondary"
+                        onClick={() => setShowModalCambioPassword(true)}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Cambiar Contraseña
+                    </LoadingButton>
+                }
 
 
             </Stack>
@@ -96,7 +124,7 @@ function MiPerfil({ entrenador }) {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='clave'>Fecha de nacimiento</TableCell>
-                                    <TableCell className='value' align="right">{data.fecha_nacimiento+""}</TableCell>
+                                    <TableCell className='value' align="right">{data.fecha_nacimiento + ""}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell className='clave'>Email</TableCell>

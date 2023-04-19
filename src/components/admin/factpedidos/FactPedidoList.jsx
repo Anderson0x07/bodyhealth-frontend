@@ -88,12 +88,10 @@ function FactPedidoList() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const navigate = useNavigate();
 
 
   const handleGenerarFactura = async (id_compra) => {
 
-    setLoadingPdf(true);
     try {
       const response = await procesarPeticionPdf(`pedido/pdf/${id_compra}`)
 
@@ -101,11 +99,9 @@ function FactPedidoList() {
       const url = URL.createObjectURL(blob);
       window.open(url);
 
-      setLoadingPdf(false);
 
     } catch (error) {
       console.log(error);
-      setLoadingPdf(false);
     }
 
   };

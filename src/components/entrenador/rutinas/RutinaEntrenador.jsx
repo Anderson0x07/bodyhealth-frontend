@@ -4,11 +4,9 @@ import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from
 //import EditarRutinaModal from './EditarRutinaModal';
 import Swal from 'sweetalert2';
 //import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, Delete, DriveFileRenameOutlineTwoTone, Edit, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
-import Label from '../../admin/dashboard/label/Label';
-import { Avatar, Badge, Button, Card, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { ArrowBack, Edit, RemoveRedEye } from '@mui/icons-material';
+import { Avatar, Button, Container, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarRutinaModal from './EditarRutinaModal';
-import logo from '../../../assets/Logo-BodyHealth.jpeg';
 import MostrarRutinaEjerciciosModal from './MostrarRutinaEjerciciosModal';
 import MostrarClienteRutinasModal from './MostrarClienteRutinasModal';
 import MostrarUsosRutinaModal from './MostrarUsosRutinaModal';
@@ -28,7 +26,6 @@ function RutinaEntrenador() {
     const [rutinaEjercicios, setRutinaEjercicios] = useState([]);
     const [clienteRutinas, setClienteRutinas] = useState([]);
 
-    const [open, setOpen] = useState(null);
 
     const navigate = useNavigate();
 
@@ -63,58 +60,6 @@ function RutinaEntrenador() {
         console.log(updatedData)
         setRutina(updatedData)
     }
-
-    const handleDelete = () => {
-        try {
-
-            Swal.fire({
-                title: 'Atención',
-                text: "¿Está seguro que desea eliminar el rutina?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, elimínalo',
-                customClass: {
-                    container: 'my-swal'
-                }
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    const response = await procesarPeticionDelete(`rutina/eliminar/${id}`);
-                    Swal.fire({
-                        title: 'Información',
-                        text: response.data.message,
-                        icon: 'success',
-                        customClass: {
-                            container: 'my-swal'
-                        }
-                    }
-
-                    ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
-                    })
-                }
-            })
-
-        } catch (error) {
-            Swal.fire({
-                title: 'Atención',
-                text: error.response.data.error,
-                icon: 'error',
-                customClass: {
-                    container: 'my-swal'
-                }
-            });
-        }
-    };
-
-    const handleOpenMenu = (event) => {
-        setOpen(event.currentTarget);
-    };
-
-    const handleCloseMenu = () => {
-        setOpen(null);
-    };
 
 
     return (

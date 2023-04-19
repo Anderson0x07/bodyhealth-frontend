@@ -2,8 +2,6 @@ import React from 'react'
 import { Box, Container, Typography } from '@mui/material'
 
 import Navbar from '../Navbar';
-import Productos from '../../components/cliente/productos/Productos';
-import Planes from '../../components/cliente/planes/Planes';
 import { CarritoCompras } from '../../components/cliente/carrito/CarritoCompras';
 
 

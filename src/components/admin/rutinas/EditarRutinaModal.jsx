@@ -109,7 +109,7 @@ function EditarRutinaModal(props) {
                     onChange={handleChange} defaultValue={rutina.nombre_rutina} fullWidth variant="outlined" />
 
                 <TextField select margin="normal" type="text" name="nivel" label="Nivel"
-                    onChange={handleNivel} fullWidth variant="outlined" defaultValue={rutina.nivel} helperText="Por favor ingrese el nivel de la rutina.">
+                    onChange={handleNivel} fullWidth variant="outlined" defaultValue={rutina.nivel} >
                     <MenuItem key="Seleccionar" value="Seleccionar">Seleccionar</MenuItem>
                     <MenuItem key="Fácil" value="Fácil">Fácil</MenuItem>
                     <MenuItem key="Intermedio" value="Intermedio">Intermedio</MenuItem>
@@ -117,7 +117,7 @@ function EditarRutinaModal(props) {
                 </TextField>
 
                 <TextField select margin="normal" type="text" name="duracion" label="Duración"
-                    onChange={handleDuracion} fullWidth variant="outlined" defaultValue={rutina.duracion} helperText="Por favor ingrese la duración de la rutina.">
+                    onChange={handleDuracion} fullWidth variant="outlined" defaultValue={rutina.duracion} >
                     <MenuItem key="Seleccionar" value="Seleccionar">Seleccionar</MenuItem>
                     <MenuItem key="10 min" value="10 min">10 min</MenuItem>
                     <MenuItem key="15 min" value="15 min">15 min</MenuItem>

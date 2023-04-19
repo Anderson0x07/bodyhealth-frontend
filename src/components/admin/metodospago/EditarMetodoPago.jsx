@@ -72,7 +72,7 @@ function EditarMetodoPago(props) {
             <DialogTitle>Editar método de pago</DialogTitle>
             <DialogContent>
 
-                <TextField margin="normal" type="text" name="descripcion" label="Musculo"
+                <TextField margin="normal" type="text" name="descripcion" label="Método de pago"
                     onChange={handleChange} defaultValue={metodo.descripcion} fullWidth variant="outlined" />
 
             </DialogContent>

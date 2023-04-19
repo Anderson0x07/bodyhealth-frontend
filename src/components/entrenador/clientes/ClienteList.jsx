@@ -66,8 +66,8 @@ function applySortFilter(array, comparator, query) {
         return a[1] - b[1];
     });
     if (query) {
-        return filter(array, (_cliente) => (_cliente.cliente.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 || 
-                                        _cliente.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1));
+        return filter(array, (_cliente) => (_cliente.cliente.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+            _cliente.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1));
     }
     return stabilizedThis.map((el) => el[0]);
 }
@@ -76,7 +76,7 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 function ClienteList({ entrenador }) {
 
     const [clientes, setClientes] = useState(entrenador.entrenadorClientes);
-   
+
     const [status, setStatus] = useState();
     const [error, setError] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -118,13 +118,14 @@ function ClienteList({ entrenador }) {
         setFilterName(event.target.value);
     };
 
-    const Status= ()=>{
-        if(clientes[0].length!=0){setStatus(200)}
+    const Status = () => {
+        if (clientes.length > 0) { setStatus(200) }
     }
 
     useEffect(() => {
         Status();
     }, []);
+    
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clientes.length) : 0;
 
     const filteredUsers = applySortFilter(clientes, getComparator(order, orderBy), filterName);
@@ -133,24 +134,29 @@ function ClienteList({ entrenador }) {
 
     return (
         <>
-        <Container>
-            {status !== 200 && (
-                <Alert sx={{marginBottom: '50px'}} variant="outlined" severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    {error} 
-                </Alert>
-            )}
-           <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                    <Typography variant="h4" gutterBottom>
-                        Clientes
-                    </Typography>
-                    
-                </Stack>
+            <Container>
+                {status !== 200
+                    &&
+                    <Alert sx={{ marginBottom: '50px' }} variant="outlined" severity="error">
+                        <AlertTitle>Error</AlertTitle>
+                        No tienes clientes asignados
+                    </Alert>
 
-            <Stack mb={5}>
-                <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
-            </Stack>
-                
+
+                }
+
+                <>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                        <Typography variant="h4" gutterBottom>
+                            Clientes
+                        </Typography>
+
+                    </Stack>
+
+                    <Stack mb={5}>
+                        <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
+                    </Stack>
+
                     <TableContainer sx={{ minWidth: 800 }}>
                         <Table>
                             <TableHead
@@ -168,13 +174,13 @@ function ClienteList({ entrenador }) {
                                         <TableRow hover key={cliente.id_usuario} >
                                             <TableCell component="th" scope="row" padding="none">
                                                 <Stack direction="row" alignItems="center" spacing={2}>
-                                                    <Avatar alt={cliente.nombre} src={url+cliente.foto} />
+                                                    <Avatar alt={cliente.nombre} src={url + cliente.foto} />
                                                     <Typography variant="subtitle2" noWrap>
                                                         {cliente.nombre}
                                                     </Typography>
                                                 </Stack>
                                             </TableCell>
-                                            
+
                                             <TableCell align="left">{cliente.apellido}</TableCell>
 
                                             <TableCell align="left">{cliente.tipo_documento + ' - ' + cliente.documento}</TableCell>
@@ -189,7 +195,7 @@ function ClienteList({ entrenador }) {
 
                                             <TableCell align="right">
                                                 <IconButton size="large" color="inherit" onClick={() => handleClienteExpand(cliente.id_usuario)}>
-                                                    <ReadMoreIcon/>
+                                                    <ReadMoreIcon />
                                                 </IconButton>
                                             </TableCell>
                                         </TableRow>
@@ -206,7 +212,7 @@ function ClienteList({ entrenador }) {
                                 <TableBody>
                                     <TableRow>
                                         <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
-                                            <Paper sx={{textAlign: 'center'}}>
+                                            <Paper sx={{ textAlign: 'center' }}>
                                                 <Typography variant="h6" paragraph>
                                                     No Encontrado
                                                 </Typography>
@@ -224,18 +230,20 @@ function ClienteList({ entrenador }) {
                         </Table>
                     </TableContainer>
 
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={clientes.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-        </Container>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={clientes.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </>
 
-    </>
+            </Container>
+
+        </>
     )
 }
 

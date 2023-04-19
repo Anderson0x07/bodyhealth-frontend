@@ -125,7 +125,7 @@ function AsignarEntrenadorModal(props) {
                                 {trainer.nombre + " " + trainer.apellido}
                             </MenuItem>
                         )) 
-                        : console.log("cargando") 
+                        : false
                     }
                     
                 </TextField>

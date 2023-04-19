@@ -74,7 +74,7 @@ function EditarPlanModal(props) {
                 <TextField margin="normal" type="text" name="meses" label="Duracion del plan"
                     onChange={handleChange} defaultValue={plan.meses} fullWidth variant="outlined" />
 
-                <TextField margin="normal" type="text" name="precio" label="precio del plan"
+                <TextField margin="normal" type="text" name="precio" label="Precio del plan"
                     onChange={handleChange} defaultValue={plan.precio} fullWidth variant="outlined" />
             </DialogContent>
             <DialogActions>

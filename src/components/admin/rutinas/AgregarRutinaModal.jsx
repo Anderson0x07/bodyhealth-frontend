@@ -59,10 +59,8 @@ function AgregarRutinaModal(props) {
 
             try {
                 const respuesta = await procesarPeticionPost(`rutina/guardar`, data);
-                console.log("-----------------------------")
                 console.log(respuesta)
                 setLoading(false);
-                console.log(respuesta);
                 Swal.fire({
                     customClass: {
                         container: 'my-swal'
@@ -136,7 +134,7 @@ function AgregarRutinaModal(props) {
                 </TextField>
 
                 <TextField margin="normal" type="text" name="descripcion" label="Descripción"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la dirección del proveedor." />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la descripción de la rutina." />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleCancelar}>Cancelar</Button>

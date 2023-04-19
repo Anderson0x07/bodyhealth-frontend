@@ -5,6 +5,7 @@ import EditarPerfilAdminModal from './EditarPerfilModal';
 import CambiarPasswordModal from './CambiarPasswordModal';
 import Swal from 'sweetalert2';
 import { procesarPeticionPost } from '../../../utils/HandleApi';
+import { LoadingButton } from '@mui/lab';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -18,6 +19,8 @@ function MiPerfil({ admin }) {
 
     const [changePassword, setChangePassword] = useState(false);
 
+    const [loading, setLoading] = useState(false);
+
 
     const handleActualizarPerfil = (infoActualizada) => {
         infoActualizada.fecha_nacimiento = infoActualizada.fecha_nacimiento.slice(0, 10);
@@ -25,6 +28,7 @@ function MiPerfil({ admin }) {
     }
 
     const handleTokenPassword = async () => {
+        setLoading(true);
 
         try {
             const respuesta = await procesarPeticionPost(`admin/restablecer-password/${admin.id_usuario}`);
@@ -38,8 +42,14 @@ function MiPerfil({ admin }) {
                 icon: 'success'
             })
 
+            setChangePassword(true);
+            setLoading(false);
+
+
         } catch (error) {
             console.log(error)
+            setLoading(false);
+
 
             Swal.fire({
                 customClass: {
@@ -57,8 +67,28 @@ function MiPerfil({ admin }) {
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
                 <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarPerfil(true)}>Editar Información</Button>
                 {!changePassword ?
-                    <Button variant="contained" startIcon={<Edit />} onClick={handleTokenPassword}>Solicitar cambio de contraseña</Button>
-                    : <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalCambioPassword(true)}>Cambiar Contraseña</Button>}
+
+                    <LoadingButton
+                        color="secondary"
+                        onClick={handleTokenPassword}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Solicitar cambio de contraseña
+                    </LoadingButton>
+                    : <LoadingButton
+                        color="secondary"
+                        onClick={() => setShowModalCambioPassword(true)}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Edit />}
+                        variant="contained"
+                    >
+                        Cambiar Contraseña
+                    </LoadingButton>
+                }
             </Stack>
 
             <div style={{ marginTop: '20px', marginBottom: '20px' }}>
