@@ -93,7 +93,7 @@ function PlanList() {
     }
 
     const handlePlanExpand = (id) => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/planes/${id}`)
+        navigate(`/admin/dashboard/planes/${id}`)
     };
 
     const handleRequestSort = (event, property) => {

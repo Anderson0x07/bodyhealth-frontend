@@ -52,7 +52,7 @@ function Ejercicio() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/ejercicios`);
+        navigate(`/admin/dashboard/ejercicios`);
     };
 
 
@@ -85,7 +85,7 @@ function Ejercicio() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/ejercicios`);
+                        navigate(`/admin/dashboard/ejercicios`);
                     })
                 }
             })

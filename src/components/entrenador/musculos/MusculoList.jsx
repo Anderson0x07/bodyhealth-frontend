@@ -106,7 +106,7 @@ function MusculoList() {
     }
 
     const handleExpandMusculo = (id_musculo) => {
-        navigate(`/bodyhealth-frontend/entrenador/dashboard/musculos/${id_musculo}`);
+        navigate(`/entrenador/dashboard/musculos/${id_musculo}`);
     };
 
     const handleRequestSort = (event, property) => {

@@ -66,7 +66,7 @@ function Home({ cliente }) {
                                 Atrévete a DARLA TODA EN BODYHEALTH
                             </Typography>
 
-                            <div onClick={() => navigate("/bodyhealth-frontend/home/planes")}>
+                            <div onClick={() => navigate("/home/planes")}>
                                 <CustomButton
                                     backgroundColor="#0F1B4C"
                                     color="#fff"

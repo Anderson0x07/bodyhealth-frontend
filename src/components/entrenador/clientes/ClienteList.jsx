@@ -109,7 +109,7 @@ function ClienteList({ entrenador }) {
     };
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/bodyhealth-frontend/entrenador/dashboard/clientes/${id_usuario}`)
+        navigate(`/entrenador/dashboard/clientes/${id_usuario}`)
     };
 
 

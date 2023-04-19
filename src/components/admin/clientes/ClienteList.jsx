@@ -108,7 +108,7 @@ function ClienteList() {
     }
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/clientes/${id_usuario}`)
+        navigate(`/admin/dashboard/clientes/${id_usuario}`)
     };
 
 

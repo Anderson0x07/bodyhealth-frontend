@@ -120,7 +120,7 @@ function SeleccionPlanModal(props) {
                             text: "Factura generada con éxito",
                             icon: 'success'
                         }).then(() => {
-                            navigate(`/bodyhealth-frontend/home`);
+                            navigate(`/home`);
                             window.location.reload();
                         })
                     }

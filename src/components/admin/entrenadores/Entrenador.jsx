@@ -73,7 +73,7 @@ function Entrenador() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/entrenadores`);
+                        navigate(`/admin/dashboard/entrenadores`);
                     })
                 }
 
@@ -210,7 +210,7 @@ function Entrenador() {
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/bodyhealth-frontend/admin/dashboard/entrenadores`)}>Atras</Button>
+                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/admin/dashboard/entrenadores`)}>Atras</Button>
                     </Grid>
 
                     {entrenadorClientes.length > 0

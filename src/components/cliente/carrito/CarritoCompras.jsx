@@ -136,7 +136,7 @@ export const CarritoCompras = ({ cliente }) => {
               text: "Factura generada con éxito",
               icon: 'success'
             }).then(() => {
-              navigate(`/bodyhealth-frontend/home`);
+              navigate(`/home`);
             })
           }
         })

@@ -40,7 +40,7 @@ function Producto() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/productos`);
+        navigate(`/admin/dashboard/productos`);
     };
 
     const handleDesactivar = async () => {
@@ -74,7 +74,7 @@ function Producto() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/productos/${id}`);
+                        navigate(`/admin/dashboard/productos/${id}`);
                     })
                 }
             })
@@ -127,7 +127,7 @@ function Producto() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/productos`);
+                        navigate(`/admin/dashboard/productos`);
                     })
                 }
             })

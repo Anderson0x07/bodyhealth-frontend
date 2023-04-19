@@ -138,10 +138,10 @@ function Navbar({ cliente }) {
           </Box>
 
           <NavbarLinksBox>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home")}>Inicio</NavLink>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/planes")}>Planes</NavLink>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/productos")}>Productos</NavLink>
-            {cart.length > 0 ? <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/carrito")}>Carrito de Compras</NavLink> : console.log("false")}
+            <NavLink variant="body2" onClick={() => navigate("/home")}>Inicio</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/home/planes")}>Planes</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/home/productos")}>Productos</NavLink>
+            {cart.length > 0 ? <NavLink variant="body2" onClick={() => navigate("/home/carrito")}>Carrito de Compras</NavLink> : console.log("false")}
           </NavbarLinksBox>
         </Box>
 
@@ -155,7 +155,7 @@ function Navbar({ cliente }) {
               gap: "1rem",
             }}
           >
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/login")}>Iniciar sesión</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/login")}>Iniciar sesión</NavLink>
 
             <div onClick={() => setShowModal(true)}>
               <CustomButton
