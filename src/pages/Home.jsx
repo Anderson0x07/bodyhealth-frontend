@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
-import { Box, Container, Grid, IconButton, Typography, styled } from '@mui/material'
-import { FitnessCenter, Newspaper, ShoppingCart, ArrowRightAlt, Instagram, Facebook, WhatsApp, LinkedIn, EmailTwoTone } from '@mui/icons-material'
+import { Box, Container, Typography, styled } from '@mui/material'
+import { FitnessCenter, Newspaper, ShoppingCart, ArrowRightAlt } from '@mui/icons-material'
 import CustomButton from './CustomButton';
 
 import Noticias from './HomeNoticia';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { procesarPeticionGet } from '../utils/HandleApi';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from './Footer';
 
 
