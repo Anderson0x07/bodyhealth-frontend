@@ -86,13 +86,10 @@ function MostrarPlanesMetodoModal(props) {
 
                                     <TableCell align="center"># Factura</TableCell>
 
-                                    <TableCell align="center">Cliente</TableCell>
-
                                     <TableCell align="center">Plan</TableCell>
 
-                                    <TableCell align="center">Fecha de Inicio</TableCell>
+                                    <TableCell align="center">Cliente</TableCell>
 
-                                    <TableCell align="center">Fecha de Fin</TableCell>
                                 </TableRow>
                             </TableHead>
 
@@ -106,20 +103,16 @@ function MostrarPlanesMetodoModal(props) {
 
                                             <TableCell align="center">{id_factura}</TableCell>
 
-                                            <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
-
                                             <TableCell align="center">{plan.plan}</TableCell>
 
-                                            <TableCell align="center">{fecha_inicio}</TableCell>
-
-                                            <TableCell align="center">{fecha_fin}</TableCell>
+                                            <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
 
                                         </TableRow>
                                     );
                                 })}
                                 {emptyRowsPlanes > 0 && (
                                     <TableRow style={{ height: 53 * emptyRowsPlanes }}>
-                                        <TableCell colSpan={5} />
+                                        <TableCell colSpan={3} />
                                     </TableRow>
                                 )}
                             </TableBody>

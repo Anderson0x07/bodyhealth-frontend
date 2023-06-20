@@ -7,7 +7,6 @@ import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
 // hooks
 import useResponsive from '../../../utils/useResponsive';
 // components
-import Scrollbar from '../../../components/admin/dashboard/scrollbar';
 import NavSection from '../../../components/admin/dashboard/nav-section';
 //
 import navConfig from './config';
@@ -46,14 +45,7 @@ function Nav({ openNav, onCloseNav, admin }) {
   }, [pathname]);
 
   const renderContent = (
-    <Scrollbar
-      sx={{
-        height: 1,
-        '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
-      }}
-    >
-      
-
+    <div>
       <Box sx={{  mx: 2.5,  px: 2.5, py: 3}}>
         <Link underline="none">
           <StyledAccount>
@@ -72,8 +64,7 @@ function Nav({ openNav, onCloseNav, admin }) {
       <NavSection data={navConfig} />
 
       <Box sx={{ flexGrow: 1 }} />
-
-    </Scrollbar>
+    </div>
   );
 
   return (

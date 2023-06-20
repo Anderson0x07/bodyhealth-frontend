@@ -38,6 +38,7 @@ function SeleccionProductoCantidadModal(props) {
             } else {
                 return [...currItems, { 
                     id_producto: producto.id_producto, 
+                    nombre:producto.nombre,
                     foto: producto.foto,
                     cantidad: cantidad, 
                     precioUnitario: producto.precio,

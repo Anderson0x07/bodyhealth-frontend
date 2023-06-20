@@ -42,7 +42,6 @@ function AsignarEntrenadorModal(props) {
 
     
     const handleEntrenador = (event) => {
-        console.log("Entrenador seleccionado: --")
         setEntrenadorSeleccionado(event.target.value);
     }
 
@@ -73,7 +72,6 @@ function AsignarEntrenadorModal(props) {
 
             setLoading(true);
 
-            console.log(clienteEntrenador)
 
             try {
                 const respuesta = await procesarPeticionPost(`entrenadorcliente/guardar`, clienteEntrenador);
@@ -120,12 +118,11 @@ function AsignarEntrenadorModal(props) {
                             Seleccionar
                     </MenuItem>
                     {entrenadores != null 
-                        ? entrenadores.map((trainer) => (
+                        && entrenadores.map((trainer) => (
                             <MenuItem key={trainer.id_usuario} value={trainer.id_usuario}>
                                 {trainer.nombre + " " + trainer.apellido}
                             </MenuItem>
-                        )) 
-                        : false
+                        ))
                     }
                     
                 </TextField>

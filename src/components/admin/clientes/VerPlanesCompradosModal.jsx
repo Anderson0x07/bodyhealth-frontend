@@ -18,6 +18,7 @@ import {
 import { CheckCircleRounded, Receipt } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { procesarPeticionPdf } from '../../../utils/HandleApi';
+import FacturaItem from '../configuracion/FacturaItem';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function VerPlanesCompradosModal(props) {
 
     const { clienteDetalles, showModalPlanesCliente, setShowModalPlanesCliente } = props;
-    const [loadingPdf, setLoadingPdf] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -41,20 +41,16 @@ function VerPlanesCompradosModal(props) {
 
     const handleVerFactura = async (id_factura) => {
 
-        setLoadingPdf(true);
         try {
             const response = await procesarPeticionPdf(`clientedetalle/pdf/${id_factura}`)
-            console.log(response)
 
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url);
 
-            setLoadingPdf(false);
 
         } catch (error) {
             console.log(error);
-            setLoadingPdf(false);
         }
     }
 
@@ -115,15 +111,11 @@ function VerPlanesCompradosModal(props) {
                                             <TableCell align="center">{metodoPago.descripcion}</TableCell>
 
                                             <TableCell align="center">
-                                                <LoadingButton
-                                                    size="large"
-                                                    color="inherit"
-                                                    onClick={() => handleVerFactura(id_factura)}
-                                                    loading={loadingPdf}
-                                                    variant="text"
-                                                >
-                                                    <Receipt />
-                                                </LoadingButton>
+                                                <FacturaItem
+                                                    key={id_factura}
+                                                    id_factura={id_factura}
+                                                    handleVerFactura={handleVerFactura}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     );

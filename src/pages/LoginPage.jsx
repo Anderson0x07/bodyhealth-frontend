@@ -3,16 +3,18 @@ import { procesarPeticionPost } from '../utils/HandleApi';
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button, TextField, InputAdornment, IconButton, Alert, AlertTitle } from '@mui/material';
+import { Link, Container, Typography, Divider, Stack, Button, TextField, InputAdornment, IconButton, Alert, AlertTitle, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 
-import { Facebook, Google, Login, Visibility, VisibilityOff } from '@mui/icons-material';
+import { Facebook, Google, Login, Save, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 import useResponsive from '../utils/useResponsive'
 
 import img from '../assets/image-login.png'
 import { LoadingButton } from '@mui/lab';
+import CambiarPasswordModal from '../components/cliente/mi-perfil/CambiarPasswordModal';
+import ModalCambioPassword from './ModalCambioPassword';
 
 // ----------------------------------------------------------------------
 
@@ -52,12 +54,21 @@ function LoginPage() {
 
     const [showPassword, setShowPassword] = useState(false);
 
+    const [changePassword, setChangePassword] = useState(false)
+
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     const [error, setError] = useState('');
+
+    const [showModalCambioPassword, setShowModalCambioPassword] = useState(false);
+
+    const data = {};
+
+    const [showModalToken, setShowModalToken] = useState(false);
+
 
 
     const handleEmailChange = (event) => {
@@ -111,6 +122,17 @@ function LoginPage() {
         }
     };
 
+
+    const handleOlvido = () => {
+        setShowModalCambioPassword(true);
+        setChangePassword(true);
+    }
+
+    const handleIntroducirToken = () => {
+        setChangePassword(false);
+        setShowModalToken(true)
+    }
+
     return (
         <>
             <StyledRoot>
@@ -131,24 +153,10 @@ function LoginPage() {
 
                         <Typography variant="body2" sx={{ mb: 5 }}>
                             ¿No tienes cuenta? {''}
-                            <Link variant="subtitle2" onClick={() => navigate("/registro")}>Registrate aquí</Link>
+                            <Link variant="subtitle2" onClick={() => navigate('/')}>Registrate aquí</Link>
                         </Typography>
 
-                        <Stack direction="row" spacing={2}>
-                            <Button fullWidth size="large" color="inherit" variant="outlined">
-                                <Google />
-                            </Button>
 
-                            <Button fullWidth size="large" color="inherit" variant="outlined">
-                                <Facebook />
-                            </Button>
-                        </Stack>
-
-                        <Divider sx={{ my: 3 }}>
-                            <Typography variant="body2">
-                                ó
-                            </Typography>
-                        </Divider>
 
                         <>
                             <Stack spacing={3}>
@@ -174,9 +182,16 @@ function LoginPage() {
 
                             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
                                 <Typography></Typography>
-                                <Link variant="subtitle2" underline="hover">
-                                    ¿Olvidaste tu contraseña?
-                                </Link>
+
+                                {!changePassword ?
+                                    <Link variant="subtitle2" underline="hover" onClick={handleOlvido}>
+                                        ¿Olvidaste tu contraseña?
+                                    </Link>
+                                    :
+                                    <Link variant="subtitle2" underline="hover" onClick={handleIntroducirToken}>
+                                        Cambia tu contraseña aqui
+                                    </Link>
+                                }
                             </Stack>
 
                             <LoadingButton
@@ -200,6 +215,30 @@ function LoginPage() {
                             )}
                         </>
                     </StyledContent>
+
+
+                    {/* MODAL PARA BUSCAR EMAIL Y ENVIAR TOKEN */}
+                    {showModalCambioPassword && (
+                        <ModalCambioPassword
+                            changePassword={changePassword}
+                            setChangePassword = {setChangePassword}
+                            showModalCambioPassword={showModalCambioPassword}
+                            setShowModalCambioPassword={setShowModalCambioPassword}
+                        />
+                    )}
+
+
+                    {/* MODAL PARA CAMBIAR CONTRASEÑA */}
+                    {showModalToken && (
+                        <CambiarPasswordModal
+                            cliente={data}
+                            showModalCambioPassword={showModalToken}
+                            setShowModalCambioPassword={setShowModalToken}
+                        />
+                    )}
+
+
+
                 </Container>
             </StyledRoot>
         </>

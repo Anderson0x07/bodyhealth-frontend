@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+    Avatar,
     Container,
     Dialog,
     DialogActions,
@@ -7,6 +8,7 @@ import {
     DialogTitle,
     Paper,
     Slide,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -14,6 +16,7 @@ import {
     TableHead,
     TablePagination,
     TableRow,
+    Typography,
 } from '@mui/material';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -23,6 +26,8 @@ import { LoadingButton } from '@mui/lab';
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
+
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function MostrarVentasProductosModal(props) {
 
@@ -80,7 +85,14 @@ function MostrarVentasProductosModal(props) {
 
                                             <TableCell align="center">{id_pedido}</TableCell>
 
-                                            <TableCell align="center">{compra.cliente.nombre + " " + compra.cliente.apellido}</TableCell>
+                                            <TableCell align="center">
+                                                <Stack direction="row" alignItems="center" spacing={2}>
+                                                    <Avatar alt={compra.cliente.nombre} src={url + compra.cliente.foto} />
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {compra.cliente.nombre + " " + compra.cliente.apellido}
+                                                    </Typography>
+                                                </Stack>
+                                            </TableCell>
 
                                             <TableCell align="center">{compra.fecha_compra}</TableCell>
 

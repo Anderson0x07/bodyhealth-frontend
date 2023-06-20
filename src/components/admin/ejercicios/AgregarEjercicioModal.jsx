@@ -23,7 +23,6 @@ function AgregarEjercicioModal(props) {
     const getMusculos = async () => {
         try {
             const respuesta = await procesarPeticionGet(`musculo/all`);
-            console.log(respuesta)
             setMusculos(respuesta.data.musculos)
 
         } catch (error) {
@@ -42,7 +41,6 @@ function AgregarEjercicioModal(props) {
         }
 
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`ejercicio/guardar`, data);
             setLoading(false);
@@ -102,11 +100,11 @@ function AgregarEjercicioModal(props) {
                 <TextField select margin="normal" type="text" name="musculo" label="Musculo" onChange={handleMusculo}
                     fullWidth variant="outlined" value={musculoSeleccionado} helperText="Por favor seleccione un musculo">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    {musculos != null ? musculos.map((musculo) => (
+                    {musculos != null && musculos.map((musculo) => (
                         <MenuItem key={musculo.id_musculo} value={musculo.id_musculo}>
                             {musculo.nombre}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
 
                 </TextField>
             </DialogContent>

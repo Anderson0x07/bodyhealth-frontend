@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarMaquinaModal from './EditarMaquinaModal';
 import Swal from 'sweetalert2';
-import { ArrowBack, Cancel, Edit } from '@mui/icons-material';
+import { ArrowBack, Cancel, Delete, Edit } from '@mui/icons-material';
 import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 
 
@@ -106,9 +106,7 @@ function Maquina() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {logo != ""
-                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
-                                : false}
+                            {logo != "" && <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
@@ -150,7 +148,7 @@ function Maquina() {
                         <Button variant="contained" startIcon={<Edit />} onClick={handleEditarMaquina}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete}>eliminar</Button>
+                        <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>Eliminar</Button>
                     </Grid>
                 </Grid>
             </Container>

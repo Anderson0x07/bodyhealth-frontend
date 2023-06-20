@@ -83,7 +83,6 @@ function MostrarUsosMusculoModal(props) {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -151,19 +150,23 @@ function MostrarUsosMusculoModal(props) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+
                 {eliminar == true
                     ?
-                    <LoadingButton
-                        color="secondary"
-                        onClick={handleDelete}
-                        loading={loading}
-                        loadingPosition="start"
-                        startIcon={<Delete />}
-                        variant="contained"
-                    >
-                        Eliminar
-                    </LoadingButton>
+                    <>
+                        <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+
+                        <LoadingButton
+                            color="secondary"
+                            onClick={handleDelete}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<Delete />}
+                            variant="contained"
+                        >
+                            Eliminar
+                        </LoadingButton>
+                    </>
                     :
                     <LoadingButton
                         color="secondary"

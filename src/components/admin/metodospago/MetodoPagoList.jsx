@@ -104,17 +104,11 @@ function MetodoPagoList() {
     }
 
     const handleDelete = async (metodo) => {
-
-        console.log(metodo);
-
-        console.log(metodo.compras);
-        console.log(metodo.clienteDetalles);
         setCompras(metodo.compras);
         setPlanes(metodo.clienteDetalles);
 
         if (metodo.compras.length > 0 && metodo.clienteDetalles.length > 0) {
             //mostrarModalAmbos
-            console.log("Entre")
             setShowModalUsosMetodo(true);
         }
         else if (metodo.compras.length > 0) {

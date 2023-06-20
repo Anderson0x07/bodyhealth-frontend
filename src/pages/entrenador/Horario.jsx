@@ -1,8 +1,7 @@
 import { Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import React, { useState } from 'react'
 import HorarioJornada from './HorarioJornada';
 
-function Horario({entrenador}) {
+function Horario({ entrenador }) {
     const horarioMañana = [
         { hora: '5:00 am' },
         { hora: '6:00 am' },
@@ -25,35 +24,35 @@ function Horario({entrenador}) {
         { hora: '8:00 pm' }
     ];
 
-    
+
     return (
         <div>
             <Container>
-                {entrenador.jornada == 'Mañana' ? <Typography variant="h4" gutterBottom mb={3}>
+                {entrenador.jornada == 'Manana' ? <Typography variant="h4" gutterBottom mb={3}>
                     Jornada Mañana
                 </Typography> : <Typography variant="h4" gutterBottom mb={3}>
                     Jornada Tarde
                 </Typography>}
-            <TableContainer sx={{ minWidth: 800 }}>
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell className='clave' align='center'>Hora</TableCell>
-                        <TableCell className='clave' align='center'>Lunes</TableCell>
-                        <TableCell className='clave' align='center'>Martes</TableCell>
-                        <TableCell className='clave' align='center'>Miércoles</TableCell>
-                        <TableCell className='clave' align='center'>Jueves</TableCell>
-                        <TableCell className='clave' align='center'>Viernes</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {entrenador.jornada == 'Mañana' ? <HorarioJornada horario={horarioMañana}/> : <HorarioJornada horario={horarioTarde}/>}
-                </TableBody>
-            </Table>
-        </TableContainer>
-        </Container>
+                <TableContainer sx={{ minWidth: 800 }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell className='clave' align='center'>Hora</TableCell>
+                                <TableCell className='clave' align='center'>Lunes</TableCell>
+                                <TableCell className='clave' align='center'>Martes</TableCell>
+                                <TableCell className='clave' align='center'>Miércoles</TableCell>
+                                <TableCell className='clave' align='center'>Jueves</TableCell>
+                                <TableCell className='clave' align='center'>Viernes</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {entrenador.jornada === 'Manana' ? <HorarioJornada horario={horarioMañana} /> : <HorarioJornada horario={horarioTarde} />}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
         </div>
-        
+
     );
 }
 

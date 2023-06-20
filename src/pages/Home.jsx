@@ -1,16 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './Navbar'
-import { Box, Container, Typography, styled } from '@mui/material'
-import { FitnessCenter, Newspaper, ShoppingCart, ArrowRightAlt } from '@mui/icons-material'
+import { Box, Container, Grid, IconButton, Typography, styled } from '@mui/material'
+import { FitnessCenter, Newspaper, ShoppingCart, ArrowRightAlt, Instagram, Facebook, WhatsApp, LinkedIn, EmailTwoTone } from '@mui/icons-material'
 import CustomButton from './CustomButton';
 
 import Noticias from './HomeNoticia';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import { procesarPeticionGet } from '../utils/HandleApi';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Footer from './Footer';
 
 
 function Home({ cliente }) {
 
     const navigate = useNavigate();
+
+    const [data, setData] = useState(null);
+
+    //USEEFFECT INFO BASICA
+    const getInfo = async () => {
+        try {
+            const respuesta = await procesarPeticionGet(`infobasica/${1}`);
+            console.log(respuesta)
+            setData(respuesta.data.infobasica);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getInfo();
+    }, []);
+
+
 
     const CustomBox = styled(Box)(({ theme }) => ({
         display: "flex",
@@ -53,7 +77,7 @@ function Home({ cliente }) {
                                     mb: 4,
                                 }}
                             >
-                                Bienvenido a Bodyhealth web
+                                Bienvenido a {data != null ? data.nombre_empresa : false}
                             </Typography>
 
                             <Title variant='h1'>
@@ -63,7 +87,7 @@ function Home({ cliente }) {
                                 variant="body2"
                                 sx={{ fontSize: "18px", color: "#5A6473", my: 4 }}
                             >
-                                Atrévete a DARLA TODA EN BODYHEALTH
+                                Atrévete a DARLA TODA EN {data != null ? data.nombre_empresa : false}
                             </Typography>
 
                             <div onClick={() => navigate("/home/planes")}>
@@ -123,10 +147,7 @@ function Home({ cliente }) {
                             textAlign: "center",
                         }}
                     >
-                        Somos una página que surge con el propósito de brindar no
-                        solo un mejor estado de salud y bienestar corporal, sino de
-                        motivación, excelencia y mejora continua. Somos un gimnasio
-                        que llegó a revolucionar la experiencia de entrenar en la ciudad de Cúcuta.
+                        {data != null && data.pie_pagina}
                     </Typography>
                 </Box>
 
@@ -155,6 +176,7 @@ function Home({ cliente }) {
                             <Typography
                                 variant="body2"
                                 sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+                                onClick={() => navigate("/home/productos")}
                             >
                                 Ir a comprar
                             </Typography>
@@ -186,6 +208,7 @@ function Home({ cliente }) {
                             <Typography
                                 variant="body2"
                                 sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+                                onClick={() => navigate("/home/planes")}
                             >
                                 Ver planes
                             </Typography>
@@ -217,6 +240,7 @@ function Home({ cliente }) {
                             <Typography
                                 variant="body2"
                                 sx={{ fontWeight: "bold", fontSize: "14px", color: "#0689FF" }}
+                                onClick={() => Swal.fire('Atención', 'Por implementar sección de noticias..', 'warning')}
                             >
                                 Ver noticias
                             </Typography>
@@ -229,43 +253,13 @@ function Home({ cliente }) {
             <Noticias />
 
 
-            <Box sx={{ backgroundColor: "#E6F0FF"}} >
+            <Box sx={{ backgroundColor: "#E6F0FF" }} mt={5} >
                 <Container>
-                    <Navbar cliente={cliente}/>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            p: 7
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: "5%",
-                                height: "5px",
-                                backgroundColor: "#000339",
-                                margin: "0 auto",
-                            }}
-                        ></div>
-                        <Box width={"100%"} mt={3}>
-                            <Typography
-                                variant="body2"
-                                sx={{
-                                    fontSize: "16px",
-                                    fontWeight: "500",
-                                    color: "#5A6473",
-                                    textAlign: "center",
-                                }}
-                            >
-                                Somos una página que surge con el propósito de brindar no
-                                solo un mejor estado de salud y bienestar corporal, sino de
-                                motivación, excelencia y mejora continua. Somos un gimnasio
-                                que llegó a revolucionar la experiencia de entrenar en la ciudad de Cúcuta.
-                            </Typography>
-                        </Box>
-                    </Box>
+                    <Navbar cliente={cliente} />
+
+                    <Footer data={data}/>
+
+
                 </Container>
             </Box>
 

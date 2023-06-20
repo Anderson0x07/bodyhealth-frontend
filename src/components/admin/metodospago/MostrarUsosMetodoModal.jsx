@@ -74,10 +74,9 @@ function MostrarUsosMetodoModal(props) {
         <Dialog open={showModalUsosMetodo} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
             <DialogTitle>Usos del método de pago</DialogTitle>
             <DialogContent>
-                {compras.length > 0 && planes.length > 0
-                    ?
+                {(compras.length > 0 && planes.length > 0) &&
                     <Grid container columns={{ xs: 7, sm: 9, md: 13 }} m={1}>
-                        <Grid item xs={6} sm={4} md={6} mr={1}>
+                        <Grid item xs={6} sm={4} md={6} mr={"1rem"} mb={2}>
                             <Typography variant="subtitle2" align="center" >
                                 Compras donde se usó el método de pago
                             </Typography>
@@ -130,7 +129,7 @@ function MostrarUsosMetodoModal(props) {
                             />
                         </Grid>
 
-                        <Grid item xs={6} sm={4} md={6} ml={1}>
+                        <Grid item xs={6} sm={4} md={6} ml={"1rem"}>
                             <Typography variant="subtitle2" align="center" >
                                 Planes que se compraron utilizado el método de pago
                             </Typography>
@@ -142,13 +141,10 @@ function MostrarUsosMetodoModal(props) {
 
                                             <TableCell align="center"># Factura</TableCell>
 
-                                            <TableCell align="center">Cliente</TableCell>
-
                                             <TableCell align="center">Plan</TableCell>
 
-                                            <TableCell align="center">Fecha de Inicio</TableCell>
+                                            <TableCell align="center">Cliente</TableCell>
 
-                                            <TableCell align="center">Fecha de Fin</TableCell>
                                         </TableRow>
                                     </TableHead>
 
@@ -161,21 +157,18 @@ function MostrarUsosMetodoModal(props) {
                                                 <TableRow hover key={id_factura} >
 
                                                     <TableCell align="center">{id_factura}</TableCell>
+                                                    
+                                                    <TableCell align="center">{plan.plan}</TableCell>
 
                                                     <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>
 
-                                                    <TableCell align="center">{plan.plan}</TableCell>
-
-                                                    <TableCell align="center">{fecha_inicio}</TableCell>
-
-                                                    <TableCell align="center">{fecha_fin}</TableCell>
 
                                                 </TableRow>
                                             );
                                         })}
                                         {emptyRowsPlanes > 0 && (
                                             <TableRow style={{ height: 53 * emptyRowsPlanes }}>
-                                                <TableCell colSpan={5} />
+                                                <TableCell colSpan={3} />
                                             </TableRow>
                                         )}
                                     </TableBody>
@@ -192,8 +185,6 @@ function MostrarUsosMetodoModal(props) {
                             />
                         </Grid>
                     </Grid>
-                    :
-                    console.log("Cargando ambas tablas")
                 }
             </DialogContent >
             <DialogActions>

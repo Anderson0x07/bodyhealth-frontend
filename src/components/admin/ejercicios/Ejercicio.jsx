@@ -91,7 +91,6 @@ function Ejercicio() {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -124,9 +123,7 @@ function Ejercicio() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {logo != ""
-                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
-                                : false}
+                            {logo != "" && <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
@@ -188,12 +185,10 @@ function Ejercicio() {
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Delete />} onClick={rutinaEjercicios.length > 0 ? handleDeletePass : handleDelete}>Eliminar</Button>
                     </Grid>
-                    {rutinaEjercicios.length > 0
-                        ?
+                    {rutinaEjercicios.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEyeRounded />} onClick={handleShowRutinaEjercicios}>Rutina Ejercicios</Button>
                         </Grid>
-                        : false
                     }
 
                 </Grid>

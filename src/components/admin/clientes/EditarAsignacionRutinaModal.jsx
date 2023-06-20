@@ -83,12 +83,8 @@ function EditarAsignacionRutinaModal(props) {
 
             setLoading(true);
 
-            console.log("D-A-T-A DE LA RUTINA CAMBIADA")
-            console.log(data)
-
             try {
                 const respuesta = await procesarPeticionPut(`clienterutina/editar/${rutinaAsignada[rutinaAsignada.length-1].id_clienterutina}`, data);
-                console.log(respuesta)
                 setLoading(false);
 
                 Swal.fire({
@@ -120,13 +116,12 @@ function EditarAsignacionRutinaModal(props) {
                     <MenuItem key="S" value="S">
                             Seleccionar
                     </MenuItem>
-                    {rutinas != null 
-                        ? rutinas.map((rutina) => (
+                    {rutinas != null && 
+                        rutinas.map((rutina) => (
                             <MenuItem key={rutina.id_rutina} value={rutina.id_rutina}>
                                 {rutina.nombre_rutina}
                             </MenuItem>
-                        )) 
-                        : console.log("cargando rutinas") 
+                        ))
                     }
                     
                 </TextField>

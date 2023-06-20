@@ -49,7 +49,6 @@ function MiPerfil({ entrenador }) {
             console.log(error)
             setLoading(false);
 
-
             Swal.fire({
                 customClass: {
                     container: 'my-swal'

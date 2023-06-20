@@ -44,7 +44,6 @@ function Producto() {
     };
 
     const handleDesactivar = async () => {
-        console.log("Entrando a desactivar producto..")
 
         try {
             Swal.fire({
@@ -79,7 +78,6 @@ function Producto() {
                 }
             })
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire({
                 title: 'Atención',
                 text: error.response.data.error,
@@ -154,9 +152,7 @@ function Producto() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {producto.foto != undefined
-                                ? <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
-                                : console.log("cargando")}
+                            {producto.foto != undefined && <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />}
 
                         </Container>
                     </Grid>
@@ -183,7 +179,7 @@ function Producto() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Proveedor</TableCell>
-                                        <TableCell className='value' align="right">{proveedor != null ? proveedor.nombre_empresa : console.log("NADA")}</TableCell>
+                                        <TableCell className='value' align="right">{proveedor != null && proveedor.nombre_empresa}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Estado</TableCell>
@@ -208,17 +204,15 @@ function Producto() {
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>Eliminar</Button>
                     </Grid>
-                    {producto.stock > 0 ?
+                    {producto.stock > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<Cancel />} onClick={handleDesactivar}>Desactivar</Button>
                         </Grid>
-                        : false}
-                    {pedidos.length > 0
-                        ?
+                    }
+                    {pedidos.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalVentasProducto(true)}>Ver Ventas</Button>
                         </Grid>
-                        : console.log("no tiene pedidos")
                     }
 
                 </Grid>

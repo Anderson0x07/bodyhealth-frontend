@@ -102,7 +102,6 @@ function ClienteList() {
     const navigate = useNavigate();
 
     const agregarCliente = (clientes) => {
-        console.log(clientes)
         setClientes(clientes);
         setStatus()
     }

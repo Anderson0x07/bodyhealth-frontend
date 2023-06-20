@@ -25,8 +25,6 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 
 function ProductoList() {
   const [productos, setProductos] = useState(null);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState('');
   const [showModal, setShowModal] = useState();
 
   const navigate = useNavigate();
@@ -38,12 +36,9 @@ function ProductoList() {
   const getAll = async () => {
     try {
       const response = await procesarPeticionGet("producto/all");
-      console.log(response)
-      setStatus(response.status);
       setProductos(response.data.productos);
     } catch (error) {
-      setError(error.response.data.error);
-      setStatus(error.response.status);
+      console.log(error)
     }
   };
 
@@ -79,7 +74,7 @@ function ProductoList() {
         </Stack>
 
         <Grid container spacing={3}>
-          {productos != null ?
+          {productos != null &&
             productos.map((producto) => (
               <Grid key={producto.id_producto} item xs={12} sm={6} md={3}>
                 <Card>
@@ -123,7 +118,7 @@ function ProductoList() {
                   </Stack>
                 </Card>
               </Grid>
-            )) : console.log("se toteó")}
+            ))}
         </Grid>
       </Container>
     </>

@@ -18,10 +18,8 @@ function AgregarMetodoPagoModal(props) {
         event.preventDefault();
 
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`metodopago/guardar`, data);
-            console.log(respuesta)
             setLoading(false);
             Swal.fire({
                 customClass: {
@@ -38,7 +36,6 @@ function AgregarMetodoPagoModal(props) {
             agregarMetodoPago(response.data.metodospago);
         } catch (error) {
             setLoading(false);
-            console.log(error);
 
             Swal.fire({
                 customClass: {

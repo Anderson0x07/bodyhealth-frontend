@@ -25,6 +25,7 @@ function AccountPopover({ entrenador }) {
 
   const handleMiPerfil = () => {
     navigate("/entrenador/dashboard/mi-perfil")
+    handleClose();
   }
 
 
@@ -51,7 +52,7 @@ function AccountPopover({ entrenador }) {
                 height: '100%',
                 borderRadius: '50%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
+                bgcolor: (theme) => alpha(theme.palette.grey[300], 0.8),
               },
             }),
           }}

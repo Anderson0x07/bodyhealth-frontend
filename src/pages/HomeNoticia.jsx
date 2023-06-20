@@ -4,6 +4,7 @@ import React from "react";
 import homeIllustration from "../assets/illustration.png";
 import CustomButton from "./CustomButton";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Noticias = () => {
 
@@ -48,7 +49,7 @@ const Noticias = () => {
             Ultima informacion relacionada a la vida saludable y fitness.
           </Typography>
 
-          <div>
+          <div onClick={() => Swal.fire('Atención','Por implementar sección de noticias..','warning')}>
             <CustomButton
               backgroundColor="#fff"
               color="#17275F"

@@ -8,8 +8,11 @@ import ScrollToTop from './components/admin/dashboard/scroll-to-top';
 
 import './App.css'
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
 
 function App() {
+  
   return (
     <BrowserRouter>
       <ThemeProvider>

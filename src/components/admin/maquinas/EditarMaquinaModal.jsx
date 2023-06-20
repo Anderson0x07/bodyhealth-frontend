@@ -26,7 +26,6 @@ function EditarMaquinaModal(props) {
     const getProveedores = async () => {
         try {
             const respuesta = await procesarPeticionGet(`proveedor/all`);
-            console.log(respuesta)
             setProveedores(respuesta.data.proveedores)
 
 
@@ -56,7 +55,6 @@ function EditarMaquinaModal(props) {
         }
 
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPut(`maquina/editar/${maquina.id}`, data);
             setLoading(false);
@@ -111,11 +109,11 @@ function EditarMaquinaModal(props) {
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedorSeleccionado} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    {proveedores != null ? proveedores.map((proveedor) => (
+                    {proveedores != null && proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>
                             {proveedor.nombre_empresa}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
 
                 </TextField>
 

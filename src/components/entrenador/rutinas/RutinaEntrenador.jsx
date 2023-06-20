@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionGet } from '../../../utils/HandleApi';
 //import EditarRutinaModal from './EditarRutinaModal';
-import Swal from 'sweetalert2';
 //import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, Edit, RemoveRedEye } from '@mui/icons-material';
+import { ArrowBack, CheckBox, Edit, RemoveRedEye } from '@mui/icons-material';
 import { Avatar, Button, Container, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarRutinaModal from './EditarRutinaModal';
 import MostrarRutinaEjerciciosModal from './MostrarRutinaEjerciciosModal';
 import MostrarClienteRutinasModal from './MostrarClienteRutinasModal';
 import MostrarUsosRutinaModal from './MostrarUsosRutinaModal';
+import AsignarEjerciciosModal from '../../admin/rutinas/AsignarEjerciciosModal';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -26,6 +26,7 @@ function RutinaEntrenador() {
     const [rutinaEjercicios, setRutinaEjercicios] = useState([]);
     const [clienteRutinas, setClienteRutinas] = useState([]);
 
+    const [showModalAsignarEjercicios, setShowModalAsignarEjercicios] = useState(false);
 
     const navigate = useNavigate();
 
@@ -61,6 +62,11 @@ function RutinaEntrenador() {
         setRutina(updatedData)
     }
 
+
+    const handleActualizarEjercicios = (ejerciciosActualizados) => {
+        console.log(ejerciciosActualizados)
+        setRutinaEjercicios(ejerciciosActualizados)
+    }
 
 
     return (
@@ -111,13 +117,14 @@ function RutinaEntrenador() {
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
                     </Grid>
+                    <Grid item xs={2} sm={2} md={3} >
+                        <Button variant="contained" startIcon={<CheckBox />} onClick={() => setShowModalAsignarEjercicios(true)}>Asignar Ejercicios</Button>
+                    </Grid>
 
-                    {rutinaEjercicios.length > 0
-                        ?
+                    {rutinaEjercicios.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalRutinaEjercicios(true)}>Ver Ejercicios</Button>
                         </Grid>
-                        : false
                     }
                     {clienteRutinas.length > 0
                         ?
@@ -138,6 +145,15 @@ function RutinaEntrenador() {
                     showModalEditarRutina={showModalEditarRutina}
                     setShowModalEditarRutina={setShowModalEditarRutina}
                     onUpdate={handleUpdate}
+                />
+            )}
+
+            {showModalAsignarEjercicios && (
+                <AsignarEjerciciosModal
+                    id_rutina={rutina.id_rutina}
+                    showModalAsignarEjercicios={showModalAsignarEjercicios}
+                    setShowModalAsignarEjercicios={setShowModalAsignarEjercicios}
+                    onUpdate={handleActualizarEjercicios}
                 />
             )}
 

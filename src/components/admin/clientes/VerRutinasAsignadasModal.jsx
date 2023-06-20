@@ -78,15 +78,13 @@ function VerRutinasAsignadasModal(props) {
 
                 <DialogContent>
                     <>
-                        {rutinasCompletas.length > 0
-                            ?
+                        {rutinasCompletas.length > 0 &&
                             rutinasCompletas.map((rutina) => {
                                 if (rutina != null) {
                                     const { id_rutina, nombre_rutina } = rutina;
                                     return (
                                         <Container key={id_rutina}>
-                                            {rutina.rutinaEjercicios.length > 0
-                                                ?
+                                            {rutina.rutinaEjercicios.length > 0 &&
                                                 <Container sx={{ mb: 2 }} key={id_rutina}>
                                                     <Typography variant="subtitle2" align="center" >
                                                         {nombre_rutina}
@@ -126,13 +124,11 @@ function VerRutinasAsignadasModal(props) {
 
                                                     </Table>
                                                 </Container>
-                                                : console.log("cargando tablas")
                                             }
                                         </Container>
                                     )
                                 }
                             })
-                            : console.log("cargando rutinas")
                         }
                     </>
                 </DialogContent>

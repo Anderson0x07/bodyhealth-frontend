@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarEntrenadorModal from './EditarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+import { ArrowBack, Cancel, CheckCircleRounded, Delete, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
 import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
@@ -80,7 +80,6 @@ function Entrenador() {
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -145,9 +144,7 @@ function Entrenador() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {entrenador.foto != undefined
-                                    ? <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />
-                                    : console.log("cargando")}
+                                {entrenador.foto != undefined && <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />}
 
                             </Container>
                         </Grid>
@@ -219,7 +216,7 @@ function Entrenador() {
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalClientesAsignados(true)}>Ver clientes</Button>
                         </Grid>
                         : <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete} >eliminar</Button>
+                            <Button variant="contained" startIcon={<Delete />} onClick={handleDelete} >Eliminar</Button>
                         </Grid>
                     }
 

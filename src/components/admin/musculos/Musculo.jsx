@@ -4,7 +4,7 @@ import { procesarPeticionDelete, procesarPeticionGet } from "../../../utils/Hand
 
 import Swal from 'sweetalert2';
 import logo from "../../../assets/Logo-BodyHealth.jpeg";
-import { ArrowBack, Cancel, Edit } from '@mui/icons-material';
+import { ArrowBack, Cancel, Delete, Edit, RemoveRedEyeRounded } from '@mui/icons-material';
 
 import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import EditarMusculoModal from './EditarMusculoModal';
@@ -153,14 +153,13 @@ function Musculo() {
                         <Button variant="contained" startIcon={<Edit />} onClick={() => {setShowModalEditarmusculo(true)}}>Editar</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Cancel />} onClick={ejercicios.length > 0 ? handleDeletePass : handleDelete}>Eliminar</Button>
+                        <Button variant="contained" startIcon={<Delete />} onClick={ejercicios.length > 0 ? handleDeletePass : handleDelete}>Eliminar</Button>
                     </Grid>
                     {ejercicios.length > 0
-                        ?
+                        &&
                         <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleShowejercicios}>Ver Ejercicios</Button>
+                            <Button variant="contained" startIcon={<RemoveRedEyeRounded />} onClick={handleShowejercicios}>Ver Ejercicios</Button>
                         </Grid>
-                        : false
                     }
 
                 </Grid>

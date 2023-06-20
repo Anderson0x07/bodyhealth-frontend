@@ -25,7 +25,7 @@ function AccountPopover({ admin }) {
 
   const handleMiPerfil = () => {
     navigate("/admin/dashboard/mi-perfil");
-    setOpen(null);
+    handleClose();
   }
 
 

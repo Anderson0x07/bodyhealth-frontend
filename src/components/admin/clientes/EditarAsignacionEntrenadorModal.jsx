@@ -19,8 +19,6 @@ function EditarAsignacionEntrenadorModal(props) {
 
     const { cliente, asignacionEntrenador, showModalEditarAsignacionEntrenador, setShowModalEditarAsignacionEntrenador, onUpdate } = props;
 
-    console.log(asignacionEntrenador)
-
     const [loading, setLoading] = useState(false);
     const [entrenadorSeleccionado, setEntrenadorSeleccionado] = useState(asignacionEntrenador.entrenador.id_usuario);
 
@@ -44,7 +42,6 @@ function EditarAsignacionEntrenadorModal(props) {
 
     
     const handleEntrenador = (event) => {
-        console.log("Entrenador seleccionado: --")
         setEntrenadorSeleccionado(event.target.value);
     }
 
@@ -77,7 +74,6 @@ function EditarAsignacionEntrenadorModal(props) {
             try {
                 const respuesta = await procesarPeticionPut(`entrenadorcliente/editar/${asignacionEntrenador.id_asignacion}`, clienteEntrenador);
                 setLoading(false);
-                console.log(respuesta)
                 Swal.fire({
                     customClass: {
                         container: 'my-swal'
@@ -114,11 +110,11 @@ function EditarAsignacionEntrenadorModal(props) {
                 <TextField name="entrenador" margin="normal" select label="Entrenador" onChange={handleEntrenador}
                     fullWidth variant="outlined" value={entrenadorSeleccionado} helperText="Por favor seleccione el entrenador">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    {entrenadores != null ? entrenadores.map((trainer) => (
+                    {entrenadores != null && entrenadores.map((trainer) => (
                         <MenuItem key={trainer.id_usuario} value={trainer.id_usuario}>
                             {trainer.nombre + " " + trainer.apellido}
                         </MenuItem>
-                    )) : console.log("cargando menu item entrenadores por jornada") }
+                    ))}
                     
                 </TextField>
 

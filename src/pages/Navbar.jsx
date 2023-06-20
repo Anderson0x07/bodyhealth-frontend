@@ -1,4 +1,4 @@
-import { Box, Button, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, styled } from "@mui/material";
+import { Box, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, styled } from "@mui/material";
 import { useContext, useState } from "react";
 
 import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import AccountPopover from "./AccountPopover";
 import { CartContext } from "../components/cliente/carrito/ShoppingCartContext";
 import RegistroClienteModal from "./RegistroClienteModal";
-import { truncate } from "lodash";
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg";
 
@@ -40,14 +39,13 @@ function Navbar({ cliente }) {
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         {["Inicio", "Planes", "Productos"].map(
           (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
+            <ListItem key={text} disablePadding >
+              <ListItemButton onClick={() => text == "Inicio" ? navigate("/home") : navigate("/home/" + text.toLowerCase())}>
                 <ListItemIcon>
                   {index === 0 && <HomeIcon />}
                   {index === 1 && <FeaturedPlayListIcon />}
@@ -131,9 +129,11 @@ function Navbar({ cliente }) {
               open={mobileMenu["left"]}
               onClose={toggleDrawer("left", false)}
             >
+
               {list("left")}
+
             </Drawer>
-            <NavbarLogo src={url} alt="logo" width={"120px"} height={"60px"} />
+            <NavbarLogo src={url} alt="logo" width={"120px"} height={"60px"} onClick={() => navigate("/home")} />
 
           </Box>
 

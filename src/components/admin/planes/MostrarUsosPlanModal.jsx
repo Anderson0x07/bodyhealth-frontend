@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+    Avatar,
     Button,
     Dialog,
     DialogActions,
@@ -8,6 +9,7 @@ import {
     Grid,
     Paper,
     Slide,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -17,22 +19,23 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Delete, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { useNavigate } from 'react-router-dom';
-import { procesarPeticionDelete, procesarPeticionPdf } from '../../../utils/HandleApi';
+import { procesarPeticionPdf } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
+import FacturaItem from '../configuracion/FacturaItem';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
+
 function MostrarUsosPlanModal(props) {
 
     const { facturas, showModalFactura, setShowModalFactura } = props;
     const [loading, setLoading] = useState(false);
-    const [loadingPdf, setLoadingPdf] = useState(false)
 
     const [page, setPage] = useState(0);
 
@@ -41,20 +44,15 @@ function MostrarUsosPlanModal(props) {
 
     const handleVerFactura = async (id_factura) => {
 
-        setLoadingPdf(true);
         try {
             const response = await procesarPeticionPdf(`clientedetalle/pdf/${id_factura}`)
-            console.log(response)
 
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url);
 
-            setLoadingPdf(false);
-
         } catch (error) {
             console.log(error);
-            setLoadingPdf(false);
         }
 
 
@@ -67,13 +65,12 @@ function MostrarUsosPlanModal(props) {
         setPage(newPage);
     };
 
-
-
     const handleChangeRowsPerPage = (event) => {
         setPage(0);
         setRowsPerPage(parseInt(event.target.value, 10));
     };
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - facturas.length) : 0;
+
     return (
         <Dialog open={showModalFactura} onClose={handleCancelarAndOk} TransitionComponent={Transition} maxWidth={'xl'}>
             <DialogTitle>Usos del plan</DialogTitle>
@@ -111,7 +108,14 @@ function MostrarUsosPlanModal(props) {
 
                                             <TableCell align="center">{id_factura}</TableCell>
 
-                                            <TableCell align="center">{cliente.nombre + "" + cliente.apellido}</TableCell>
+                                            <TableCell align="center">
+                                                <Stack direction="row" alignItems="center" spacing={2}>
+                                                    <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {cliente.nombre + " " + cliente.apellido}
+                                                    </Typography>
+                                                </Stack>
+                                            </TableCell>
 
                                             <TableCell align="center">{fecha_inicio}</TableCell>
 
@@ -120,15 +124,11 @@ function MostrarUsosPlanModal(props) {
                                             <TableCell align="center">{metodoPago.descripcion}</TableCell>
 
                                             <TableCell align="center">
-                                                <LoadingButton key={id_factura}
-                                                    size="large"
-                                                    color="inherit"
-                                                    onClick={() => handleVerFactura(id_factura)}
-                                                    loading={loadingPdf}
-                                                    variant="text"
-                                                >
-                                                    <Receipt />
-                                                </LoadingButton>
+                                                <FacturaItem
+                                                    key={id_factura}
+                                                    id_factura={id_factura}
+                                                    handleVerFactura={handleVerFactura}
+                                                />
                                             </TableCell>
 
                                         </TableRow>

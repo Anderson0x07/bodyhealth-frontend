@@ -9,7 +9,13 @@ const config = {
 export const procesarPeticionGet = (endpoint) => {
   const url = `${API_BASE_URL}/${endpoint}`;
 
-  const response = axios.get(url, config);
+  let response;
+
+  if(token != null){
+    response = axios.get(url, config);
+  } else {
+    response = axios.get(url);
+  }
 
   return response;
 };

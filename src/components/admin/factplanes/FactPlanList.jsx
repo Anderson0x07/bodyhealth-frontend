@@ -12,21 +12,19 @@ import {
   TableCell,
   Container,
   Typography,
-  IconButton,
   TableContainer,
   TablePagination,
   Alert,
   AlertTitle,
+  Avatar,
 } from '@mui/material';
 // components
-import ReceiptIcon from '@mui/icons-material/Receipt';
-
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
+import FacturaItem from "../configuracion/FacturaItem";
 
-import { useNavigate } from "react-router-dom";
-
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 const TABLE_HEAD = [
   { id: 'id_factura', label: '# Factura', alignRight: false },
@@ -65,7 +63,8 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
     return filter(array, (_factPlan) => (_factPlan.cliente.nombre.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-      _factPlan.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1))
+      _factPlan.cliente.apellido.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
+      _factPlan.plan.plan.toLowerCase().indexOf(query.toLowerCase()) !== -1))
 
   }
   return stabilizedThis.map((el) => el[0]);
@@ -76,7 +75,6 @@ function FactPlanList() {
   const [fact, setFact] = useState([]);
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -87,7 +85,6 @@ function FactPlanList() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const navigate = useNavigate();
 
 
   const handleVerFactura = async (id_factura) => {
@@ -185,11 +182,13 @@ function FactPlanList() {
 
 
                     <TableCell align="center">{id_factura}</TableCell>
-                    <TableCell align="left">
-                      <Typography variant="subtitle2" noWrap>
-                        {cliente.nombre + " " + cliente.apellido}
-                      </Typography>
-
+                    <TableCell align="center">
+                      <Stack direction="row" alignItems="center" spacing={2}>
+                        <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                        <Typography variant="subtitle2" noWrap>
+                          {cliente.nombre + " " + cliente.apellido}
+                        </Typography>
+                      </Stack>
                     </TableCell>
 
                     <TableCell align="left">{plan.plan}</TableCell>
@@ -201,9 +200,11 @@ function FactPlanList() {
                     <TableCell align="left">{metodoPago.descripcion} </TableCell>
 
                     <TableCell align="center">
-                      <IconButton size="large" color="inherit" onClick={() => handleVerFactura(id_factura)}>
-                        <ReceiptIcon />
-                      </IconButton>
+                      <FacturaItem
+                        key={id_factura}
+                        id_factura={id_factura}
+                        handleVerFactura={handleVerFactura}
+                      />
                     </TableCell>
                   </TableRow>
                 );

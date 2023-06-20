@@ -110,35 +110,35 @@ function MiPerfil({ cliente }) {
                 }
             </Stack>
 
-            {cliente.clienteDetalles.length > 0 && obtenerDiferenciaDias(cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_fin) > 0
+            {cliente.clienteDetalles.length > 0 && obtenerDiferenciaDias(cliente.clienteDetalles[0].fecha_fin) > 0
                 ?
 
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
 
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Alert severity="success" color="info">
-                            <AlertTitle>Cuentas con el {cliente.clienteDetalles[cliente.clienteDetalles.length - 1].plan.plan}</AlertTitle>
+                            <AlertTitle>Cuentas con el {cliente.clienteDetalles[0].plan.plan}</AlertTitle>
                         </Alert>
 
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Alert severity="success" color="info">
-                            <AlertTitle>Tiempo restante {obtenerDiferenciaDias(cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_fin)} dias</AlertTitle>
+                            <AlertTitle>Tiempo restante {obtenerDiferenciaDias(cliente.clienteDetalles[0].fecha_fin)} dias</AlertTitle>
                         </Alert>
 
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Alert severity="success" color="info">
-                            <AlertTitle>Fecha de inicio {cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_inicio}</AlertTitle>
+                            <AlertTitle>Fecha de inicio {cliente.clienteDetalles[0].fecha_inicio}</AlertTitle>
                         </Alert>
 
                     </Grid>
 
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Alert severity="success" color="info">
-                            <AlertTitle>Fecha de finalización {cliente.clienteDetalles[cliente.clienteDetalles.length - 1].fecha_fin}</AlertTitle>
+                            <AlertTitle>Fecha de finalización {cliente.clienteDetalles[0].fecha_fin}</AlertTitle>
                         </Alert>
 
                     </Grid>
@@ -238,7 +238,7 @@ function MiPerfil({ cliente }) {
                         : false
                     }
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalComentario(true)}>Realizar comentario</Button>
+                        <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalComentario(true)}>Sugerencia</Button>
                     </Grid>
                 </Grid>
             </Grid>

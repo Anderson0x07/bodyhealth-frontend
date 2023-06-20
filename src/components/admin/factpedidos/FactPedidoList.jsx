@@ -16,17 +16,16 @@ import {
   TablePagination,
   Alert,
   AlertTitle,
+  Avatar,
 } from '@mui/material';
 // components
-import ReceiptIcon from '@mui/icons-material/Receipt';
 
 import TableHead from '../dashboard/TableHead';
 import TableBuscar from '../dashboard/TableBuscar';
 
+import FacturaItem from "../configuracion/FacturaItem";
 
-import { useNavigate } from "react-router-dom";
-import { LoadingButton } from "@mui/lab";
-
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 const TABLE_HEAD = [
   { id: 'id_compra', label: '# Compra', alignRight: false },
@@ -73,7 +72,6 @@ function FactPedidoList() {
   const [fact, setFact] = useState([]);
   const [status, setStatus] = useState(0);
   const [error, setError] = useState("");
-  const [loadingPdf, setLoadingPdf] = useState(false)
 
 
 
@@ -185,24 +183,23 @@ function FactPedidoList() {
 
 
                     <TableCell align="center">{id_compra}</TableCell>
-                    <TableCell align="left">
-                      <Typography variant="subtitle2" noWrap>
-                        {cliente.nombre + " " + cliente.apellido}
-                      </Typography>
+                    <TableCell align="center">
+                      <Stack direction="row" alignItems="center" spacing={2}>
+                        <Avatar alt={cliente.nombre} src={url + cliente.foto} />
+                        <Typography variant="subtitle2" noWrap>
+                          {cliente.nombre + " " + cliente.apellido}
+                        </Typography>
+                      </Stack>
                     </TableCell>
                     <TableCell align="left">{fecha_compra}</TableCell>
                     <TableCell align="left">{metodoPago.descripcion} </TableCell>
                     <TableCell align="left">{total}</TableCell>
                     <TableCell align="center">
-                      <LoadingButton
-                        size="large"
-                        color="inherit"
-                        onClick={() => handleGenerarFactura(id_compra)}
-                        loading={loadingPdf}
-                        variant="text"
-                      >
-                        <ReceiptIcon />
-                      </LoadingButton>
+                      <FacturaItem
+                        key={id_compra}
+                        id_factura={id_compra}
+                        handleVerFactura={handleGenerarFactura}
+                      />
                     </TableCell>
                   </TableRow>
                 );

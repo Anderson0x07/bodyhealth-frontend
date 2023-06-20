@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionGet } from '../../../utils/HandleApi';
-import { ArrowBack, CheckCircleRounded, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+import { ArrowBack, CheckCircleRounded, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
 import Label from '../../admin/dashboard/label/Label';
-import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
-import AsignarRutinaModal from './AsignarRutinaModal';
+import { Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from '@mui/material';
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
-import { obtenerDiferenciaDias } from '../../../utils/obtenerDiasRestantesPlan';
-import EditarAsignacionRutinaModal from './EditarAsignacionRutinaModal';
-import VerRutinasAsignadasModal from './VerRutinasAsignadasModal';
-import VerControlFisicoModal from './VerControlFisicoModal';
+import EditarAsignacionRutinaModal from '../../admin/clientes/EditarAsignacionRutinaModal';
+import VerRutinasAsignadasModal from '../../admin/clientes/VerRutinasAsignadasModal';
+import VerControlFisicoModal from '../../admin/clientes/VerControlFisicoModal';
+import AsignarRutinaModal from '../../admin/clientes/AsignarRutinaModal';
+import AsignarControlFisico from '../../admin/clientes/AsignarControlFisico';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -17,7 +17,6 @@ function ClienteEntrenador() {
     const [cliente, setCliente] = useState({});
     const [clienteRutinas, setClienteRutinas] = useState([]);
     const [controlesCliente, setControlesCliente] = useState([]);
-
 
 
     //MODALES
@@ -38,9 +37,7 @@ function ClienteEntrenador() {
     const getCliente = async () => {
         try {
             const response = await procesarPeticionGet(`cliente/${id}`);
-            console.log(response)
             setCliente(response.data.cliente);
-            console.log(response.data.cliente.clienteRutinas)
             setClienteRutinas(response.data.cliente.clienteRutinas);
             setControlesCliente(response.data.cliente.controlClientes);
 
@@ -51,7 +48,11 @@ function ClienteEntrenador() {
 
 
     const handleActualizarAsignacionRutina = (asignacionRutinaActualizada) => {
-        setClienteRutinas(asignacionRutinaActualizada)
+        setClienteRutinas(prevState => [...prevState, asignacionRutinaActualizada]);
+    }
+
+    const handleActualizarControl = (nuevoControl) => {
+        setControlesCliente(prevState => [...prevState, nuevoControl]);
     }
 
     const [open, setOpen] = useState(null);
@@ -94,11 +95,10 @@ function ClienteEntrenador() {
 
 
                         {clienteRutinas.length > 0
-                            ?
+                            &&
                             <MenuItem onClick={() => setShowModalEditarAsignacionRutina(true)} sx={{ typography: 'body2' }}>
                                 <DriveFileRenameOutlineTwoToneIcon />Cambiar rutina
                             </MenuItem>
-                            : false
                         }
                     </Menu>
 
@@ -108,9 +108,7 @@ function ClienteEntrenador() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {cliente.foto != null
-                                    ? <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />
-                                    : false}
+                                {cliente.foto != null && <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />}
 
                             </Container>
                         </Grid>
@@ -174,39 +172,29 @@ function ClienteEntrenador() {
                     </Grid>
 
 
-
-
                     {clienteRutinas.length == 0
-                        ?
+                        &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarRutina(true)}>Asignar rutina</Button>
                         </Grid>
-                        : false
                     }
 
                     {clienteRutinas.length > 0
-                        ?
+                        &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalRutinasCliente(true)}>Ver rutinas</Button>
                         </Grid>
-                        : false
                     }
 
-                    {controlesCliente.length == 0
-                        ?
-                        <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarControl(true)}>Asignar control</Button>
-                        </Grid>
-                        : false
-                    }
-
+                    <Grid item xs={2} sm={2} md={3} >
+                        <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarControl(true)}>Asignar control</Button>
+                    </Grid>
 
                     {controlesCliente.length > 0
-                        ?
+                        &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalControlesCliente(true)}>Ver control fisico</Button>
                         </Grid>
-                        : false
                     }
                 </Grid>
 
@@ -217,6 +205,7 @@ function ClienteEntrenador() {
                     cliente={cliente}
                     showModalAsignarRutina={showModalAsignarRutina}
                     setShowModalAsignarRutina={setShowModalAsignarRutina}
+                    onUpdate ={handleActualizarAsignacionRutina}
 
                 />
             )}
@@ -241,6 +230,16 @@ function ClienteEntrenador() {
                 />
             )}
 
+            {/* MODAL PARA ASIGNAR CONTROL FISICO DEL CLIENTE */}
+            {showModalAsignarControl && (
+                <AsignarControlFisico
+                    cliente={cliente}
+                    showModalAsignarControl={showModalAsignarControl}
+                    setShowModalAsignarControl={setShowModalAsignarControl}
+                    onUpdate = {handleActualizarControl}
+                />
+            )}
+
             {/* MODAL PARA VER CONTROL FISICO DEL CLIENTE */}
             {showModalControlesCliente && (
                 <VerControlFisicoModal
@@ -249,6 +248,8 @@ function ClienteEntrenador() {
                     setShowModalControlesCliente={setShowModalControlesCliente}
                 />
             )}
+
+
 
 
 

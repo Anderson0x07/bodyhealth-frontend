@@ -37,7 +37,6 @@ function AsignarRutinaModal(props) {
             typeof value === 'string' ? value.split(',') : value,
         );
 
-        console.log(rutinaSeleccion)
     };
 
     const data = {};
@@ -86,13 +85,8 @@ function AsignarRutinaModal(props) {
                 id_rutina: rutinaSeleccion[i].split(":")[0]
             }
 
-
-            console.log("D-A-T-A DE LA RUTINA ASIGNADA:"+i)
-            console.log(data)
-
             try {
                 const respuesta = await procesarPeticionPost(`clienterutina/guardar`, data);
-                console.log(respuesta)
                 setLoading(false);
 
                 Swal.fire({
@@ -146,13 +140,12 @@ function AsignarRutinaModal(props) {
                     >
 
                         {rutinas != null
-                            ? rutinas.map((rutina) => (
+                            && rutinas.map((rutina) => (
                                 <MenuItem key={rutina.id_rutina} value={rutina.id_rutina + ":" + rutina.nombre_rutina}>
                                     <Checkbox checked={rutinaSeleccion.indexOf(rutina.id_rutina + ":" + rutina.nombre_rutina) > -1} />
                                     <ListItemText primary={rutina.nombre_rutina} />
                                 </MenuItem>
                             ))
-                            : console.log("cargando rutinas")
                         }
                     </Select>
                 </FormControl>

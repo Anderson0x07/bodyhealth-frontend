@@ -30,7 +30,7 @@ import { procesarPeticionGet } from '../utils/HandleApi';
 import Home from '../pages/Home';
 import DashboardAdmin from '../layouts/dashboard-admin/DashboardAdmin';
 import DashboardEntrenador from '../layouts/dashboard-trainer/DashboardEntrenador';
-import Entrenador from '../components/admin/Entrenadores/Entrenador';
+import Entrenador from '../components/admin/entrenadores/Entrenador';
 import ProfilePage from '../pages/admin/ProfilePage';
 import HomeEntrenador from '../pages/entrenador/HomeEntrenador';
 import ClientesEntrenador from '../pages/entrenador/clientes/ClientesEntrenador';
