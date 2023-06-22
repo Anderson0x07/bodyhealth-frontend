@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
 
@@ -19,11 +19,9 @@ function AgregarPlanModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPost(`plan/guardar`, data);
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'

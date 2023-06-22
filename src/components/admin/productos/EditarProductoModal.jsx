@@ -8,14 +8,12 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Grid,
     IconButton,
     MenuItem,
     TextField
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { useNavigate } from 'react-router-dom';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -143,11 +141,11 @@ function EditarProductoModal(props) {
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedorSeleccionado} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
-                    {proveedores != null ? proveedores.map((proveedor) => (
+                    {proveedores != null && proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>
                             {proveedor.nombre_empresa}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
 
                 </TextField>
 

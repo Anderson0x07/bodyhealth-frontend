@@ -51,9 +51,6 @@ import HorarioAdmin from '../pages/admin/HorarioAdmin';
 import MiPerfilEntrenador from '../pages/entrenador/MiPerfilEntrenador';
 import RegistroClienteModal from '../pages/RegistroClienteModal';
 
-
-
-
 const email = localStorage.getItem('email');
 
 function RutasRoles() {
@@ -70,7 +67,6 @@ function RutasRoles() {
                 try {
                     const response = await procesarPeticionGet(`usuario/login/${encodeURIComponent(email)}`);
                     setUsuario(response.data.usuario);
-                    console.log(response)
                 } catch (error) {
                     localStorage.clear();
                     navigate("/home");
@@ -131,7 +127,7 @@ function RutasRoles() {
                                 <Route exact path="metodospago" element={<MetodosPago />} />
                                 <Route exact path="fact-pedidos" element={<FactPedidos />} />
                                 <Route exact path="fact-planes" element={<FactPlanes />} />
-                                <Route exact path="horarios" element={<HorarioAdmin/>} />
+                                <Route exact path="horarios" element={<HorarioAdmin />} />
                                 <Route exact path="configuracion" element={<Configuracion />} />
                                 <Route exact path="mi-perfil" element={<ProfilePage admin={usuario} />} />
                                 <Route exact path="*" element={<Page404 />} />
@@ -142,7 +138,7 @@ function RutasRoles() {
                         {/* RUTAS PARA ENTRENADOR PROTEGIDAS */}
                         <Route element={<ProtectedRouteAdmin isAllowed={isAuthenticated && usuario.rol.nombre === "TRAINER"} redirectTo="/home" />}>
                             <Route path='/entrenador/dashboard' element={<DashboardEntrenador entrenador={usuario} />}>
-                                <Route exact path="home" element={<HomeEntrenador entrenador={usuario}/>} />
+                                <Route exact path="home" element={<HomeEntrenador entrenador={usuario} />} />
                                 <Route exact path="clientes" element={<ClientesEntrenador entrenador={usuario} />} />
                                 <Route exact path="clientes/:id" element={<ClienteEntrenador />} />
                                 <Route exact path="musculos" element={<MusculosEntrenador />} />
@@ -151,8 +147,8 @@ function RutasRoles() {
                                 <Route exact path="ejercicios/:id" element={<EjercicioEntrenador />} />
                                 <Route exact path="rutinas" element={<RutinasEntrenador />} />
                                 <Route exact path="rutinas/:id" element={<RutinaEntrenador />} />
-                                <Route exact path="mi-perfil" element={<MiPerfilEntrenador entrenador={usuario}/>} />
-                                <Route exact path="horario" element={<Horario entrenador={usuario}/>} />
+                                <Route exact path="mi-perfil" element={<MiPerfilEntrenador entrenador={usuario} />} />
+                                <Route exact path="horario" element={<Horario entrenador={usuario} />} />
                             </Route>
                         </Route>
 
@@ -171,9 +167,11 @@ function RutasRoles() {
 
                         {/* PAGINA HOME */}
                         <Route element={<ProtectedRouteAdmin isAllowed={localStorage.length == 0} redirectTo="/home" />}>
-                            <Route index element={<Home />} />
+                            <Route index element={
+                                <Home></Home>
+                            } />
                         </Route>
-                        
+
                         <Route path='/*' element={<Page404 />} />
 
                     </Routes>

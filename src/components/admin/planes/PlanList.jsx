@@ -192,7 +192,7 @@ function PlanList() {
 
                                         <TableCell align="left">{meses}</TableCell>
 
-                                        <TableCell align="left">{precio}</TableCell>
+                                        <TableCell align="left">{"$ "+precio.toLocaleString()}</TableCell>
 
                                         <TableCell align="right">
                                             <IconButton size="large" color="inherit" onClick={() => handlePlanExpand(id_plan)}>

@@ -15,7 +15,6 @@ function MiPerfilCliente({ cliente }) {
   const getInfo = async () => {
     try {
       const respuesta = await procesarPeticionGet(`infobasica/${1}`);
-      console.log(respuesta)
       setData(respuesta.data.infobasica);
 
     } catch (error) {

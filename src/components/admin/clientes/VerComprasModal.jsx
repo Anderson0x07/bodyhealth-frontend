@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Container,
     Dialog,
     DialogActions,
@@ -143,7 +142,6 @@ function VerComprasModal(props) {
 
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}

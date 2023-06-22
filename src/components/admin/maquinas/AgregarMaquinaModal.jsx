@@ -42,7 +42,7 @@ function AgregarMaquinaModal(props) {
         }
 
         setLoading(true);
-        
+
         try {
             const respuesta = await procesarPeticionPost(`maquina/guardar`, data);
             setLoading(false);

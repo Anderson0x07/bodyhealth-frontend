@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     Avatar,
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -22,7 +21,6 @@ import {
 import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { procesarPeticionPdf } from '../../../utils/HandleApi';
-import Swal from 'sweetalert2';
 import FacturaItem from '../configuracion/FacturaItem';
 
 
@@ -35,7 +33,6 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 function MostrarUsosPlanModal(props) {
 
     const { facturas, showModalFactura, setShowModalFactura } = props;
-    const [loading, setLoading] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -158,8 +155,6 @@ function MostrarUsosPlanModal(props) {
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >

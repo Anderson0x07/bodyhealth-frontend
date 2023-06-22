@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPost, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
-    Avatar,
     Button,
     Dialog,
     DialogActions,

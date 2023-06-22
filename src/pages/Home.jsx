@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { procesarPeticionGet } from '../utils/HandleApi';
 import Footer from './Footer';
+import Chat from '../components/cliente/Chat';
 
+import '../components/cliente/bot/chatbot.css'
 
 function Home({ cliente }) {
 
@@ -21,7 +23,6 @@ function Home({ cliente }) {
     const getInfo = async () => {
         try {
             const respuesta = await procesarPeticionGet(`infobasica/${1}`);
-            console.log(respuesta)
             setData(respuesta.data.infobasica);
 
         } catch (error) {
@@ -256,13 +257,15 @@ function Home({ cliente }) {
                 <Container>
                     <Navbar cliente={cliente} />
 
-                    <Footer data={data}/>
+                    <Footer data={data} />
 
 
                 </Container>
             </Box>
 
-
+            <div className="estilo-card">
+                <Chat />
+            </div>
 
         </>
     )

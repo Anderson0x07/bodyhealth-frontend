@@ -5,7 +5,6 @@ import AgregarEntrenadorModal from "./AgregarEntrenadorModal";
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,

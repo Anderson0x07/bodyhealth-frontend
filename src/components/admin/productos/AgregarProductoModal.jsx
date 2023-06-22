@@ -10,7 +10,6 @@ import {
     DialogTitle,
     IconButton,
     MenuItem,
-    OutlinedInput,
     TextField
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
@@ -73,7 +72,6 @@ function AgregarProductoModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(data);
 
         if (proveedor === 'Seleccionar') {
             Swal.fire({
@@ -155,13 +153,13 @@ function AgregarProductoModal(props) {
                 </TextField>
 
                 <TextField margin="normal" type="text" name="nombre" label="Nombre"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su nombre" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el nombre" />
 
                 <TextField margin="normal" type="number" name="stock" label="Stock"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su apellido" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el stock disponible" />
 
                 <TextField margin="normal" type="number" name="precio" label="Precio"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su número de telefono" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el precio" />
 
                 <Button variant="outlined" component="label" size="large" >
                     Subir foto de producto

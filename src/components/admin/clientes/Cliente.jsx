@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarClienteModal from './EditarClienteModal';
 import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, CheckCircleRounded, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+import { ArrowBack, CheckCircleRounded, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
 import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import EditarAsignacionEntrenadorModal from './EditarAsignacionEntrenadorModal';
@@ -166,10 +166,6 @@ function Cliente() {
                             </MenuItem>
                         }
 
-
-
-
-
                     </Menu>
 
                 </Stack>
@@ -178,7 +174,7 @@ function Cliente() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {cliente.foto != null && <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} /> }
+                                {<Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />}
 
                             </Container>
                         </Grid>
@@ -190,10 +186,10 @@ function Cliente() {
                             {clienteDetalles.length > 0
                                 &&
                                 obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin) > 0
-                                    &&
-                                    <Alert sx={{ marginBottom: '10px' }} variant="standard" severity="success">
-                                        <AlertTitle>Tiempo restante {obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin)} dias</AlertTitle>
-                                    </Alert>
+                                &&
+                                <Alert sx={{ marginBottom: '10px' }} variant="standard" severity="success">
+                                    <AlertTitle>Tiempo restante {obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin)} dias</AlertTitle>
+                                </Alert>
                             }
 
 
@@ -431,7 +427,7 @@ function Cliente() {
                     cliente={cliente}
                     showModalAsignarControl={showModalAsignarControl}
                     setShowModalAsignarControl={setShowModalAsignarControl}
-                    onUpdate = {handleActualizarControl}
+                    onUpdate={handleActualizarControl}
                 />
             )}
 

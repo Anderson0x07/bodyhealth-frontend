@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Avatar,

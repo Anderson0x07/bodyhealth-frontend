@@ -242,74 +242,74 @@ function MetodoPagoList() {
                         <TableBuscar filterName={filterName} onFilterName={handleFilterByName} />
                     </Stack>
 
-                        <TableContainer sx={{ minWidth: 500 }}>
-                            <Table>
-                                <TableHead
-                                    order={order}
-                                    orderBy={orderBy}
-                                    headLabel={TABLE_HEAD}
-                                    onRequestSort={handleRequestSort}
-                                />
-                                <TableBody>
-                                    {filteredMetodoPago.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    <TableContainer sx={{ minWidth: 500 }}>
+                        <Table>
+                            <TableHead
+                                order={order}
+                                orderBy={orderBy}
+                                headLabel={TABLE_HEAD}
+                                onRequestSort={handleRequestSort}
+                            />
+                            <TableBody>
+                                {filteredMetodoPago.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
 
-                                        const { id_metodopago, descripcion } = row;
+                                    const { id_metodopago, descripcion } = row;
 
-                                        return (
+                                    return (
 
-                                            <TableRow hover key={id_metodopago} >
-                                                <TableCell align="left">
-                                                    <Typography variant="subtitle2" noWrap>
-                                                        {descripcion}
-                                                    </Typography>
+                                        <TableRow hover key={id_metodopago} >
+                                            <TableCell align="left">
+                                                <Typography variant="subtitle2" noWrap>
+                                                    {descripcion}
+                                                </Typography>
 
-                                                </TableCell>
-
-                                                <TableCell align="right">
-                                                    <Button variant="contained" sx={{ marginRight: '10px' }} color="inherit" onClick={() => handleEditarMetodoPago(row)}>
-                                                        <Edit /> Editar
-                                                    </Button>
-                                                    <Button variant="contained" color="inherit" onClick={() => handleDelete(row)}>
-                                                        <Delete /> Eliminar
-                                                    </Button>
-
-                                                </TableCell>
-
-
-                                            </TableRow>
-
-
-                                        );
-
-                                    })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={2} />
-                                        </TableRow>
-                                    )}
-
-                                </TableBody>
-                                {isNotFound && (
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell align="center" colSpan={2} sx={{ py: 3 }}>
-                                                <Paper sx={{ textAlign: 'center' }}>
-                                                    <Typography variant="h6" paragraph>
-                                                        No Encontrado
-                                                    </Typography>
-
-                                                    <Typography variant="body2">
-                                                        No hay resultados para &nbsp;
-                                                        <strong>&quot;{filterName}&quot;</strong>.
-                                                        <br /> Intente verificar errores tipográficos o usar palabras completas.
-                                                    </Typography>
-                                                </Paper>
                                             </TableCell>
+
+                                            <TableCell align="right">
+                                                <Button variant="contained" sx={{ marginRight: '10px' }} color="inherit" onClick={() => handleEditarMetodoPago(row)}>
+                                                    <Edit /> Editar
+                                                </Button>
+                                                <Button variant="contained" color="inherit" onClick={() => handleDelete(row)}>
+                                                    <Delete /> Eliminar
+                                                </Button>
+
+                                            </TableCell>
+
+
                                         </TableRow>
-                                    </TableBody>
+
+
+                                    );
+
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={2} />
+                                    </TableRow>
                                 )}
-                            </Table>
-                        </TableContainer>
+
+                            </TableBody>
+                            {isNotFound && (
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell align="center" colSpan={2} sx={{ py: 3 }}>
+                                            <Paper sx={{ textAlign: 'center' }}>
+                                                <Typography variant="h6" paragraph>
+                                                    No Encontrado
+                                                </Typography>
+
+                                                <Typography variant="body2">
+                                                    No hay resultados para &nbsp;
+                                                    <strong>&quot;{filterName}&quot;</strong>.
+                                                    <br /> Intente verificar errores tipográficos o usar palabras completas.
+                                                </Typography>
+                                            </Paper>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            )}
+                        </Table>
+                    </TableContainer>
 
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

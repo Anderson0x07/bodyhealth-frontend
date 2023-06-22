@@ -1,5 +1,5 @@
 import { Box, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
 import CategoryIcon from '@mui/icons-material/Category';
@@ -11,12 +11,30 @@ import { useNavigate } from "react-router-dom";
 import AccountPopover from "./AccountPopover";
 import { CartContext } from "../components/cliente/carrito/ShoppingCartContext";
 import RegistroClienteModal from "./RegistroClienteModal";
+import { procesarPeticionGet } from "../utils/HandleApi";
 
-const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg";
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function Navbar({ cliente }) {
 
   const navigate = useNavigate();
+
+  const [data, setData] = useState(null);
+
+  //USEEFFECT INFO BASICA
+  const getInfo = async () => {
+    try {
+      const respuesta = await procesarPeticionGet(`infobasica/${1}`);
+      setData(respuesta.data.infobasica);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -133,7 +151,7 @@ function Navbar({ cliente }) {
               {list("left")}
 
             </Drawer>
-            <NavbarLogo src={url} alt="logo" width={"120px"} height={"60px"} onClick={() => navigate("/home")} />
+            <NavbarLogo src={data != null ? (url + data.logo_empresa) : undefined} alt="Logo empresa" width={"120px"} height={"60px"} onClick={() => navigate("/home")} />
 
           </Box>
 
@@ -141,7 +159,7 @@ function Navbar({ cliente }) {
             <NavLink variant="body2" onClick={() => navigate("/home")}>Inicio</NavLink>
             <NavLink variant="body2" onClick={() => navigate("/home/planes")}>Planes</NavLink>
             <NavLink variant="body2" onClick={() => navigate("/home/productos")}>Productos</NavLink>
-            {cart.length > 0 ? <NavLink variant="body2" onClick={() => navigate("/home/carrito")}>Carrito de Compras</NavLink> : console.log("false")}
+            {cart.length > 0 && <NavLink variant="body2" onClick={() => navigate("/home/carrito")}>Carrito de Compras</NavLink>}
           </NavbarLinksBox>
         </Box>
 

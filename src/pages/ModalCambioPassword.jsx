@@ -4,11 +4,9 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import React, { useState } from 'react'
 import Swal from 'sweetalert2';
 import { procesarPeticionGet, procesarPeticionPost } from '../utils/HandleApi';
-import CambiarPasswordModal from '../components/cliente/mi-perfil/CambiarPasswordModal';
 
 function ModalCambioPassword(props) {
 
-    const data = [];
     const { changePassword, setChangePassword, showModalCambioPassword, setShowModalCambioPassword } = props;
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState(null)
@@ -36,12 +34,6 @@ function ModalCambioPassword(props) {
                         confirmButtonText: 'Vale!',
                         customClass: {
                             container: 'my-swal'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            console.log("QUE SE ABRA EL MODAL PARA TOKEN")
-                            console.log(showModalToken)
-                            setShowModalToken(true)
                         }
                     })
 
@@ -103,10 +95,8 @@ function ModalCambioPassword(props) {
             <DialogTitle>Cambio de contraseña</DialogTitle>
             <DialogContent>
 
-
                 <TextField margin="normal" type="text" name="email" label="Digite su email"
                     onChange={handleChange} fullWidth variant="outlined" />
-
 
             </DialogContent>
             <DialogActions>
@@ -124,7 +114,7 @@ function ModalCambioPassword(props) {
             </DialogActions>
 
 
-            
+
         </Dialog>
     )
 }

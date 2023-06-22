@@ -36,7 +36,7 @@ function VerEntrenadorAsignadoModal(props) {
                     const { entrenador } = row;
 
                     return (
-                        <>
+                        <div key={entrenador.id_usuario}>
                             <Avatar style={{ margin: '0 auto', width: '200px', height: '200px' }} src={url + entrenador.foto} />
 
                             <TextField margin="normal" type="text" label="Documento"
@@ -82,7 +82,7 @@ function VerEntrenadorAsignadoModal(props) {
                                 }} />
 
                             
-                        </>
+                        </div>
                     )
                 })}
 

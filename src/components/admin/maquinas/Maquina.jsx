@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarMaquinaModal from './EditarMaquinaModal';
 import Swal from 'sweetalert2';
-import { ArrowBack, Cancel, Delete, Edit } from '@mui/icons-material';
+import { ArrowBack, Delete, Edit } from '@mui/icons-material';
 import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 
 

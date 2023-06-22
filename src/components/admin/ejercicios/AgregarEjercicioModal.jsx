@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from "../../../utils/HandleApi";
 import Swal from 'sweetalert2';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, TextField, InputLabel } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
-
-
 
 
 function AgregarEjercicioModal(props) {
@@ -97,6 +95,7 @@ function AgregarEjercicioModal(props) {
 
                 <TextField margin="normal" type="text" name="url_video" label="URL video"
                     onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese la URL del video del ejercicio." />
+
                 <TextField select margin="normal" type="text" name="musculo" label="Musculo" onChange={handleMusculo}
                     fullWidth variant="outlined" value={musculoSeleccionado} helperText="Por favor seleccione un musculo">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>

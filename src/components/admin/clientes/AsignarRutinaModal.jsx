@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPost, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionGet, procesarPeticionPost } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
-    Avatar,
     Button,
     Checkbox,
     Dialog,
@@ -15,7 +14,6 @@ import {
     MenuItem,
     OutlinedInput,
     Select,
-    TextField
 } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';

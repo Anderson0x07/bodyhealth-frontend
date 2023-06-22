@@ -5,7 +5,6 @@ import AgregarMaquinaModal from './AgregarMaquinaModal'
 import { filter } from 'lodash';
 // @mui
 import {
-  Card,
   Table,
   Stack,
   Paper,

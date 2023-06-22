@@ -157,7 +157,7 @@ function MostrarUsosMetodoModal(props) {
                                                 <TableRow hover key={id_factura} >
 
                                                     <TableCell align="center">{id_factura}</TableCell>
-                                                    
+
                                                     <TableCell align="center">{plan.plan}</TableCell>
 
                                                     <TableCell align="center">{cliente.nombre + " " + cliente.apellido}</TableCell>

@@ -42,36 +42,36 @@ function Footer({data}) {
                 >
                     <IconButton
                         component="a"
-                        href={data != null && data.url_instagram}
+                        href={data != null ? data.url_instagram : undefined}
                         target="_blank"
                     >
                         <Instagram />
                     </IconButton>
                     <IconButton
                         component="a"
-                        href={data != null && data.url_facebook}
+                        href={data != null ? data.url_facebook : undefined}
                         target="_blank"
                     >
                         <Facebook />
                     </IconButton>
                     <IconButton
                         component="a"
-                        href={data != null && data.url_whatsapp}
+                        href={data != null ? data.url_whatsapp : undefined}
                         target="_blank"
                     >
                         <WhatsApp />
                     </IconButton>
                     <IconButton
                         component="a"
-                        href={data != null && data.url_tiktok}
+                        href={data != null ? data.url_tiktok : undefined}
                         target="_blank"
                     >
-                        <i class="fa-brands fa-tiktok"></i>
+                        <i className="fa-brands fa-tiktok"></i>
                     </IconButton>
 
                     <IconButton
                         component="a"
-                        href={data != null && ("mailto:" + data.email + "?subject=Solicitud%20de%20Descuento%20Cliente%20Nuevo&body=Cordial%20Saludo,%20")}
+                        href={data != null ? ("mailto:" + data.email + "?subject=Solicitud%20de%20Descuento%20Cliente%20Nuevo&body=Cordial%20Saludo,%20") : undefined}
                         target="_blank"
                     >
                         <EmailTwoTone />

@@ -5,7 +5,6 @@ import AgregarClienteModal from "./AgregarClienteModal";
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -156,7 +155,7 @@ function ClienteList() {
     return (
         <>
             <Container>
-                {status !== 200  && (
+                {error != ""  && (
                     <Alert sx={{marginBottom: '50px'}} variant="outlined" severity="error">
                         <AlertTitle>Error</AlertTitle>
                         {error} 

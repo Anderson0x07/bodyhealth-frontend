@@ -90,16 +90,12 @@ function LoginPage() {
                 password: password
             }, null);
 
-            console.log(response);
-
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('email', response.data.username);
             localStorage.setItem('rol', response.data.rol);
             localStorage.setItem('isAuthenticated', true);
 
             setLoading(false);
-
-
 
             if (response.data.rol === "ROLE_ADMIN") {
                 navigate('/admin/dashboard/home', { replace: true });
@@ -129,7 +125,7 @@ function LoginPage() {
     }
 
     const handleIntroducirToken = () => {
-        setChangePassword(false);
+        setChangePassword(true);
         setShowModalToken(true)
     }
 

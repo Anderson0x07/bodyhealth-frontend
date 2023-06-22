@@ -54,7 +54,7 @@ function Productos() {
                 
 
                 <Grid container spacing={3}>
-                    {productos != null ?
+                    {productos != null &&
                         productos.map((producto) => (
                             <Grid key={producto.id_producto} item xs={12} sm={6} md={3}>
                                 <Card onClick={() => { setProducto(producto); setShowModalAgregarProducto(true) }}>
@@ -98,7 +98,7 @@ function Productos() {
                                     </Stack>
                                 </Card>
                             </Grid>
-                        )) : console.log("se toteó")}
+                        ))}
                 </Grid>
 
                 {showModalAgregarProducto && (

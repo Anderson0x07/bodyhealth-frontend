@@ -6,7 +6,8 @@ import Productos from '../../components/cliente/productos/Productos';
 import Planes from '../../components/cliente/planes/Planes';
 import { procesarPeticionGet } from '../../utils/HandleApi';
 import Footer from '../Footer';
-
+import Chat from '../../components/cliente/Chat';
+import '../../components/cliente/bot/chatbot.css'
 
 function PlanesCliente({ cliente }) {
 
@@ -16,7 +17,6 @@ function PlanesCliente({ cliente }) {
   const getInfo = async () => {
     try {
       const respuesta = await procesarPeticionGet(`infobasica/${1}`);
-      console.log(respuesta)
       setData(respuesta.data.infobasica);
 
     } catch (error) {
@@ -37,9 +37,13 @@ function PlanesCliente({ cliente }) {
 
       <Box  >
         <Container>
-          <Footer data={data}/>
+          <Footer data={data} />
         </Container>
       </Box>
+
+      <div className="estilo-card">
+        <Chat />
+      </div>
     </>
   )
 }

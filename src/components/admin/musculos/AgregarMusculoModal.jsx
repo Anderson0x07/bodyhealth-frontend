@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost } from "../../../utils/HandleApi";
 import Swal from 'sweetalert2';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, TextField, InputLabel } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
-
-
 
 
 function AgregarMusculoModal(props) {
@@ -19,11 +17,11 @@ function AgregarMusculoModal(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         setLoading(true);
-        console.log(data)
+
         try {
             const respuesta = await procesarPeticionPost(`musculo/guardar`, data);
-            console.log(respuesta)
             setLoading(false);
             Swal.fire({
                 customClass: {
@@ -41,7 +39,6 @@ function AgregarMusculoModal(props) {
 
         } catch (error) {
             setLoading(false);
-            console.log(error);
 
             Swal.fire({
                 customClass: {

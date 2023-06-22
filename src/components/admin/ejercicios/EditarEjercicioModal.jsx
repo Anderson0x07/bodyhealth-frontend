@@ -52,7 +52,7 @@ function EditarEjercicioModal(props) {
             id_musculo: musculoSeleccionado
         }
         setLoading(true);
-        
+
         try {
             const respuesta = await procesarPeticionPut(`ejercicio/editar/${ejercicio.id_ejercicio}`, data);
             setLoading(false);
@@ -80,8 +80,6 @@ function EditarEjercicioModal(props) {
                 icon: 'error'
             })
         }
-
-
     };
 
     const handleMusculo = (event) => {

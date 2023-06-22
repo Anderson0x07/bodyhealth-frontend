@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material'
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, Container, Divider, Grid, InputAdornment, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from '@mui/material'
 import { procesarPeticionGet } from '../../../utils/HandleApi';
 import { Edit } from '@mui/icons-material';
 import EditarInfoModal from './EditarInfoModal';
+import { acortar } from '../../../utils/acortarCadena';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -31,126 +32,136 @@ function Config() {
         setData(infoActualizada)
     }
 
-
-    const acortarURL = (url, longitudMaxima) => {
-
-        if (url != null) {
-            if (url.length <= longitudMaxima) {
-                return url; // La URL no necesita acortarse
-            } else {
-                const urlAcortada = url.substring(0, longitudMaxima - 3) + "...";
-                return urlAcortada;
-            }
-        }
-    }
-
     return (
         <>
-            {data !== null &&
+            {data != null &&
                 <>
-                    <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarInfo(true)}>Editar Información</Button>
 
-
-                            {/* MODAL PARA EDITAR LA INFO */}
-                            {showModalEditarInfo && (
-                                <EditarInfoModal
-                                    info={data}
-                                    showModalEditarInfo={showModalEditarInfo}
-                                    setShowModalEditarInfo={setShowModalEditarInfo}
-                                    onUpdate={handleActualizarData}
-                                />
-                            )}
-
-                        </Grid>
-                    </Grid>
-
-                    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-
-                        {data.logo_empresa != null &&
-
-                            <Container maxWidth="md">
-                                <Grid container justifyContent="center">
-                                    <Grid item xs={12} sm={6} md={6}>
-                                        <Avatar
-                                            src={url + data.logo_empresa}
-                                            sx={{
-                                                width: '100%',
-                                                height: '100%',
-                                                borderRadius: 1,
-                                                margin: '0 auto',
-                                            }}
-                                        />
-                                    </Grid>
+                    {data.logo_empresa != null &&
+                        <Container maxWidth="md" sx={{ mb: 5 }}>
+                            <Grid container justifyContent="center">
+                                <Grid item xs={12} sm={6} md={6}>
+                                    <Avatar
+                                        src={url + data.logo_empresa}
+                                        sx={{
+                                            width: '100%',
+                                            height: '100%',
+                                            borderRadius: 1,
+                                            margin: '0 auto',
+                                        }}
+                                    />
                                 </Grid>
-                            </Container>
-
-                        }
-                    </div>
+                            </Grid>
+                        </Container>
+                    }
 
                     <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5}>
-                            <TableContainer sx={{ minWidth: 100 }}>
-                                <Table style={{ border: "1px solid black" }}>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell className='clave' >Nombre empresa</TableCell>
-                                            <TableCell className='value' align="right">{data.nombre_empresa}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Dirección</TableCell>
-                                            <TableCell className='value' align="right">{data.direccion}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Telefono</TableCell>
-                                            <TableCell className='value' align="right">{data.telefono}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>RUT</TableCell>
-                                            <TableCell className='value' align="right">{data.rut}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Email</TableCell>
-                                            <TableCell className='value' align="right">{data.email}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Eslogan</TableCell>
-                                            <TableCell className='value' align="right">{data.eslogan}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Cuenta de facebook</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_facebook, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Cuenta de instagram</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_instagram, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Cuenta de tiktok</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_tiktok, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Cuenta de twitter</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_twitter, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Whatsapp de empresa</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_whatsapp, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Canal de youtube</TableCell>
-                                            <TableCell className='value' align="right">{acortarURL(data.url_youtube, 25)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell className='clave'>Pie de página</TableCell>
-                                            <TableCell className='value' align="right">{data.pie_pagina}</TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+
+
+                            <Card>
+                                <CardHeader title="Información" />
+                                <CardContent sx={{ pt: 2 }}>
+                                    <Box sx={{ m: 0 }}>
+                                        <Grid container spacing={2}>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Nombre empresa"
+                                                    fullWidth variant="outlined" value={data.nombre_empresa != null ? data.nombre_empresa : ""} InputProps={{ readOnly: true }} />
+
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Dirección" fullWidth
+                                                    value={data.direccion != null ? data.direccion : ""} variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Teléfono"
+                                                    value={"+57 " + data.telefono} fullWidth variant="outlined"
+                                                    InputProps={{
+                                                        readOnly: true,
+                                                        startAdornment: (
+                                                            <InputAdornment position="start">
+                                                                <img loading="lazy" width="20" src={`https://flagcdn.com/w20/co.png`} srcSet={`https://flagcdn.com/w40/co.png 2x`} />
+                                                            </InputAdornment>
+                                                        )
+                                                    }}
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="RUT"
+                                                    value={data.rut != null ? data.rut : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Email"
+                                                    value={data.email != null ? data.email : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Eslogan"
+                                                    value={data.eslogan != null ? data.eslogan : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Cuenta de facebook"
+                                                    value={data.url_facebook != null ? data.url_facebook : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Cuenta de instagram"
+                                                    value={data.url_instagram != null ? data.url_instagram : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Cuenta de tiktok"
+                                                    value={data.url_tiktok != null ? data.url_tiktok : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Cuenta de twitter"
+                                                    value={data.url_twitter != null ? data.url_twitter : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Whatsapp de empresa"
+                                                    value={data.url_whatsapp != null ? data.url_whatsapp : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                            <Grid item xs={12} md={6}>
+                                                <TextField margin="normal" type="text" label="Canal de Youtube"
+                                                    value={data.url_youtube != null ? data.url_youtube : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+                                            <Grid item xs={12} md={12}>
+
+
+                                                <TextField margin="normal" label="Pie de página" multiline rows={4}
+                                                    value={data.pie_pagina != null ? data.pie_pagina : ""} fullWidth variant="outlined" InputProps={{ readOnly: true }} />
+                                            </Grid>
+
+                                        </Grid>
+                                    </Box>
+                                </CardContent>
+                                <Divider />
+                                <CardActions sx={{ justifyContent: 'flex-end', mb: 1, mr: 2 }} >
+                                    <Button variant="contained" startIcon={<Edit />} onClick={() => setShowModalEditarInfo(true)}>Editar Información</Button>
+                                </CardActions>
+
+                            </Card>
                         </Grid>
                     </Grid>
+
+                    {/* MODAL PARA EDITAR LA INFO */}
+                    {showModalEditarInfo && (
+                        <EditarInfoModal
+                            info={data}
+                            showModalEditarInfo={showModalEditarInfo}
+                            setShowModalEditarInfo={setShowModalEditarInfo}
+                            onUpdate={handleActualizarData}
+                        />
+                    )}
                 </>
             }
 

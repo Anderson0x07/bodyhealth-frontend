@@ -1,0 +1,21 @@
+.react-chatbot-kit-chat-container {
+    width: 400px;
+}
+
+.react-chatbot-kit-chat-bot-message {
+    width: 1000px;
+}
+
+/* .react-chatbot-kit-chat-btn-send {
+    border: 0;
+} */
+
+.estilo-card {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+
+
+

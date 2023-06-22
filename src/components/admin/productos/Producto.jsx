@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 
-import { ArrowBack, Cancel, Delete, Edit, RemoveRedEye } from '@mui/icons-material';
+import { ArrowBack, Delete, Edit, RemoveRedEye, RemoveShoppingCart } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
-import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import EditarProductoModal from './EditarProductoModal';
 import MostrarVentasProductosModal from './MostrarVentasProductoModal';
@@ -152,7 +152,7 @@ function Producto() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {producto.foto != undefined && <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />}
+                            <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
 
                         </Container>
                     </Grid>
@@ -175,7 +175,7 @@ function Producto() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Precio</TableCell>
-                                        <TableCell className='value' align="right">{producto.precio + ''}</TableCell>
+                                        <TableCell className='value' align="right">{"$ " + (producto.precio != undefined && producto.precio.toLocaleString())}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Proveedor</TableCell>
@@ -206,7 +206,7 @@ function Producto() {
                     </Grid>
                     {producto.stock > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleDesactivar}>Desactivar</Button>
+                            <Button variant="contained" startIcon={<RemoveShoppingCart />} onClick={handleDesactivar}>Desactivar</Button>
                         </Grid>
                     }
                     {pedidos.length > 0 &&

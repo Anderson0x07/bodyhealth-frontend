@@ -5,7 +5,8 @@ import Navbar from '../Navbar';
 import { CarritoCompras } from '../../components/cliente/carrito/CarritoCompras';
 import { procesarPeticionGet } from '../../utils/HandleApi';
 import Footer from '../Footer';
-
+import Chat from '../../components/cliente/Chat';
+import '../../components/cliente/bot/chatbot.css'
 
 function CarritoCliente({ cliente }) {
 
@@ -15,7 +16,6 @@ function CarritoCliente({ cliente }) {
     const getInfo = async () => {
         try {
             const respuesta = await procesarPeticionGet(`infobasica/${1}`);
-            console.log(respuesta)
             setData(respuesta.data.infobasica);
 
         } catch (error) {
@@ -40,6 +40,9 @@ function CarritoCliente({ cliente }) {
                     <Footer data={data} />
                 </Container>
             </Box>
+            <div className="estilo-card">
+                <Chat />
+            </div>
         </>
     )
 }

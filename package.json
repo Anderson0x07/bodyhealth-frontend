@@ -23,7 +23,9 @@
     "react-router-dom": "^6.9.0",
     "recharts": "^2.7.1",
     "simplebar-react": "^3.2.1",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "react-chatbot-kit": "^2.1.2",
+    "react-icons": "^4.9.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

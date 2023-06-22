@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Avatar,
@@ -10,7 +10,7 @@ import {
     DialogTitle,
     Grid,
     IconButton,
-    MenuItem,
+    InputAdornment,
     TextField
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
@@ -123,7 +123,15 @@ function EditarPerfilAdminModal(props) {
                     onChange={handleChange} defaultValue={admin.apellido} fullWidth variant="outlined" />
 
                 <TextField margin="normal" type="text" name="telefono" label="Teléfono"
-                    onChange={handleChange} defaultValue={admin.telefono} fullWidth variant="outlined" />
+                    onChange={handleChange} defaultValue={admin.telefono} fullWidth variant="outlined"
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <img loading="lazy" width="20" src={`https://flagcdn.com/w20/co.png`} srcSet={`https://flagcdn.com/w40/co.png 2x`} />
+                            </InputAdornment>
+                        )
+                    }}
+                />
 
                 <TextField margin="normal" type="date" name="fecha_nacimiento"
                     onChange={handleChange} defaultValue={admin.fecha_nacimiento} fullWidth variant="outlined" label="Fecha de nacimiento" />

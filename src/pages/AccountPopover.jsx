@@ -24,8 +24,6 @@ function AccountPopover({ cliente }) {
   }
 
   const handleMiPerfil = () => {
-    console.log("MI PERFIL cliente")
-    console.log(cliente)
     navigate("/home/mi-perfil")
   }
 
@@ -65,9 +63,9 @@ function AccountPopover({ cliente }) {
             }),
           }}
         >
-          <StyledAccount>
+          <StyledAccount >
             <Avatar src={url + cliente.foto} alt="photoURL" />
-            <Typography variant="subtitle2" noWrap>
+            <Typography sx={{pl:1}} variant="subtitle2" noWrap>
               {cliente.nombre + " " + cliente.apellido}
             </Typography>
           </StyledAccount>
