@@ -8,12 +8,14 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Grid,
     IconButton,
     MenuItem,
     TextField
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { useNavigate } from 'react-router-dom';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -32,6 +34,9 @@ function EditarProductoModal(props) {
     const [proveedorSeleccionado, setProveedorSeleccionado] = useState(producto.proveedor.id_proveedor);
     const [proveedores, setProveedores] = useState(null);
 
+    const [tipo, setTipo] = useState(producto.tipo);
+
+
 
     useEffect(() => {
         getProveedores();
@@ -49,6 +54,10 @@ function EditarProductoModal(props) {
 
     const handleProveedor = (event) => {
         setProveedorSeleccionado(event.target.value);
+    }
+
+    const handleTipo = (event) => {
+        setTipo(event.target.value);
     }
 
     const handleImageUpload = (event) => {
@@ -77,7 +86,16 @@ function EditarProductoModal(props) {
         event.preventDefault();
         console.log(data)
 
-        if (proveedorSeleccionado === 'Seleccionar') {
+        if (tipo === 'Seleccionar') {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar un tipo de producto',
+                icon: 'warning'
+            })
+        } else if (proveedorSeleccionado === 'Seleccionar') {
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -96,6 +114,8 @@ function EditarProductoModal(props) {
             data.proveedor = {
                 id_proveedor: proveedorSeleccionado
             }
+
+            data.tipo = tipo;
 
             if (!image.startsWith("https")) {
                 data.foto = image + " " + fileName;
@@ -134,10 +154,29 @@ function EditarProductoModal(props) {
         }
     };
 
+    const tipos_productos = [{id:1, descripcion: "Creatinas"},
+                        {id:2, descripcion: "Proteínas en polvo"},
+                        {id:3, descripcion: "Pre-entrenos"},
+                        {id:4, descripcion: "BCAA (aminoácidos de cadena ramificada)"},
+                        {id:5, descripcion: "Vitaminas"}]
+
+
     return (
         <Dialog open={showEditModal} onClose={handleCancelar} >
             <DialogTitle>Editar producto</DialogTitle>
             <DialogContent>
+
+                <TextField select margin="normal" type="text" name="tipo" label="Tipo de producto" onChange={handleTipo}
+                    fullWidth variant="outlined" value={tipo} helperText="Por favor seleccione el tipo de producto">
+                    <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
+                    {tipos_productos.map((tipo) => (
+                        <MenuItem key={tipo.id} value={tipo.descripcion}>
+                            {tipo.descripcion}
+                        </MenuItem>
+                    ))}
+
+                </TextField>
+
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedorSeleccionado} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>

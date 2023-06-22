@@ -174,7 +174,8 @@ function Cliente() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {<Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />}
+
+                                {cliente.foto != undefined && <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />}
 
                             </Container>
                         </Grid>

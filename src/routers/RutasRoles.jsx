@@ -49,7 +49,7 @@ import { ShoppingCartProvider } from '../components/cliente/carrito/ShoppingCart
 import CarritoCliente from '../pages/cliente/CarritoCliente';
 import HorarioAdmin from '../pages/admin/HorarioAdmin';
 import MiPerfilEntrenador from '../pages/entrenador/MiPerfilEntrenador';
-import RegistroClienteModal from '../pages/RegistroClienteModal';
+
 
 const email = localStorage.getItem('email');
 
@@ -167,9 +167,7 @@ function RutasRoles() {
 
                         {/* PAGINA HOME */}
                         <Route element={<ProtectedRouteAdmin isAllowed={localStorage.length == 0} redirectTo="/home" />}>
-                            <Route index element={
-                                <Home></Home>
-                            } />
+                            <Route index element={<Home />} />
                         </Route>
 
                         <Route path='/*' element={<Page404 />} />

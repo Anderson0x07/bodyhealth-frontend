@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { procesarPeticionGet } from '../../../utils/HandleApi';
 import { Filter } from '@mui/icons-material';
 import SeleccionProductoCantidadModal from './SeleccionProductoCantidadModal';
+import FiltroProductos from '../../admin/productos/FiltroProductos';
 
 
 const ImagenProductoEstilo = styled('img')({
@@ -29,12 +30,15 @@ function Productos() {
     const [showModalAgregarProducto, setShowModalAgregarProducto] = useState(false);
 
     const [producto, setProducto] = useState(null);
+    const [filtro, setFiltro] = useState("all");
 
     useEffect(() => {
         getProductos();
     }, []);
 
     const getProductos = async () => {
+
+        setFiltro("all")
         try {
             const response = await procesarPeticionGet("producto/activos");
             setProductos(response.data.productos);
@@ -47,11 +51,16 @@ function Productos() {
     return (
         <>
             <Container>
-                <Typography variant="h4" sx={{ mb: 5 }}>
-                    Productos
-                </Typography>
 
-                
+
+                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={12} sx={{ mb: 5 }}>
+                    <Typography variant="h4" sx={{ mb: 5 }}>
+                        Productos
+                    </Typography>
+
+                    <FiltroProductos getAll={getProductos} setProductos={setProductos} filtro={filtro} setFiltro={setFiltro} admin={false} />
+                </Stack>
+
 
                 <Grid container spacing={3}>
                     {productos != null &&
@@ -102,12 +111,12 @@ function Productos() {
                 </Grid>
 
                 {showModalAgregarProducto && (
-                        <SeleccionProductoCantidadModal
-                            producto={producto}
-                            showModalAgregarProducto={showModalAgregarProducto}
-                            setShowModalAgregarProducto={setShowModalAgregarProducto}
+                    <SeleccionProductoCantidadModal
+                        producto={producto}
+                        showModalAgregarProducto={showModalAgregarProducto}
+                        setShowModalAgregarProducto={setShowModalAgregarProducto}
 
-                        />
+                    />
                 )}
             </Container>
         </>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 
-import { ArrowBack, Delete, Edit, RemoveRedEye, RemoveShoppingCart } from '@mui/icons-material';
+import { ArrowBack, Cancel, Delete, Edit, RemoveRedEye, RemoveShoppingCart } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
-import { Avatar, Button, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
+import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import EditarProductoModal from './EditarProductoModal';
 import MostrarVentasProductosModal from './MostrarVentasProductoModal';
+import { acortar } from '../../../utils/acortarCadena';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -152,7 +153,7 @@ function Producto() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
+                            {producto.foto != undefined && <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />}
 
                         </Container>
                     </Grid>
@@ -166,6 +167,10 @@ function Producto() {
                                         <TableCell className='value' align="right">{producto.id_producto}</TableCell>
                                     </TableRow>
                                     <TableRow>
+                                        <TableCell className='clave'>Tipo</TableCell>
+                                        <TableCell className='value' align="right">{acortar(producto.tipo, 20)}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
                                         <TableCell className='clave'>Nombre</TableCell>
                                         <TableCell className='value' align="right">{producto.nombre}</TableCell>
                                     </TableRow>
@@ -175,7 +180,7 @@ function Producto() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Precio</TableCell>
-                                        <TableCell className='value' align="right">{"$ " + (producto.precio != undefined && producto.precio.toLocaleString())}</TableCell>
+                                        <TableCell className='value' align="right">{producto.precio + ''}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Proveedor</TableCell>

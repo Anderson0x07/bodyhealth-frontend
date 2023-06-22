@@ -10,6 +10,7 @@ import {
     DialogTitle,
     IconButton,
     MenuItem,
+    OutlinedInput,
     TextField
 } from '@mui/material';
 import { PhotoCamera, Save } from '@mui/icons-material';
@@ -28,6 +29,9 @@ function AgregarProductoModal(props) {
 
     const [proveedor, setProveedor] = useState("Seleccionar");
     const [proveedores, setProveedores] = useState(null);
+
+    const [tipo, setTipo] = useState("Seleccionar");
+
 
     useEffect(() => {
         getProveedores();
@@ -65,6 +69,10 @@ function AgregarProductoModal(props) {
         setProveedor(event.target.value);
     }
 
+    const handleTipo = (event) => {
+        setTipo(event.target.value);
+    }
+
     const handleCancelar = () => {
         setShowModal(false);
     };
@@ -82,6 +90,15 @@ function AgregarProductoModal(props) {
                 text: 'Debe seleccionar un proveedor',
                 icon: 'warning'
             })
+        } else if (tipo === 'Seleccionar') {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar un tipo de producto',
+                icon: 'warning'
+            })
         } else {
             setLoading(true);
             if (data.stock > 0) {
@@ -93,6 +110,8 @@ function AgregarProductoModal(props) {
             data.proveedor = {
                 id_proveedor: proveedor
             }
+
+            data.tipo = tipo
 
             if (image != "") {
                 data.foto = image + " " + fileName;
@@ -136,6 +155,12 @@ function AgregarProductoModal(props) {
         }
     }
 
+    const tipos_productos = [{id:1, descripcion: "Creatinas"},
+                        {id:2, descripcion: "Proteínas en polvo"},
+                        {id:3, descripcion: "Pre-entrenos"},
+                        {id:4, descripcion: "BCAA (aminoácidos de cadena ramificada)"},
+                        {id:5, descripcion: "Vitaminas"}]
+
     return (
 
         <Dialog open={showModal} onClose={handleCancelar} >
@@ -144,11 +169,22 @@ function AgregarProductoModal(props) {
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedor} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
-                    {proveedores != null ? proveedores.map((proveedor) => (
+                    {proveedores != null && proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>
                             {proveedor.nombre_empresa}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
+
+                </TextField>
+
+                <TextField select margin="normal" type="text" name="tipo" label="Tipo de producto" onChange={handleTipo}
+                    fullWidth variant="outlined" value={tipo} helperText="Por favor seleccione el tipo de producto">
+                    <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
+                    {tipos_productos.map((tipo) => (
+                        <MenuItem key={tipo.id} value={tipo.descripcion}>
+                            {tipo.descripcion}
+                        </MenuItem>
+                    ))}
 
                 </TextField>
 

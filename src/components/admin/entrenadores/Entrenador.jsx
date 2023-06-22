@@ -141,7 +141,8 @@ function Entrenador() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />
+                                {entrenador.foto != undefined && <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />}
+
                             </Container>
                         </Grid>
                     </Grid>

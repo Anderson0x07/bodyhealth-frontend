@@ -258,14 +258,14 @@ function Home({ cliente }) {
                     <Navbar cliente={cliente} />
 
                     <Footer data={data} />
-
-
+                    
+                    <div className="estilo-card">
+                        <Chat />
+                    </div>
+                    
                 </Container>
             </Box>
 
-            <div className="estilo-card">
-                <Chat />
-            </div>
 
         </>
     )

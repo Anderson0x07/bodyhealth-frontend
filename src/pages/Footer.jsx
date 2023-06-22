@@ -10,7 +10,6 @@ function Footer({data}) {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
-                p: 2
             }}
         >
             <div

@@ -7,6 +7,7 @@
   font-family: "Poppins",sans-serif;
 }
 
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -29,18 +30,13 @@ h1 {
   line-height: 1.1;
 }
 
+button {
+  color: #f9f9f9;
+}
+
 button:hover {
   border-color: #646cff;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
 
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    color: #f9f9f9;
-  }
+
 
