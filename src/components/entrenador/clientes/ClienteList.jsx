@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { procesarPeticionGet } from "../../../utils/HandleApi";
 
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
     Avatar,
-    Button,
     TableRow,
     TableBody,
     TableCell,
@@ -28,7 +25,6 @@ import TableBuscar from '../../../components/admin/dashboard/TableBuscar';
 
 //icons
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
-import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from "react-router-dom";
 
 const TABLE_HEAD = [
@@ -78,8 +74,6 @@ function ClienteList({ entrenador }) {
     const [clientes, setClientes] = useState(entrenador.entrenadorClientes);
 
     const [status, setStatus] = useState();
-    const [error, setError] = useState("");
-    const [showModal, setShowModal] = useState(false);
 
     const [page, setPage] = useState(0);
 
@@ -109,7 +103,7 @@ function ClienteList({ entrenador }) {
     };
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/bodyhealth-frontend/entrenador/dashboard/clientes/${id_usuario}`)
+        navigate(`/entrenador/dashboard/clientes/${id_usuario}`)
     };
 
 
@@ -125,7 +119,7 @@ function ClienteList({ entrenador }) {
     useEffect(() => {
         Status();
     }, []);
-    
+
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clientes.length) : 0;
 
     const filteredUsers = applySortFilter(clientes, getComparator(order, orderBy), filterName);
@@ -141,8 +135,6 @@ function ClienteList({ entrenador }) {
                         <AlertTitle>Error</AlertTitle>
                         No tienes clientes asignados
                     </Alert>
-
-
                 }
 
                 <>

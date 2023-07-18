@@ -76,7 +76,7 @@ function CambiarPasswordModal(props) {
                 <TextField margin="normal" type="text" name="newPassword" label="Contraseña nueva"
                     onChange={handleChange} fullWidth variant="outlined" />
 
-                
+
             </DialogContent>
             <DialogActions>
                 <Button variant="outlined" onClick={handleCancelar}>Cancelar</Button>

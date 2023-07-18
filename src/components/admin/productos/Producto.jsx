@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
 
-import { ArrowBack, Cancel, Delete, Edit, RemoveRedEye } from '@mui/icons-material';
+import { ArrowBack, Cancel, Delete, Edit, RemoveRedEye, RemoveShoppingCart } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
 import { Avatar, Button, Card, Container, Grid, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from '@mui/material';
 import Swal from 'sweetalert2';
 import EditarProductoModal from './EditarProductoModal';
 import MostrarVentasProductosModal from './MostrarVentasProductoModal';
+import { acortar } from '../../../utils/acortarCadena';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -40,11 +41,10 @@ function Producto() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/productos`);
+        navigate(`/admin/dashboard/productos`);
     };
 
     const handleDesactivar = async () => {
-        console.log("Entrando a desactivar producto..")
 
         try {
             Swal.fire({
@@ -74,12 +74,11 @@ function Producto() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/productos/${id}`);
+                        navigate(`/admin/dashboard/productos/${id}`);
                     })
                 }
             })
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire({
                 title: 'Atención',
                 text: error.response.data.error,
@@ -127,7 +126,7 @@ function Producto() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/productos`);
+                        navigate(`/admin/dashboard/productos`);
                     })
                 }
             })
@@ -154,9 +153,7 @@ function Producto() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {producto.foto != undefined
-                                ? <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />
-                                : console.log("cargando")}
+                            {producto.foto != undefined && <Avatar src={url + producto.foto} style={{ width: '300px', height: '300px' }} />}
 
                         </Container>
                     </Grid>
@@ -168,6 +165,10 @@ function Producto() {
                                     <TableRow>
                                         <TableCell className='clave' >Id producto</TableCell>
                                         <TableCell className='value' align="right">{producto.id_producto}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell className='clave'>Tipo</TableCell>
+                                        <TableCell className='value' align="right">{acortar(producto.tipo, 20)}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Nombre</TableCell>
@@ -183,7 +184,7 @@ function Producto() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Proveedor</TableCell>
-                                        <TableCell className='value' align="right">{proveedor != null ? proveedor.nombre_empresa : console.log("NADA")}</TableCell>
+                                        <TableCell className='value' align="right">{proveedor != null && proveedor.nombre_empresa}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Estado</TableCell>
@@ -208,17 +209,15 @@ function Producto() {
                     <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Delete />} onClick={handleDelete}>Eliminar</Button>
                     </Grid>
-                    {producto.stock > 0 ?
+                    {producto.stock > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleDesactivar}>Desactivar</Button>
+                            <Button variant="contained" startIcon={<RemoveShoppingCart />} onClick={handleDesactivar}>Desactivar</Button>
                         </Grid>
-                        : false}
-                    {pedidos.length > 0
-                        ?
+                    }
+                    {pedidos.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalVentasProducto(true)}>Ver Ventas</Button>
                         </Grid>
-                        : console.log("no tiene pedidos")
                     }
 
                 </Grid>

@@ -18,13 +18,14 @@ function AccountPopover({ entrenador }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/bodyhealth-frontend/", { replace: true });
+    navigate("/", { replace: true });
     window.location.reload();
 
   }
 
   const handleMiPerfil = () => {
-    navigate("/bodyhealth-frontend/entrenador/dashboard/mi-perfil")
+    navigate("/entrenador/dashboard/mi-perfil")
+    handleClose();
   }
 
 
@@ -51,7 +52,7 @@ function AccountPopover({ entrenador }) {
                 height: '100%',
                 borderRadius: '50%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
+                bgcolor: (theme) => alpha(theme.palette.grey[300], 0.8),
               },
             }),
           }}
@@ -92,7 +93,7 @@ function AccountPopover({ entrenador }) {
           <Stack sx={{ p: 1 }}>
 
             <MenuItem onClick={() => {
-              navigate("/bodyhealth-frontend/entrenador/dashboard/home");
+              navigate("/entrenador/dashboard/home");
               setOpen(null);
             }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>

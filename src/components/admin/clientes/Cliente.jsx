@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarClienteModal from './EditarClienteModal';
 import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, CheckCircleRounded, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+import { ArrowBack, CheckCircleRounded, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
 import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
 import EditarAsignacionEntrenadorModal from './EditarAsignacionEntrenadorModal';
@@ -16,6 +16,7 @@ import EditarAsignacionRutinaModal from './EditarAsignacionRutinaModal';
 import VerRutinasAsignadasModal from './VerRutinasAsignadasModal';
 import VerComprasModal from './VerComprasModal';
 import VerControlFisicoModal from './VerControlFisicoModal';
+import AsignarControlFisico from './AsignarControlFisico';
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
@@ -39,6 +40,7 @@ function Cliente() {
     const [showModalPlanesCliente, setShowModalPlanesCliente] = useState(false);
     const [showModalAsignarPlan, setShowModalAsignarPlan] = useState(false);
     const [showModalControlesCliente, setShowModalControlesCliente] = useState(false);
+    const [showModalAsignarControl, setShowModalAsignarControl] = useState(false);
     const [showModalRutinasCliente, setShowModalRutinasCliente] = useState(false);
 
 
@@ -56,7 +58,7 @@ function Cliente() {
             const response = await procesarPeticionGet(`cliente/${id}`);
             setCliente(response.data.cliente);
             setClienteEntrenador(response.data.cliente.clienteEntrenadores[0]);
-            setClienteRutinas(response.data.cliente.clienteRutinas); 
+            setClienteRutinas(response.data.cliente.clienteRutinas);
             setClienteCompras(response.data.cliente.compras);
             setClienteDetalles(response.data.cliente.clienteDetalles);
             setControlesCliente(response.data.cliente.controlClientes);
@@ -85,6 +87,10 @@ function Cliente() {
 
     }
 
+    const handleActualizarControl = (nuevoControl) => {
+        setControlesCliente(prevState => [...prevState, nuevoControl]);
+    }
+
 
 
     const [open, setOpen] = useState(null);
@@ -96,6 +102,23 @@ function Cliente() {
     const handleCloseMenu = () => {
         setOpen(null);
     };
+
+    const obtenerUltimoPlan = () => {
+        if (clienteDetalles.length === 0) {
+            return null;
+        }
+
+        return clienteDetalles.reduce((maxClienteDetalle, clienteDetalle) => {
+            if (clienteDetalle.id_factura > maxClienteDetalle.id_factura) {
+                return clienteDetalle;
+            } else {
+                return maxClienteDetalle;
+            }
+        });
+
+    }
+
+
 
     return (
         <div>
@@ -137,16 +160,11 @@ function Cliente() {
                         </MenuItem>
 
                         {clienteEntrenador != null
-                            ?
+                            &&
                             <MenuItem onClick={() => setShowModalEditarAsignacionEntrenador(true)} sx={{ typography: 'body2' }}>
                                 <DriveFileRenameOutlineTwoToneIcon />Cambiar entrenador
                             </MenuItem>
-                            : false
                         }
-
-                        
-
-
 
                     </Menu>
 
@@ -156,9 +174,8 @@ function Cliente() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {cliente.foto != null
-                                    ? <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />
-                                    : false}
+
+                                {cliente.foto != undefined && <Avatar src={url + cliente.foto} style={{ width: '300px', height: '300px' }} />}
 
                             </Container>
                         </Grid>
@@ -168,12 +185,12 @@ function Cliente() {
                         <Grid item xs={6} sm={8} md={12} pb={5}>
 
                             {clienteDetalles.length > 0
-                                ?
+                                &&
+                                obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin) > 0
+                                &&
                                 <Alert sx={{ marginBottom: '10px' }} variant="standard" severity="success">
-                                    <AlertTitle>Tiempo restante {obtenerDiferenciaDias(clienteDetalles[clienteDetalles.length - 1].fecha_fin)} dias</AlertTitle>
+                                    <AlertTitle>Tiempo restante {obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin)} dias</AlertTitle>
                                 </Alert>
-
-                                : false
                             }
 
 
@@ -217,33 +234,30 @@ function Cliente() {
                                         </TableRow>
 
                                         {clienteEntrenador != null
-                                            ?
+                                            &&
                                             <TableRow>
                                                 <TableCell className='clave'>Entrenador</TableCell>
                                                 <TableCell className='value' align="right">
                                                     {clienteEntrenador.entrenador != null
                                                         ? clienteEntrenador.entrenador.nombre + " " + clienteEntrenador.entrenador.apellido
-                                                        : false
+                                                        : "Entrenador sin asignar"
                                                     }
 
                                                 </TableCell>
                                             </TableRow>
-                                            : false
                                         }
 
                                         {clienteDetalles.length > 0
-                                            ?
+                                            &&
                                             <TableRow>
                                                 <TableCell className='clave'>Plan</TableCell>
                                                 <TableCell className='value' align="right">
-                                                    {clienteDetalles[clienteDetalles.length - 1].plan != null
-                                                        ? clienteDetalles[clienteDetalles.length - 1].plan.plan + " por " + clienteDetalles[clienteDetalles.length - 1].plan.meses + (clienteDetalles[clienteDetalles.length - 1].plan.meses == 1 ? " mes" : " meses")
-                                                        : false
+                                                    {obtenerUltimoPlan().plan != null
+                                                        && obtenerUltimoPlan().plan.plan + " por " + obtenerUltimoPlan().plan.meses + (obtenerUltimoPlan().plan.meses == 1 ? " mes" : " meses")
                                                     }
 
                                                 </TableCell>
                                             </TableRow>
-                                            : false
                                         }
 
 
@@ -259,62 +273,61 @@ function Cliente() {
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/bodyhealth-frontend/admin/dashboard/clientes`)}>Atras</Button>
+                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/admin/dashboard/clientes`)}>Atras</Button>
                     </Grid>
-                    {clienteEntrenador == null
-                        ?
+                    {clienteEntrenador == null &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarEntrenador(true)}>Asignar entrenador</Button>
                         </Grid>
-                        : false
                     }
 
-                    {clienteDetalles.length == 0
-                        ?
+                    {clienteDetalles.length == 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarPlan(true)}>Asignar plan</Button>
                         </Grid>
-                        : false
                     }
 
-                    {clienteDetalles.length > 0
-                        ?
-                        <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalPlanesCliente(true)}>Ver planes</Button>
-                        </Grid>
-                        : false
+                    {clienteDetalles.length > 0 &&
+                        <>
+                            {obtenerDiferenciaDias(obtenerUltimoPlan().fecha_fin) <= 0
+                                && <Grid item xs={2} sm={2} md={3} >
+                                    <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarPlan(true)}>Asignar plan</Button>
+                                </Grid>
+                            }
+                            <Grid item xs={2} sm={2} md={3} >
+                                <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalPlanesCliente(true)}>Ver planes</Button>
+                            </Grid>
+
+                        </>
+
                     }
 
-                    {clienteRutinas.length == 0
-                        ?
+                    {clienteRutinas.length == 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarRutina(true)}>Asignar rutina</Button>
                         </Grid>
-                        : false
                     }
 
-                    {clienteRutinas.length > 0
-                        ?
+                    {clienteRutinas.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalRutinasCliente(true)}>Ver rutinas</Button>
                         </Grid>
-                        : false
                     }
 
-                    {clienteCompras.length > 0
-                        ?
+                    {clienteCompras.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalComprasCliente(true)}>Ver compras</Button>
                         </Grid>
-                        : false
                     }
 
-                    {controlesCliente.length > 0
-                        ?
+                    <Grid item xs={2} sm={2} md={3} >
+                        <Button variant="contained" startIcon={<CheckCircleRounded />} onClick={() => setShowModalAsignarControl(true)}>Asignar control</Button>
+                    </Grid>
+
+                    {controlesCliente.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalControlesCliente(true)}>Ver control fisico</Button>
                         </Grid>
-                        : false
                     }
                 </Grid>
 
@@ -406,6 +419,16 @@ function Cliente() {
                     clienteCompras={clienteCompras}
                     showModalComprasCliente={showModalComprasCliente}
                     setShowModalComprasCliente={setShowModalComprasCliente}
+                />
+            )}
+
+            {/* MODAL PARA ASIGNAR CONTROL FISICO DEL CLIENTE */}
+            {showModalAsignarControl && (
+                <AsignarControlFisico
+                    cliente={cliente}
+                    showModalAsignarControl={showModalAsignarControl}
+                    setShowModalAsignarControl={setShowModalAsignarControl}
+                    onUpdate={handleActualizarControl}
                 />
             )}
 

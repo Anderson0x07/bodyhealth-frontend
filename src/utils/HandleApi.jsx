@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = "https://api.antech-software.com";
+//const API_BASE_URL = "http://localhost:8080";
 const token = localStorage.getItem('token');
 const config = {
   headers: { Authorization: `Bearer ${token}` }
@@ -9,7 +10,13 @@ const config = {
 export const procesarPeticionGet = (endpoint) => {
   const url = `${API_BASE_URL}/${endpoint}`;
 
-  const response = axios.get(url, config);
+  let response;
+
+  if(token != null){
+    response = axios.get(url, config);
+  } else {
+    response = axios.get(url);
+  }
 
   return response;
 };

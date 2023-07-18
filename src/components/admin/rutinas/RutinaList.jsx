@@ -95,7 +95,7 @@ function RutinaList() {
     }
 
     const handleExpandRutina = (id_rutina) => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas/${id_rutina}`);
+        navigate(`/admin/dashboard/rutinas/${id_rutina}`);
     };
 
     const handleRequestSort = (event, property) => {

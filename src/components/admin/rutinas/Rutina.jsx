@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { procesarPeticionDelete, procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 //import EditarRutinaModal from './EditarRutinaModal';
 import Swal from 'sweetalert2';
 //import AsignarEntrenadorModal from './AsignarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, Delete, DriveFileRenameOutlineTwoTone, Edit, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
-import Label from '../dashboard/label/Label';
-import { Avatar, Badge, Button, Card, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { ArrowBack, CheckBox, Delete, DriveFileRenameOutlineTwoTone, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+
+import { Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from '@mui/material';
 import EditarRutinaModal from './EditarRutinaModal';
-import logo from '../../../assets/Logo-BodyHealth.jpeg';
 import MostrarRutinaEjerciciosModal from './MostrarRutinaEjerciciosModal';
 import MostrarClienteRutinasModal from './MostrarClienteRutinasModal';
 import MostrarUsosRutinaModal from './MostrarUsosRutinaModal';
+import AsignarEjerciciosModal from './AsignarEjerciciosModal';
 
 
 const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
@@ -25,6 +25,8 @@ function Rutina() {
     const [showModalRutinaEjercicios, setShowModalRutinaEjercicios] = useState(false);
     const [showModalClienteRutinas, setShowModalClienteRutinas] = useState(false);
     const [showModalUsosRutina, setShowModalUsosRutina] = useState(false);
+    const [showModalAsignarEjercicios, setShowModalAsignarEjercicios] = useState(false);
+
     const [rutinaEjercicios, setRutinaEjercicios] = useState([]);
     const [clienteRutinas, setClienteRutinas] = useState([]);
 
@@ -56,7 +58,7 @@ function Rutina() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
+        navigate(`/admin/dashboard/rutinas`);
     };
 
     const handleUpdate = (updatedData) => {
@@ -64,12 +66,17 @@ function Rutina() {
         setRutina(updatedData)
     }
 
+    const handleActualizarEjercicios = (ejerciciosActualizados) => {
+        console.log(ejerciciosActualizados)
+        setRutinaEjercicios(ejerciciosActualizados)
+    }
+
     const handleDelete = () => {
         try {
 
             Swal.fire({
                 title: 'Atención',
-                text: "¿Está seguro que desea eliminar el rutina?",
+                text: "¿Está seguro que desea eliminar la rutina?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -91,7 +98,7 @@ function Rutina() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
+                        navigate(`/admin/dashboard/rutinas`);
                     })
                 }
             })
@@ -190,21 +197,20 @@ function Rutina() {
                         <Button variant="contained" startIcon={<ArrowBack />} onClick={handleBack}>Atras</Button>
                     </Grid>
                     <Grid item xs={2} sm={2} md={3} >
+                        <Button variant="contained" startIcon={<CheckBox />} onClick={() => setShowModalAsignarEjercicios(true)}>Asignar Ejercicios</Button>
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={3} >
                         <Button variant="contained" startIcon={<Delete />} onClick={rutinaEjercicios.length > 0 || clienteRutinas.length > 0 ? () => setShowModalUsosRutina(true) : handleDelete}>Eliminar</Button>
                     </Grid>
-                    {rutinaEjercicios.length > 0
-                        ?
+                    {rutinaEjercicios.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalRutinaEjercicios(true)}>Ver Ejercicios</Button>
                         </Grid>
-                        : console.log("no tiene ejercicios.")
                     }
-                    {clienteRutinas.length > 0
-                        ?
+                    {clienteRutinas.length > 0 &&
                         <Grid item xs={2} sm={2} md={3} >
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalClienteRutinas(true)}>Ver Clientes</Button>
                         </Grid>
-                        : console.log("no tiene clientes.")
                     }
 
                 </Grid>
@@ -218,6 +224,17 @@ function Rutina() {
                     onUpdate={handleUpdate}
                 />
             )}
+
+            {showModalAsignarEjercicios && (
+                <AsignarEjerciciosModal
+                    id_rutina={rutina.id_rutina}
+                    showModalAsignarEjercicios={showModalAsignarEjercicios}
+                    setShowModalAsignarEjercicios={setShowModalAsignarEjercicios}
+                    onUpdate={handleActualizarEjercicios}
+                />
+            )}
+
+
 
             {/* MODAL PARA VER LOS USOS DE LA RUTINA */}
             {showModalUsosRutina && (

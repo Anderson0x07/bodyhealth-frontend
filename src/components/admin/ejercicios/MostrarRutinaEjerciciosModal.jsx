@@ -17,7 +17,7 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Delete, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded, Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import { useNavigate } from 'react-router-dom';
@@ -78,13 +78,12 @@ function MostrarRutinaEjerciciosModal(props) {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/ejercicios`);
+                        navigate(`/admin/dashboard/ejercicios`);
                     })
                 }
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -129,7 +128,7 @@ function MostrarRutinaEjerciciosModal(props) {
                                                 <TableCell align="center">{rutina.nombre_rutina}</TableCell>
 
                                                 <TableCell align="center">{ejercicio.descripcion}</TableCell>
-                                                
+
                                             </TableRow>
                                         );
                                     })}
@@ -154,19 +153,21 @@ function MostrarRutinaEjerciciosModal(props) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 {eliminar == true
                     ?
-                    <LoadingButton
-                        color="secondary"
-                        onClick={handleDelete}
-                        loading={loading}
-                        loadingPosition="start"
-                        startIcon={<Delete />}
-                        variant="contained"
-                    >
-                        Eliminar
-                    </LoadingButton>
+                    <>
+                        <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+                        <LoadingButton
+                            color="secondary"
+                            onClick={handleDelete}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<Delete />}
+                            variant="contained"
+                        >
+                            Eliminar
+                        </LoadingButton>
+                    </>
                     :
                     <LoadingButton
                         color="secondary"

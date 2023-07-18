@@ -51,13 +51,11 @@ function EditarEjercicioModal(props) {
         data.musculo = {
             id_musculo: musculoSeleccionado
         }
-
         setLoading(true);
-        console.log(data)
+
         try {
             const respuesta = await procesarPeticionPut(`ejercicio/editar/${ejercicio.id_ejercicio}`, data);
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -82,8 +80,6 @@ function EditarEjercicioModal(props) {
                 icon: 'error'
             })
         }
-
-
     };
 
     const handleMusculo = (event) => {
@@ -109,11 +105,11 @@ function EditarEjercicioModal(props) {
                 <TextField select margin="normal" type="text" name="musculo" label="Musculo" onChange={handleMusculo}
                     fullWidth variant="outlined" value={musculoSeleccionado} helperText="Por favor seleccione un musculo">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    {musculos != null ? musculos.map((musculo) => (
+                    {musculos != null && musculos.map((musculo) => (
                         <MenuItem key={musculo.id_musculo} value={musculo.id_musculo}>
                             {musculo.nombre}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
 
                 </TextField>
 

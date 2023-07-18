@@ -10,6 +10,7 @@ import {
     DialogTitle,
     Grid,
     IconButton,
+    InputAdornment,
     MenuItem,
     TextField
 } from '@mui/material';
@@ -123,7 +124,15 @@ function EditarPerfilEntrenadorModal(props) {
                     onChange={handleChange} defaultValue={entrenador.apellido} fullWidth variant="outlined" />
 
                 <TextField margin="normal" type="text" name="telefono" label="Teléfono"
-                    onChange={handleChange} defaultValue={entrenador.telefono} fullWidth variant="outlined" />
+                    onChange={handleChange} defaultValue={entrenador.telefono} fullWidth variant="outlined" 
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <img loading="lazy" width="20" src={`https://flagcdn.com/w20/co.png`} srcSet={`https://flagcdn.com/w40/co.png 2x`} />
+                            </InputAdornment>
+                        )
+                    }}
+                />
 
                 <TextField margin="normal" type="date" name="fecha_nacimiento"
                     onChange={handleChange} defaultValue={entrenador.fecha_nacimiento} fullWidth variant="outlined" label="Fecha de nacimiento" />
@@ -132,7 +141,7 @@ function EditarPerfilEntrenadorModal(props) {
                     onChange={handleChange} defaultValue={entrenador.email} fullWidth variant="outlined" />
 
                 <TextField margin="normal" type="text" name="jornada" label="Jornada" onChange={handleChange}
-                    fullWidth variant="outlined" defaultValue={entrenador.jornada}
+                    fullWidth variant="outlined" defaultValue={entrenador.jornada === "Manana" ? "Mañana" : "Tarde"}
                     InputProps={{
                         readOnly: true,
                     }} />

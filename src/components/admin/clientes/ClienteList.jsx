@@ -5,7 +5,6 @@ import AgregarClienteModal from "./AgregarClienteModal";
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -102,13 +101,12 @@ function ClienteList() {
     const navigate = useNavigate();
 
     const agregarCliente = (clientes) => {
-        console.log(clientes)
         setClientes(clientes);
         setStatus()
     }
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/clientes/${id_usuario}`)
+        navigate(`/admin/dashboard/clientes/${id_usuario}`)
     };
 
 
@@ -157,7 +155,7 @@ function ClienteList() {
     return (
         <>
             <Container>
-                {status !== 200  && (
+                {error != ""  && (
                     <Alert sx={{marginBottom: '50px'}} variant="outlined" severity="error">
                         <AlertTitle>Error</AlertTitle>
                         {error} 

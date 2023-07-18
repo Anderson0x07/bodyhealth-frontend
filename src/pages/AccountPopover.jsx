@@ -18,15 +18,13 @@ function AccountPopover({ cliente }) {
 
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/bodyhealth-frontend/", { replace: true });
+    navigate("/", { replace: true });
     window.location.reload();
 
   }
 
   const handleMiPerfil = () => {
-    console.log("MI PERFIL cliente")
-    console.log(cliente)
-    navigate("/bodyhealth-frontend/home/mi-perfil")
+    navigate("/home/mi-perfil")
   }
 
 
@@ -65,9 +63,9 @@ function AccountPopover({ cliente }) {
             }),
           }}
         >
-          <StyledAccount>
+          <StyledAccount >
             <Avatar src={url + cliente.foto} alt="photoURL" />
-            <Typography variant="subtitle2" noWrap>
+            <Typography sx={{pl:1}} variant="subtitle2" noWrap>
               {cliente.nombre + " " + cliente.apellido}
             </Typography>
           </StyledAccount>
@@ -106,7 +104,7 @@ function AccountPopover({ cliente }) {
           <Stack sx={{ p: 1 }}>
 
             <MenuItem onClick={() => {
-              navigate("/bodyhealth-frontend/home");
+              navigate("/home");
               setOpen(null);
             }}>Inicio</MenuItem>
             <MenuItem onClick={handleMiPerfil}>Mi Perfil</MenuItem>

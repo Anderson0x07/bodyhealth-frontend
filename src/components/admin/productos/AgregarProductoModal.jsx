@@ -30,6 +30,9 @@ function AgregarProductoModal(props) {
     const [proveedor, setProveedor] = useState("Seleccionar");
     const [proveedores, setProveedores] = useState(null);
 
+    const [tipo, setTipo] = useState("Seleccionar");
+
+
     useEffect(() => {
         getProveedores();
     }, [])
@@ -66,6 +69,10 @@ function AgregarProductoModal(props) {
         setProveedor(event.target.value);
     }
 
+    const handleTipo = (event) => {
+        setTipo(event.target.value);
+    }
+
     const handleCancelar = () => {
         setShowModal(false);
     };
@@ -73,7 +80,6 @@ function AgregarProductoModal(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log(data);
 
         if (proveedor === 'Seleccionar') {
             Swal.fire({
@@ -82,6 +88,15 @@ function AgregarProductoModal(props) {
                 },
                 title: 'Atención',
                 text: 'Debe seleccionar un proveedor',
+                icon: 'warning'
+            })
+        } else if (tipo === 'Seleccionar') {
+            Swal.fire({
+                customClass: {
+                    container: 'my-swal'
+                },
+                title: 'Atención',
+                text: 'Debe seleccionar un tipo de producto',
                 icon: 'warning'
             })
         } else {
@@ -95,6 +110,8 @@ function AgregarProductoModal(props) {
             data.proveedor = {
                 id_proveedor: proveedor
             }
+
+            data.tipo = tipo
 
             if (image != "") {
                 data.foto = image + " " + fileName;
@@ -138,6 +155,12 @@ function AgregarProductoModal(props) {
         }
     }
 
+    const tipos_productos = [{id:1, descripcion: "Creatinas"},
+                        {id:2, descripcion: "Proteínas en polvo"},
+                        {id:3, descripcion: "Pre-entrenos"},
+                        {id:4, descripcion: "BCAA (aminoácidos de cadena ramificada)"},
+                        {id:5, descripcion: "Vitaminas"}]
+
     return (
 
         <Dialog open={showModal} onClose={handleCancelar} >
@@ -146,22 +169,33 @@ function AgregarProductoModal(props) {
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedor} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
-                    {proveedores != null ? proveedores.map((proveedor) => (
+                    {proveedores != null && proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>
                             {proveedor.nombre_empresa}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
+
+                </TextField>
+
+                <TextField select margin="normal" type="text" name="tipo" label="Tipo de producto" onChange={handleTipo}
+                    fullWidth variant="outlined" value={tipo} helperText="Por favor seleccione el tipo de producto">
+                    <MenuItem key="S" value="Seleccionar">Seleccionar</MenuItem>
+                    {tipos_productos.map((tipo) => (
+                        <MenuItem key={tipo.id} value={tipo.descripcion}>
+                            {tipo.descripcion}
+                        </MenuItem>
+                    ))}
 
                 </TextField>
 
                 <TextField margin="normal" type="text" name="nombre" label="Nombre"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su nombre" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el nombre" />
 
                 <TextField margin="normal" type="number" name="stock" label="Stock"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su apellido" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el stock disponible" />
 
                 <TextField margin="normal" type="number" name="precio" label="Precio"
-                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese su número de telefono" />
+                    onChange={handleChange} fullWidth variant="outlined" helperText="Por favor ingrese el precio" />
 
                 <Button variant="outlined" component="label" size="large" >
                     Subir foto de producto

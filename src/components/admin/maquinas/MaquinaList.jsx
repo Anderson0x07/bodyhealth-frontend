@@ -5,7 +5,6 @@ import AgregarMaquinaModal from './AgregarMaquinaModal'
 import { filter } from 'lodash';
 // @mui
 import {
-  Card,
   Table,
   Stack,
   Paper,
@@ -101,7 +100,7 @@ function MaquinaList() {
   }
 
   const handleMaquinaExpand = (id) => {
-    navigate(`/bodyhealth-frontend/admin/dashboard/maquinas/${id}`)
+    navigate(`/admin/dashboard/maquinas/${id}`)
   };
 
   const handleRequestSort = (event, property) => {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { procesarPeticionGet, procesarPeticionPost, procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
-    Avatar,
     Button,
     Dialog,
     DialogActions,
@@ -125,12 +124,14 @@ function AsignarPlanModal(props) {
 
             setLoading(true);
 
-            console.log("D-A-T-A DEL PLAN ASIGNADO")
-            console.log(data)
-
             try {
                 const respuesta = await procesarPeticionPost(`clientedetalle/guardar`, data);
-                console.log(respuesta)
+
+                
+                const res = await procesarPeticionPut(`cliente/cambiar-estado/${cliente.id_usuario}/1`,null);
+                
+                //onUpdate(res.data.cliente);
+
                 setLoading(false);
 
                 Swal.fire({
@@ -174,12 +175,11 @@ function AsignarPlanModal(props) {
                         Seleccionar
                     </MenuItem>
                     {planes != null
-                        ? planes.map((plan) => (
+                        && planes.map((plan) => (
                             <MenuItem key={plan.id_plan} value={plan.id_plan}>
                                 {plan.plan + " por " + plan.meses + (plan.meses == 1 ? " mes" : " meses")}
                             </MenuItem>
                         ))
-                        : console.log("cargando planes")
                     }
 
                 </TextField>
@@ -190,12 +190,11 @@ function AsignarPlanModal(props) {
                         Seleccionar
                     </MenuItem>
                     {metodos != null
-                        ? metodos.map((metodo) => (
+                        && metodos.map((metodo) => (
                             <MenuItem key={metodo.id_metodopago} value={metodo.id_metodopago}>
                                 {metodo.descripcion}
                             </MenuItem>
                         ))
-                        : console.log("cargando metodos de pago")
                     }
 
                 </TextField>

@@ -32,7 +32,6 @@ function EditarPlanModal(props) {
         event.preventDefault();
 
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPut(`plan/editar/${plan.id_plan}`, data);
             setLoading(false);

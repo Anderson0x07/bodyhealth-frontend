@@ -45,6 +45,7 @@ function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other 
             )} 100%)`,
         }}
       >
+        {icon}
       </StyledIcon>
 
       <Typography variant="h4">{total}</Typography>

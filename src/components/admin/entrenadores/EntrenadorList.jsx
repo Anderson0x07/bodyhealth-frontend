@@ -5,7 +5,6 @@ import AgregarEntrenadorModal from "./AgregarEntrenadorModal";
 import { filter } from 'lodash';
 // @mui
 import {
-    Card,
     Table,
     Stack,
     Paper,
@@ -103,7 +102,7 @@ function EntrenadorList() {
     }
 
     const handleClienteExpand = (id_usuario) => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/entrenador/${id_usuario}`)
+        navigate(`/admin/dashboard/entrenador/${id_usuario}`)
     };
 
 

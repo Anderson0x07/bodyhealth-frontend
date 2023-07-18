@@ -17,7 +17,7 @@ import {
     TableRow,
     Typography,
 } from '@mui/material';
-import { CheckCircleRounded, Delete, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded, Delete } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { useNavigate } from 'react-router-dom';
 import { procesarPeticionDelete } from '../../../utils/HandleApi';
@@ -77,13 +77,12 @@ function MostrarUsosMusculoModal(props) {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/musculos`);
+                        navigate(`/admin/dashboard/musculos`);
                     })
                 }
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -151,19 +150,23 @@ function MostrarUsosMusculoModal(props) {
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+
                 {eliminar == true
                     ?
-                    <LoadingButton
-                        color="secondary"
-                        onClick={handleDelete}
-                        loading={loading}
-                        loadingPosition="start"
-                        startIcon={<Delete />}
-                        variant="contained"
-                    >
-                        Eliminar
-                    </LoadingButton>
+                    <>
+                        <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
+
+                        <LoadingButton
+                            color="secondary"
+                            onClick={handleDelete}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<Delete />}
+                            variant="contained"
+                        >
+                            Eliminar
+                        </LoadingButton>
+                    </>
                     :
                     <LoadingButton
                         color="secondary"

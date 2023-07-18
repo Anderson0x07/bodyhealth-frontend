@@ -42,12 +42,10 @@ function AgregarMaquinaModal(props) {
         }
 
         setLoading(true);
-        
-        console.log(data)
+
         try {
             const respuesta = await procesarPeticionPost(`maquina/guardar`, data);
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -65,7 +63,6 @@ function AgregarMaquinaModal(props) {
 
         } catch (error) {
             setLoading(false);
-            console.log(error);
 
             Swal.fire({
                 customClass: {
@@ -106,11 +103,11 @@ function AgregarMaquinaModal(props) {
                 <TextField select margin="normal" type="text" name="proveedor" label="Proveedor" onChange={handleProveedor}
                     fullWidth variant="outlined" value={proveedorSeleccionado} helperText="Por favor seleccione un proveedor">
                     <MenuItem key="S" value="S">Seleccionar</MenuItem>
-                    {proveedores != null ? proveedores.map((proveedor) => (
+                    {proveedores != null && proveedores.map((proveedor) => (
                         <MenuItem key={proveedor.id_proveedor} value={proveedor.id_proveedor}>
                             {proveedor.nombre_empresa}
                         </MenuItem>
-                    )) : console.log("cargando")}
+                    ))}
 
                 </TextField>
 

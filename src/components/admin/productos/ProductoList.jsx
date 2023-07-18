@@ -1,4 +1,4 @@
-import { Container, Box, Card, Grid, Stack, Typography, styled, Button } from '@mui/material';
+import { Container, Box, Card, Grid, Stack, Typography, styled, Button, Tooltip } from '@mui/material';
 
 import { fCurrency } from '../../../utils/formatNumber';
 import Label from '../dashboard/label/Label';
@@ -7,6 +7,7 @@ import { procesarPeticionGet } from '../../../utils/HandleApi';
 import { useNavigate } from "react-router-dom";
 import AddIcon from '@mui/icons-material/Add';
 import AgregarProductoModal from "./AgregarProductoModal";
+import FiltroProductos from './FiltroProductos';
 
 
 const ImagenProductoEstilo = styled('img')({
@@ -25,9 +26,10 @@ const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/im
 
 function ProductoList() {
   const [productos, setProductos] = useState(null);
-  const [status, setStatus] = useState('');
-  const [error, setError] = useState('');
   const [showModal, setShowModal] = useState();
+
+  const [filtro, setFiltro] = useState("all");
+
 
   const navigate = useNavigate();
 
@@ -36,19 +38,17 @@ function ProductoList() {
   }, []);
 
   const getAll = async () => {
+    setFiltro("all")
     try {
       const response = await procesarPeticionGet("producto/all");
-      console.log(response)
-      setStatus(response.status);
       setProductos(response.data.productos);
     } catch (error) {
-      setError(error.response.data.error);
-      setStatus(error.response.status);
+      console.log(error)
     }
   };
 
   const handleExpandProducto = (id_producto) => {
-    navigate(`/bodyhealth-frontend/admin/dashboard/productos/${id_producto}`);
+    navigate(`/admin/dashboard/productos/${id_producto}`);
   };
   const agregarProducto = (productos) => {
     setProductos(productos);
@@ -61,25 +61,32 @@ function ProductoList() {
           Productos
         </Typography>
 
-        <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end" sx={{ mb: 5 }}>
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
 
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
-              Nuevo
-            </Button>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={12} sx={{ mb: 5 }}>
 
-            {showModal && (
+          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setShowModal(true)}>
+            Nuevo
+          </Button>
+
+
+          <FiltroProductos getAll={getAll} setProductos={setProductos} filtro={filtro} setFiltro={setFiltro} admin={true}/>
+
+          {
+            showModal && (
               <AgregarProductoModal
                 showModal={showModal}
                 setShowModal={setShowModal}
                 agregarProducto={agregarProducto}
               />
-            )}
-          </Stack>
+            )
+          }
+
+
         </Stack>
 
+
         <Grid container spacing={3}>
-          {productos != null ?
+          {productos != null &&
             productos.map((producto) => (
               <Grid key={producto.id_producto} item xs={12} sm={6} md={3}>
                 <Card>
@@ -123,7 +130,7 @@ function ProductoList() {
                   </Stack>
                 </Card>
               </Grid>
-            )) : console.log("se toteó")}
+            ))}
         </Grid>
       </Container>
     </>

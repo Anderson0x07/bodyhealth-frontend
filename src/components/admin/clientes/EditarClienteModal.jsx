@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { procesarPeticionGet, procesarPeticionPut } from '../../../utils/HandleApi';
+import { procesarPeticionPut } from '../../../utils/HandleApi';
 import Swal from 'sweetalert2';
 import {
     Avatar,
@@ -60,7 +60,6 @@ function EditarClienteModal(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(data)
 
         if (jornada === 'S') {
             Swal.fire({
@@ -89,7 +88,6 @@ function EditarClienteModal(props) {
                 data.foto = image + " " + fileName;
             }
             setLoading(true);
-            console.log(data)
             try {
                 const respuesta = await procesarPeticionPut(`cliente/editar/${cliente.id_usuario}`, data);
                 setLoading(false);

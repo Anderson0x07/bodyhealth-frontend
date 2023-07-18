@@ -32,11 +32,9 @@ function EditarMusculoModal(props) {
         event.preventDefault();
 
         setLoading(true);
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPut(`musculo/editar/${musculo.id_musculo}`, data);
             setLoading(false);
-            console.log(respuesta);
             Swal.fire({
                 customClass: {
                     container: 'my-swal'
@@ -48,6 +46,7 @@ function EditarMusculoModal(props) {
 
             setShowEditModal(false);
             onUpdate(respuesta.data.musculo);
+
         } catch (error) {
             setLoading(false);
             console.log(error);

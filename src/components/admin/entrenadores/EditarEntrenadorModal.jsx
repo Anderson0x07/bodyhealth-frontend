@@ -60,7 +60,6 @@ function EditarEntrenadorModal(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(data)
 
     if (jornada === 'S') {
       Swal.fire({
@@ -89,7 +88,6 @@ function EditarEntrenadorModal(props) {
         data.foto = image + " " + fileName;
       }
       setLoading(true);
-      console.log(data)
       try {
         const respuesta = await procesarPeticionPut(`entrenador/editar/${entrenador.id_usuario}`, data);
         setLoading(false);
@@ -104,12 +102,10 @@ function EditarEntrenadorModal(props) {
         })
 
         setShowModalEditarEntrenador(false);
-        console.log("hola")
         onUpdate(respuesta.data.entrenador);
 
       } catch (error) {
         setLoading(false);
-        console.log(error);
 
         Swal.fire({
           customClass: {

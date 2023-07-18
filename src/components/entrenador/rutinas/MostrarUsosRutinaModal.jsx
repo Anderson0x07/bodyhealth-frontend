@@ -74,7 +74,7 @@ function MostrarUsosRutinaModal(props) {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
+                        navigate(`/admin/dashboard/rutinas`);
                     })
                 }
             })

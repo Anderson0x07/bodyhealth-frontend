@@ -58,7 +58,6 @@ function EditarInfoModal(props) {
         }
         setLoading(true);
 
-        console.log(data)
         try {
             const respuesta = await procesarPeticionPut(`infobasica/editar/${info.id_configuracion}`, data);
             setLoading(false);

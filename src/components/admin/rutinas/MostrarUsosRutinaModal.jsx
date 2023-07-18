@@ -74,7 +74,7 @@ function MostrarUsosRutinaModal(props) {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/rutinas`);
+                        navigate(`/admin/dashboard/rutinas`);
                     })
                 }
             })
@@ -186,7 +186,6 @@ function MostrarUsosRutinaModal(props) {
                                         <TableRow hover >
 
                                             <TableCell align="center">Nombres</TableCell>
-                                            <TableCell align="center">Documento</TableCell>
                                             <TableCell align="center">Telefono</TableCell>
                                             <TableCell align="center">Email</TableCell>
 
@@ -211,11 +210,9 @@ function MostrarUsosRutinaModal(props) {
 
                                                     </TableCell>
 
-                                                    <TableCell align="center">{cliente.email}</TableCell>
-
-                                                    <TableCell align="center">{cliente.tipo_documento + " - " + cliente.documento}</TableCell>
-
                                                     <TableCell align="center">{cliente.telefono}</TableCell>
+
+                                                    <TableCell align="center">{cliente.email}</TableCell>
 
                                                 </TableRow>
                                             );

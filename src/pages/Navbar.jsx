@@ -1,5 +1,5 @@
-import { Box, Button, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, styled } from "@mui/material";
-import { useContext, useState } from "react";
+import { Box, Container, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, styled } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 
 import FeaturedPlayListIcon from "@mui/icons-material/FeaturedPlayList";
 import CategoryIcon from '@mui/icons-material/Category';
@@ -11,13 +11,30 @@ import { useNavigate } from "react-router-dom";
 import AccountPopover from "./AccountPopover";
 import { CartContext } from "../components/cliente/carrito/ShoppingCartContext";
 import RegistroClienteModal from "./RegistroClienteModal";
-import { truncate } from "lodash";
+import { procesarPeticionGet } from "../utils/HandleApi";
 
-const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg";
+const url = "https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/";
 
 function Navbar({ cliente }) {
 
   const navigate = useNavigate();
+
+  const [data, setData] = useState(null);
+
+  //USEEFFECT INFO BASICA
+  const getInfo = async () => {
+    try {
+      const respuesta = await procesarPeticionGet(`infobasica/${1}`);
+      setData(respuesta.data.infobasica);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const [showModal, setShowModal] = useState(false);
 
@@ -40,14 +57,13 @@ function Navbar({ cliente }) {
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
         {["Inicio", "Planes", "Productos"].map(
           (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
+            <ListItem key={text} disablePadding >
+              <ListItemButton onClick={() => text == "Inicio" ? navigate("/home") : navigate("/home/" + text.toLowerCase())}>
                 <ListItemIcon>
                   {index === 0 && <HomeIcon />}
                   {index === 1 && <FeaturedPlayListIcon />}
@@ -131,17 +147,19 @@ function Navbar({ cliente }) {
               open={mobileMenu["left"]}
               onClose={toggleDrawer("left", false)}
             >
+
               {list("left")}
+
             </Drawer>
-            <NavbarLogo src={url} alt="logo" width={"120px"} height={"60px"} />
+            <NavbarLogo src={data != null ? (url + data.logo_empresa) : undefined} alt="Logo empresa" width={"120px"} height={"60px"} onClick={() => navigate("/home")} />
 
           </Box>
 
           <NavbarLinksBox>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home")}>Inicio</NavLink>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/planes")}>Planes</NavLink>
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/productos")}>Productos</NavLink>
-            {cart.length > 0 ? <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/home/carrito")}>Carrito de Compras</NavLink> : console.log("false")}
+            <NavLink variant="body2" onClick={() => navigate("/home")}>Inicio</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/home/planes")}>Planes</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/home/productos")}>Productos</NavLink>
+            {cart.length > 0 && <NavLink variant="body2" onClick={() => navigate("/home/carrito")}>Carrito de Compras</NavLink>}
           </NavbarLinksBox>
         </Box>
 
@@ -155,7 +173,7 @@ function Navbar({ cliente }) {
               gap: "1rem",
             }}
           >
-            <NavLink variant="body2" onClick={() => navigate("/bodyhealth-frontend/login")}>Iniciar sesión</NavLink>
+            <NavLink variant="body2" onClick={() => navigate("/login")}>Iniciar sesión</NavLink>
 
             <div onClick={() => setShowModal(true)}>
               <CustomButton

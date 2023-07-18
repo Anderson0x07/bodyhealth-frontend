@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { procesarPeticionDelete, procesarPeticionGet } from '../../../utils/HandleApi';
 import EditarEntrenadorModal from './EditarEntrenadorModal';
-import { ArrowBack, Cancel, CheckCircleRounded, MoreVert, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
+import { ArrowBack, Delete, RemoveRedEye, WidgetsRounded } from '@mui/icons-material';
 import Label from '../dashboard/label/Label';
-import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@mui/material';
+import { Alert, AlertTitle, Avatar, Badge, Button, Container, Grid, IconButton, Menu, MenuItem, Stack, Table, TableBody, TableCell, TableContainer, TableRow, Tooltip, Typography } from '@mui/material';
 import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
-import { obtenerDiferenciaDias } from '../../../utils/obtenerDiasRestantesPlan';
 import MostrarUsoEntrenadorModal from './MostrarUsoEntrenadorModal';
 import Swal from 'sweetalert2';
 
@@ -28,23 +27,21 @@ function Entrenador() {
 
     const { id } = useParams();
 
+    const getEntrenador = async () => {
+        try {
+            const response = await procesarPeticionGet(`entrenador/${id}`);
+
+            setEntrenador(response.data.entrenador);
+            setEntrenadorClientes(response.data.entrenador.entrenadorClientes);
+
+        } catch (error) {
+            setError(error.response.data.error)
+        }
+    };
 
     useEffect(() => {
-        const getEntrenador = async () => {
-            try {
-                const response = await procesarPeticionGet(`entrenador/${id}`);
-
-
-                setEntrenador(response.data.entrenador);
-                setEntrenadorClientes(response.data.entrenador.entrenadorClientes);
-
-
-            } catch (error) {
-                setError(error.response.data.error)
-            }
-        };
-
         getEntrenador();
+
     }, []);
 
     const handleDelete = () => {
@@ -73,14 +70,13 @@ function Entrenador() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/entrenadores`);
+                        navigate(`/admin/dashboard/entrenadores`);
                     })
                 }
 
             })
 
         } catch (error) {
-            console.log(error.response.data.error);
             Swal.fire('Atención', error.response.data.error, 'error');
         }
     };
@@ -145,9 +141,7 @@ function Entrenador() {
                     <Grid item xs={6} sm={4} md={6} columns={{ xs: 6, sm: 8, md: 12 }}>
                         <Grid item xs={6} sm={8} md={12} pb={5} >
                             <Container>
-                                {entrenador.foto != undefined
-                                    ? <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />
-                                    : console.log("cargando")}
+                                {entrenador.foto != undefined && <Avatar src={url + entrenador.foto} style={{ width: '400px', height: '400px' }} />}
 
                             </Container>
                         </Grid>
@@ -210,7 +204,7 @@ function Entrenador() {
                 <Grid container spacing={{ xs: 4, sm: 6, md: 6 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 
                     <Grid item xs={2} sm={2} md={3} >
-                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/bodyhealth-frontend/admin/dashboard/entrenadores`)}>Atras</Button>
+                        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => navigate(`/admin/dashboard/entrenadores`)}>Atras</Button>
                     </Grid>
 
                     {entrenadorClientes.length > 0
@@ -219,7 +213,7 @@ function Entrenador() {
                             <Button variant="contained" startIcon={<RemoveRedEye />} onClick={() => setShowModalClientesAsignados(true)}>Ver clientes</Button>
                         </Grid>
                         : <Grid item xs={2} sm={2} md={3} >
-                            <Button variant="contained" startIcon={<Cancel />} onClick={handleDelete} >eliminar</Button>
+                            <Button variant="contained" startIcon={<Delete />} onClick={handleDelete} >Eliminar</Button>
                         </Grid>
                     }
 

@@ -31,8 +31,6 @@ function EditarMetodoPago(props) {
 
         setLoading(true);
 
-
-        console.log(data);
         try {
             const respuesta = await procesarPeticionPut(`metodopago/editar/${metodo.id_metodopago}`, data);
             setLoading(false);
@@ -48,11 +46,9 @@ function EditarMetodoPago(props) {
             setShowModalEditarMetodoPago(false);
 
             const response = await procesarPeticionGet('metodopago/all')
-            console.log(response)
             onUpdate(response.data.metodospago);
 
         } catch (error) {
-            console.log(error)
             setLoading(false);
 
             Swal.fire({

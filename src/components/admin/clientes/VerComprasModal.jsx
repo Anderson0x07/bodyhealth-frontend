@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import {
-    Button,
     Container,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
-    IconButton,
     Paper,
     Slide,
     Table,
@@ -17,10 +15,10 @@ import {
     TablePagination,
     TableRow,
 } from '@mui/material';
-import { CheckCircleRounded, Receipt } from '@mui/icons-material';
+import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import Scrollbar from '../dashboard/scrollbar/Scrollbar';
 import { procesarPeticionPdf } from '../../../utils/HandleApi';
+import FacturaItem from '../configuracion/FacturaItem';
 
 // ----------------------------------------------------------------------
 
@@ -31,9 +29,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function VerComprasModal(props) {
 
     const { clienteCompras, showModalComprasCliente, setShowModalComprasCliente } = props;
-
-    const [loading, setLoading] = useState(false);
-    const [loadingPdf, setLoadingPdf] = useState(false);
 
 
     const [page, setPage] = useState(0);
@@ -47,20 +42,16 @@ function VerComprasModal(props) {
 
     const handleVerFactura = async (id_compra) => {
 
-        setLoadingPdf(true);
         try {
             const response = await procesarPeticionPdf(`pedido/pdf/${id_compra}`)
-            console.log(response)
 
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             window.open(url);
 
-            setLoadingPdf(false);
 
         } catch (error) {
             console.log(error);
-            setLoadingPdf(false);
         }
     }
 
@@ -116,15 +107,11 @@ function VerComprasModal(props) {
                                             <TableCell align="center">$ {total}</TableCell>
 
                                             <TableCell align="center">
-                                                <LoadingButton
-                                                    size="large"
-                                                    color="inherit"
-                                                    onClick={() => handleVerFactura(id_compra)}
-                                                    loading={loadingPdf}
-                                                    variant="text"
-                                                >
-                                                    <Receipt />
-                                                </LoadingButton>
+                                                <FacturaItem
+                                                    key={id_compra}
+                                                    id_factura={id_compra}
+                                                    handleVerFactura={handleVerFactura}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -155,12 +142,9 @@ function VerComprasModal(props) {
 
             </DialogContent>
             <DialogActions>
-                <Button variant="outlined" onClick={handleCancelarAndOk}>Cancelar</Button>
                 <LoadingButton
                     color="secondary"
                     onClick={handleCancelarAndOk}
-                    loading={loading}
-                    loadingPosition="start"
                     startIcon={<CheckCircleRounded />}
                     variant="contained"
                 >

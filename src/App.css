@@ -1,5 +1,5 @@
 .my-swal {
-  z-index: 4000;
+  z-index: 100000000000 !important;
 }
 
 .clave {

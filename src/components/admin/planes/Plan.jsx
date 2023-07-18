@@ -47,7 +47,7 @@ function Plan() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/planes`);
+        navigate(`/admin/dashboard/planes`);
     };
 
     const handleDelete = () => {
@@ -75,7 +75,7 @@ function Plan() {
                         text: response.data.message,
                         icon: 'success'
                     }).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/planes`);
+                        navigate(`/admin/dashboard/planes`);
                     })
                 }
             })
@@ -106,32 +106,32 @@ function Plan() {
                 <Grid container columns={{ xs: 6, sm: 8, md: 12 }}>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <Container>
-                            {logo != ""
-                                ? <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />
-                                : false}
+                            {logo != "" && <Avatar src={url + logo} style={{ width: '350px', height: '200px', borderRadius: 0, }} />}
                         </Container>
                     </Grid>
                     <Grid item xs={6} sm={4} md={6} pb={5}>
                         <TableContainer  >
                             <Table style={{ border: "1px solid black" }}>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell className='clave' ># Plan</TableCell>
-                                        <TableCell className='value' align="right">{plan.id_plan}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='clave'>nombre</TableCell>
-                                        <TableCell className='value' align="right">{plan.plan}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='clave'>Meses</TableCell>
-                                        <TableCell className='value' align="right">{plan.meses}</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell className='clave'>Precio</TableCell>
-                                        <TableCell className='value' align="right">{plan.precio}</TableCell>
-                                    </TableRow>
-                                </TableBody>
+                                
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell className='clave' ># Plan</TableCell>
+                                            <TableCell className='value' align="right">{plan.id_plan}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell className='clave'>nombre</TableCell>
+                                            <TableCell className='value' align="right">{plan.plan}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell className='clave'>Meses</TableCell>
+                                            <TableCell className='value' align="right">{plan.meses}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell className='clave'>Precio</TableCell>
+                                            <TableCell className='value' align="right">{"$ " + (plan.precio != undefined && plan.precio.toLocaleString())}</TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                
 
                             </Table>
                         </TableContainer>

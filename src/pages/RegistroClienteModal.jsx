@@ -145,7 +145,7 @@ function RegistroClienteModal(props) {
 
                 setShowModal(false);
 
-                navigate("/bodyhealth-frontend/login");
+                navigate("/login");
 
             } catch (error) {
                 setLoading(false);

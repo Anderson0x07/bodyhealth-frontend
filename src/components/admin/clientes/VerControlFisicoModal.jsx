@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { CheckCircleRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 // ----------------------------------------------------------------------
 
@@ -55,13 +56,34 @@ function VerControlFisicoModal(props) {
             <DialogTitle>Controles Físicos</DialogTitle>
             <DialogContent>
 
-                <Container>
+                <Container sx={{mt:3}}>
+                    <ResponsiveContainer width="100%" aspect={2}>
+                        <AreaChart
+                            width={800}
+                            height={700}
+                            data={controlesCliente}
+                            margin={{
+                                top: 10,
+                                right: 30,
+                                left: 0,
+                                bottom: 0
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="fecha" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend/>
+                            <Area type="monotone" dataKey="peso" stackId="1" stroke='#8884d8' fill="#8884d8" />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </Container>
+
+                <Container sx={{mt:5}}>
                     <TableContainer component={Paper}>
                         <Table>
                             <TableHead>
                                 <TableRow hover >
-
-                                    <TableCell align="center">Control #</TableCell>
 
                                     <TableCell align="center">Fecha de control</TableCell>
 
@@ -79,8 +101,6 @@ function VerControlFisicoModal(props) {
 
                                     return (
                                         <TableRow hover key={id_controlcliente} >
-
-                                            <TableCell align="center">{id_controlcliente}</TableCell>
 
                                             <TableCell align="center">{fecha}</TableCell>
 

@@ -55,7 +55,7 @@ function Proveedor() {
 
 
     const handleBack = () => {
-        navigate(`/bodyhealth-frontend/admin/dashboard/proveedores`);
+        navigate(`/admin/dashboard/proveedores`);
     };
 
     const handleEditarProveedor = () => {
@@ -94,7 +94,7 @@ function Proveedor() {
                     }
 
                     ).then(() => {
-                        navigate(`/bodyhealth-frontend/admin/dashboard/proveedores`);
+                        navigate(`/admin/dashboard/proveedores`);
                     })
                 }
             })
