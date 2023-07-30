@@ -82,7 +82,7 @@ function FiltroProductos({ getAll, setProductos, filtro, setFiltro, admin}) {
                     Pre-entrenos
                 </MenuItem>
 
-                <MenuItem onClick={() => filtrar("BCAA")} sx={{ typography: 'body2' }} selected={filtro === "BCAA"}>
+                <MenuItem onClick={() => filtrar("BCAA (Aminoacidos)")} sx={{ typography: 'body2' }} selected={filtro === "BCAA (Aminoacidos)"}>
                     BCAA (Aminoácidos)
                 </MenuItem>
 

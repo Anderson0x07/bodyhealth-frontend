@@ -10,7 +10,7 @@ export default function EntrenadorCard(props) {
       {props.entrenador.map((item) => (
 
         <>
-          <div style={{
+          <div key={item.id_usuario} style={{
             color: "black",
             display: "flex",
             flexDirection: "column",

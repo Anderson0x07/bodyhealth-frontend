@@ -1,28 +1,21 @@
-import config from "./bot/config";
-import MessageParser from "./bot/MessageParser.jsx";
-import ActionProvider from "./bot/ActionProvider.jsx";
+import MessageParser from "./bot/MessageParser";
+import ActionProvider from "./bot/ActionProvider";
 import Chatbot from "react-chatbot-kit";
 import "react-chatbot-kit/build/main.css";
 import { FaRobot } from "react-icons/fa"
 import "./bot/chatbot.css"
-
 import { useState } from "react";
+import llenarConfig from "./bot/LlenarConfig";
+
 const Chat = () => {
   const [showBot, toggleBot] = useState(false);
 
-  const con = config();
+  const con = llenarConfig();
 
-  const saveMessages = (messages, HTMLText) => {
-    localStorage.setItem("chat_messages", JSON.stringify(messages));
-  };
+  console.log(con)
 
   const validateInput = (message) => {
     return message.match("^(?!s*$).+");
-  };
-
-  const loadMessages = () => {
-    const messages = JSON.parse(localStorage.getItem("chat_messages"));
-    return messages;
   };
 
   return (
@@ -43,12 +36,10 @@ const Chat = () => {
       {showBot && (
         <Chatbot
           config={con}
-          messageHistory={loadMessages()}
           messageParser={MessageParser}
           headerText="Gym Chat"
           placeholderText="Escribe algo..."
           actionProvider={ActionProvider}
-          saveMessages={saveMessages}
           validator={validateInput}
         />
       )}

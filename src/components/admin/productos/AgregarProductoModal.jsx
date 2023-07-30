@@ -148,7 +148,7 @@ function AgregarProductoModal(props) {
                         container: 'my-swal'
                     },
                     title: 'Atención',
-                    text: error.response.data.errors != null ? "Campos obligatorios" : error.response.data.error,
+                    text: error.response.data.errors != null ? "Revisar los campos!!" : error.response.data.error,
                     icon: 'error'
                 })
             }
@@ -156,9 +156,9 @@ function AgregarProductoModal(props) {
     }
 
     const tipos_productos = [{id:1, descripcion: "Creatinas"},
-                        {id:2, descripcion: "Proteínas en polvo"},
+                        {id:2, descripcion: "Proteinas en polvo"},
                         {id:3, descripcion: "Pre-entrenos"},
-                        {id:4, descripcion: "BCAA (aminoácidos de cadena ramificada)"},
+                        {id:4, descripcion: "BCAA (aminoacidos)"},
                         {id:5, descripcion: "Vitaminas"}]
 
     return (

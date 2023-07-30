@@ -4,7 +4,7 @@ export default function PlanCard(props) {
   return (
     <>
       {props.planes.map((item) => (
-        <div style={{
+        <div key={item.id} style={{
           color: "black",
           display: "flex",
           flexDirection: "column",

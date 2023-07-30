@@ -6,9 +6,7 @@ export default function CardLink(props) {
   const navigate = useNavigate();
 
   return (
-    <div onClick={() => navigate(props.link)} style={{
-      color: "white"
-    }}>
+    <div onClick={() => navigate(`/home/${props.link}`)} style={{color: "white", cursor: "pointer"}}>
       <h1 style={{
         backgroundColor: "#1877F2",
         borderRadius: "8px",
