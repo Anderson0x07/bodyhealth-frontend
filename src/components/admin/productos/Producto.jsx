@@ -180,7 +180,7 @@ function Producto() {
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Precio</TableCell>
-                                        <TableCell className='value' align="right">{producto.precio + ''}</TableCell>
+                                        <TableCell className='value' align="right">{producto.precio != null && ("$ "+producto.precio.toLocaleString())}</TableCell>
                                     </TableRow>
                                     <TableRow>
                                         <TableCell className='clave'>Proveedor</TableCell>

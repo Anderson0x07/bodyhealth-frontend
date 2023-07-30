@@ -19,13 +19,13 @@
     "lodash": "^4.17.21",
     "numeral": "^2.0.6",
     "react": "^18.2.0",
+    "react-chatbot-kit": "^2.1.2",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.9.0",
     "react-router-dom": "^6.9.0",
     "recharts": "^2.7.1",
     "simplebar-react": "^3.2.1",
-    "sweetalert2": "^11.7.3",
-    "react-chatbot-kit": "^2.1.2",
-    "react-icons": "^4.9.0"
+    "sweetalert2": "^11.7.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

@@ -15,11 +15,9 @@ function HomeAdmin({ admin }) {
       try {
         const response = await procesarPeticionGet(`admin/info/${admin.id_usuario}`);
         setInfo(response.data.informacion);
-        console.log("Adnddede")
-        console.log(response)
 
       } catch (error) {
-        console.log("se toteó")
+        console.log(error)
       }
     }
 

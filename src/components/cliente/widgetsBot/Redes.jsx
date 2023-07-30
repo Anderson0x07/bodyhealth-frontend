@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Card from './Card'
-import { procesarPeticionGet } from '../../../utils/HandleApi';
 
 export default function Redes(data) {
 

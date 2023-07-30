@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import EntrenadorCard from './EntrenadorCard'
-import { procesarPeticionGet } from '../../../utils/HandleApi';
 
 export default function Entrenador(entrenadores) {
 
     console.log(entrenadores)
+    
     return (
         <div
             style={{

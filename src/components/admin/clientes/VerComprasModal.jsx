@@ -104,7 +104,7 @@ function VerComprasModal(props) {
 
                                             <TableCell align="center">{metodoPago.descripcion}</TableCell>
 
-                                            <TableCell align="center">$ {total}</TableCell>
+                                            <TableCell align="center">$ {total.toLocaleString()}</TableCell>
 
                                             <TableCell align="center">
                                                 <FacturaItem

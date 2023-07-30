@@ -193,7 +193,7 @@ function FactPedidoList() {
                     </TableCell>
                     <TableCell align="left">{fecha_compra}</TableCell>
                     <TableCell align="left">{metodoPago.descripcion} </TableCell>
-                    <TableCell align="left">{total}</TableCell>
+                    <TableCell align="left">{"$ "+total.toLocaleString()}</TableCell>
                     <TableCell align="center">
                       <FacturaItem
                         key={id_compra}

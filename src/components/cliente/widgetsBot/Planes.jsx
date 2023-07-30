@@ -4,24 +4,28 @@ import PlanCard from "./PlanCard";
 export default function Planes() {
   const planArray = [
     {
+      id: 1,
       nombre: "Plan Platinum Anual",
       precio: "$999.999",
       mensaje:
         "Reservado para aquellos miembros comprometidos que deseen una membresía de largo plazo. Ofrece todos los beneficios del Plan Gold, pero con la ventaja adicional de una membresía anual con tarifa especial. Incluye acceso completo a todas las instalaciones, clases grupales, servicios exclusivos, y asesoramiento personalizado. Además de tener un estilo de vida saludable y en movimiento durante todo el año.",
     },
     {
+      id: 2,
       nombre: "Plan Gold",
       precio: "$99.900/Mes",
       mensaje:
         "Ofrece una amplia gama de servicios y beneficios exclusivos. Incluye acceso ilimitado a todas las áreas del gimnasio, clases grupales, servicios exclusivos y asesoramiento personalizado..",
     },
     {
+      id: 3,
       nombre: "Plan Silver",
       precio: "$79.900/Mes",
       mensaje:
         "Brinda a los miembros acceso a áreas, y equipos esenciales. Incluye acceso limitado a clases grupales, servicios exclusivos y asesoramiento semi-personalizado.",
     },
     {
+      id: 4,
       nombre: "Plan Bronze",
       precio: "$59.900/Mes",
       mensaje:

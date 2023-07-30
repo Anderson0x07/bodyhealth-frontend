@@ -4,7 +4,7 @@ export default function Reseña(props) {
   return (
     <>
       {props.reseñas.map((item) => (
-        <div style={{
+        <div key={item.id} style={{
           color: "black",
           display: "flex",
           flexDirection: "column",

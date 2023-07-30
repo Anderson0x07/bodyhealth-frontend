@@ -1,6 +1,5 @@
 import { createChatBotMessage } from 'react-chatbot-kit';
 import GeneralOptions from '../widgetsBot/Overview';
-import Card from '../widgetsBot/Card';
 import Redes from '../widgetsBot/Redes';
 import Opiniones from '../widgetsBot/Opiniones';
 import Planes from '../widgetsBot/Planes';
@@ -13,7 +12,7 @@ import { procesarPeticionGet } from '../../../utils/HandleApi';
 const botName = "Gym Chat"
 
 
-function config() {
+function llenarConfig() {
   const [redes, setRedes] = useState(null);
   const [entrenadores, setEntrenadores] = useState(null);
 
@@ -94,6 +93,6 @@ function config() {
 
 }
 
-export default config
+export default llenarConfig;
 
 
